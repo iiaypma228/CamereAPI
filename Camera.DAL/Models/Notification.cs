@@ -1,0 +1,21 @@
+using Joint.Data.Models;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Metadata.Builders;
+
+namespace Camera.DAL.Models;
+
+public class NotificationConfiguration : IEntityTypeConfiguration<Notification>
+{
+    public void Configure(EntityTypeBuilder<Notification> builder)
+    {
+        builder.ToTable(name: nameof(Tables.Notification)).HasKey(o => o.Id);
+
+        builder.HasOne<User>().WithMany().HasForeignKey(i => i.UserId);
+        builder.HasOne<Joint.Data.Models.Camera>().WithMany().HasForeignKey(i => i.CameraId);
+
+        builder.Ignore(i => i.Camera);
+        builder.Ignore(i => i.User);
+
+
+    }
+}
