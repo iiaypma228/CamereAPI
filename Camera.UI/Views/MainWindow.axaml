@@ -1,5 +1,7 @@
 <Window xmlns="https://github.com/avaloniaui"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+		xmlns:rxui="http://reactiveui.net"
+		xmlns:app="clr-namespace:Camera.UI"
         xmlns:vm="using:Camera.UI.ViewModels"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
@@ -7,28 +9,24 @@
         x:Class="Camera.UI.Views.MainWindow"
         x:DataType="vm:MainWindowViewModel"
         Icon="/Assets/avalonia-logo.ico"
-        Title="Camera.UI">
+        Title="Camera.UI"
+		>
 
     <Design.DataContext>
         <!-- This only sets the DataContext for the previewer in an IDE,
              to set the actual DataContext for runtime, set the DataContext property in code (look at App.axaml.cs) -->
         <vm:MainWindowViewModel/>
     </Design.DataContext>
-    
-    <StackPanel Width="500" Margin="10" Orientation="Vertical" VerticalAlignment="Center">
-        <StackPanel Margin="5" Orientation="Horizontal">
-            <TextBlock Width="100" VerticalAlignment="Center" Text="Login" Margin="0,0,30,0" ></TextBlock>
-            <TextBox Width="200" HorizontalContentAlignment="Right" HorizontalAlignment="Right" ></TextBox>
-        </StackPanel>
-
-        <StackPanel Margin="5" Orientation="Horizontal">
-            <TextBlock Width="100" VerticalAlignment="Center"  Text="Password" Margin="0,0,30,0" ></TextBlock>
-            <TextBox  Width="200" HorizontalContentAlignment="Right" HorizontalAlignment="Right" ></TextBox>
-        </StackPanel>
-        
-        <Button Width="200" VerticalAlignment="Center">
-            <TextBlock Text="Login"></TextBlock>
-        </Button>
-    </StackPanel>
+	<rxui:RoutedViewHost Router="{Binding Router}">
+		<rxui:RoutedViewHost.DefaultContent>
+			<TextBlock Text="Default content"
+					   HorizontalAlignment="Center"
+					   VerticalAlignment="Center" />
+		</rxui:RoutedViewHost.DefaultContent>
+		<rxui:RoutedViewHost.ViewLocator>
+			<!-- See AppViewLocator.cs section below -->
+			<app:AppViewLocator />
+		</rxui:RoutedViewHost.ViewLocator>
+	</rxui:RoutedViewHost>
     
 </Window>

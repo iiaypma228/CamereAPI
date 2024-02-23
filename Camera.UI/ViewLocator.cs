@@ -2,11 +2,16 @@ using System;
 using Avalonia.Controls;
 using Avalonia.Controls.Templates;
 using Camera.UI.ViewModels;
+using ReactiveUI;
 
 namespace Camera.UI;
 
 public class ViewLocator : IDataTemplate
 {
+    public static RoutingState Router { get; } = new RoutingState();
+
+    public static IScreen Screen { get; set; }
+
     public Control Build(object data)
     {
         var name = data.GetType().FullName!.Replace("ViewModel", "View");
