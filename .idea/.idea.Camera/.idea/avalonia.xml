@@ -4,7 +4,9 @@
     <option name="projectPerEditor">
       <map>
         <entry key="Camera.UI/App.axaml" value="Camera.UI/Camera.UI.csproj" />
+        <entry key="Camera.UI/Views/LoginView.axaml" value="Camera.UI/Camera.UI.csproj" />
         <entry key="Camera.UI/Views/MainWindow.axaml" value="Camera.UI/Camera.UI.csproj" />
+        <entry key="Camera.UI/Views/RegistrationView.axaml" value="Camera.UI/Camera.UI.csproj" />
       </map>
     </option>
   </component>
