@@ -7,7 +7,7 @@ namespace Camera.UI.Models;
 
 public class ServerResponse<T>
 {
-    public static async Task<ServerResponse<T>> Create(HttpResponseMessage message)
+    public static async Task<ServerResponse<T>> CreateFromJson(HttpResponseMessage message)
     {
         var res = new ServerResponse<T>()
         {
@@ -16,7 +16,19 @@ public class ServerResponse<T>
             Error = message.IsSuccessStatusCode ? string.Empty : await message.Content.ReadAsStringAsync(),
         };
         return res;
-    }    
+    }
+    
+    public static async Task<ServerResponse<string>> CreateFromString(HttpResponseMessage message)
+    {
+        var res = new ServerResponse<string>()
+        {
+            IsSuccess = message.IsSuccessStatusCode,
+            Data = message.IsSuccessStatusCode ? await message.Content.ReadAsStringAsync() : default,
+            Error = message.IsSuccessStatusCode ? string.Empty : await message.Content.ReadAsStringAsync(),
+        };
+        return res;
+    } 
+    
     public bool IsSuccess { get; set; }
     
     public T? Data { get; set; }

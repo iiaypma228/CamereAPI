@@ -29,7 +29,7 @@ namespace Camera.UI.Services
             try
             {
                 var res = await _httpClient.PostAsJsonAsync("http://26.90.89.142:5047/api/user/user", user);
-                return await ServerResponse<string>.Create(res);
+                return await ServerResponse<string>.CreateFromString(res);
             }
             catch (Exception e)
             {

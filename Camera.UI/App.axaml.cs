@@ -61,11 +61,13 @@ public partial class App : Application
         //screen
         _services.AddSingleton<RoutingState>();
         _services.AddSingleton<IScreen,MainWindowViewModel>();
-        
+        _services.AddSingleton<IServiceCollection>(_services);
         
         //ViewModels
         _services.AddSingleton<RegistrationViewModel>();
         _services.AddSingleton<LoginViewModel>();
+        _services.AddSingleton<HomeViewModel>();
+        _services.AddSingleton<CameraViewModel>();
         
         //Services        
         _services.AddSingleton<IAuthorizationService, AuthorizationService>();
