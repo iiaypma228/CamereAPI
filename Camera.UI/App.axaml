@@ -11,5 +11,36 @@
   
     <Application.Styles>
         <FluentTheme />
+		<StyleInclude Source="avares://Avalonia.Controls.DataGrid/Themes/Fluent.xaml"/>
+        <StyleInclude Source="avares://Camera.UI/Assets/Icons.axaml"></StyleInclude>
+		<Style Selector="Button.icon">
+			<Setter Property="Template">
+				<ControlTemplate>
+					<Border Background="{TemplateBinding Background}"
+							BorderBrush="{TemplateBinding BorderBrush}"
+							BorderThickness="{TemplateBinding BorderThickness}"
+							CornerRadius="{StaticResource ControlCornerRadius}"
+							Padding="{TemplateBinding Padding}">
+						<DockPanel>
+							<PathIcon Foreground="{TemplateBinding Foreground}"
+									  Data="{TemplateBinding Tag}"
+									  DockPanel.Dock="Left" />
+							<ContentPresenter Content="{TemplateBinding Content}"
+											  Margin="10,0,10,0"
+											  TextBlock.Foreground="{TemplateBinding Foreground}"
+											  ContentTemplate="{TemplateBinding ContentTemplate}"
+											  HorizontalContentAlignment="{TemplateBinding HorizontalContentAlignment}"
+											  VerticalContentAlignment="{TemplateBinding VerticalContentAlignment}" />
+						</DockPanel>
+					</Border>
+				</ControlTemplate>
+			</Setter>
+		</Style>
+		<Style Selector="Button.icon:pointerover">
+			<Setter Property="Background" Value="{StaticResource ButtonBackgroundPointerOver}" />
+		</Style>
+		<Style Selector="Button.icon:pressed">
+			<Setter Property="Background" Value="{StaticResource ButtonBackgroundPressed}" />
+		</Style>
     </Application.Styles>
 </Application>

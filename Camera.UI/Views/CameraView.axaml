@@ -1,0 +1,30 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+             x:Class="Camera.UI.Views.CameraView"
+			 xmlns:vm="using:Camera.UI.ViewModels"
+             x:DataType="vm:CameraViewModel">
+	
+	<StackPanel Margin="20">
+		<StackPanel Orientation="Horizontal" Margin="0 5 0 5">
+			<Button Margin="0 0 5 0" Classes="icon" Tag="{StaticResource CameraAddIcon}" Content="Add" Command="{Binding LoadCameras}"/>
+			<Button Margin="0 0 5 0" Classes="icon" Tag="{StaticResource CameraEditIcon}" Content="Edit" />
+			<Button Margin="0 0 5 0" Classes="icon" Tag="{StaticResource DeleteIcon}" Content="Delete" />
+		</StackPanel>
+		<DataGrid ItemsSource="{Binding Items}"
+          IsReadOnly="True"
+          CanUserReorderColumns="True"
+          CanUserResizeColumns="True"
+          CanUserSortColumns="False"
+          GridLinesVisibility="All"
+          BorderThickness="1" BorderBrush="Gray">
+			<DataGrid.Columns>
+				<DataGridTextColumn Header="Name" Binding="{Binding Name}"/>
+				<DataGridTextColumn Header="Connection" Binding="{Binding Connection}"/>
+				<DataGridTextColumn Header="ConnectionData" Binding="{Binding ConnectionData}"/>
+			</DataGrid.Columns>
+		</DataGrid>
+	</StackPanel>
+</UserControl>

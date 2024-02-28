@@ -8,6 +8,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Avalonia.Controls.Notifications;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.DependencyInjection.Extensions;
 using ReactiveUI.Fody.Helpers;
 
 namespace Camera.UI.ViewModels
@@ -26,6 +27,10 @@ namespace Camera.UI.ViewModels
 
         private INotificationService _notificationService;
 
+        private readonly IServiceCollection _serviceProvider;
+
+        private HomeViewModel _homeViewModel;
+        
         #endregion
         
         
@@ -33,10 +38,14 @@ namespace Camera.UI.ViewModels
             RoutingState routingState, 
             RegistrationViewModel registrationViewModel, 
             IAuthorizationService service,
-            INotificationService notificationService
+            INotificationService notificationService,
+            IServiceCollection serviceProvider,
+            HomeViewModel homeViewModel
             ) :
             base(screen, routingState)
         {
+            _homeViewModel = homeViewModel;
+            _serviceProvider = serviceProvider;
             _service = service;
             _notificationService = notificationService;
             _registrationViewModel = registrationViewModel;
@@ -54,7 +63,9 @@ namespace Camera.UI.ViewModels
             if (res.IsSuccess)
             {
                 //TODO LOGIC OLEG!!!
-                this.RoutingState.Navigate.Execute();
+                _serviceProvider.TryAddSingleton<IScreen>(_homeViewModel);
+                _serviceProvider.TryAddSingleton<RoutingState>(_homeViewModel.Router);
+                this.RoutingState.Navigate.Execute(_homeViewModel);
             }
             else
             {

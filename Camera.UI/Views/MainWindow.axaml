@@ -27,8 +27,6 @@
 			<rxui:RoutedViewHost.ViewLocator>
 				<!-- See AppViewLocator.cs section below -->
 				<app:ViewLocator />
-				
 			</rxui:RoutedViewHost.ViewLocator>
-			
 		</rxui:RoutedViewHost>
 </Window>

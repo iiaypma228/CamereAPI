@@ -13,6 +13,7 @@ namespace Camera.UI.Services
     public interface IAuthorizationService
     {
         Task<ServerResponse<string>> AuthorizationAsync(User user);
+        string Token { get; }
     }
     
     public class AuthorizationService : IAuthorizationService
@@ -22,14 +23,24 @@ namespace Camera.UI.Services
         {
             _httpClient = httpClient;
         }
-        
+
+        public string Token => _token;
+        private string _token;
+
         public async Task<ServerResponse<string>> AuthorizationAsync(User user)
         {
             try
             {
-                var res = await _httpClient.PostAsJsonAsync("http://26.90.89.142:5047/api/auth", user);
+                var res = await _httpClient.PostAsJsonAsync("api/auth", user);
 
-                return await ServerResponse<string>.Create(res);
+                var token = await ServerResponse<string>.CreateFromString(res);
+
+                if (token.IsSuccess) 
+                {
+                    var parsedToken = ServerResponse<string>.ParseToken(token.Data);
+                    _token = parsedToken.access_token;
+                }
+                return token;
             }
             catch (Exception e)
             {

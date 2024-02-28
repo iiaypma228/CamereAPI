@@ -1,3 +1,4 @@
+using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Controls.Notifications;
 using Avalonia.Interactivity;
@@ -14,7 +15,8 @@ public partial class MainWindow : Window
     public MainWindow(IServiceCollection collection)
     {
         _collection = collection;
-        AvaloniaXamlLoader.Load(this);
+        InitializeComponent();
+        //AttachDevTools();
     }
 
     private void Control_OnLoaded(object? sender, RoutedEventArgs e)
