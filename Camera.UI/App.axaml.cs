@@ -5,6 +5,7 @@ using Avalonia.Controls;
 using Avalonia.Controls.ApplicationLifetimes;
 using Avalonia.Controls.Notifications;
 using Avalonia.Markup.Xaml;
+using Avalonia.Platform;
 using Camera.UI.Services;
 using Camera.UI.ViewModels;
 using Camera.UI.Views;
@@ -66,6 +67,7 @@ public partial class App : Application
         //ViewModels
         _services.AddSingleton<RegistrationViewModel>();
         _services.AddSingleton<LoginViewModel>();
+        _services.AddSingleton<WindowStartViewModel>();
         
         //Services        
         _services.AddSingleton<IAuthorizationService, AuthorizationService>();

@@ -54,6 +54,7 @@ namespace Camera.UI.ViewModels
             if (res.IsSuccess)
             {
                 //TODO LOGIC OLEG!!!
+                this.RoutingState.Navigate.Execute();
             }
             else
             {
