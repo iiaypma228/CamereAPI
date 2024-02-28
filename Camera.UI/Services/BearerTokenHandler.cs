@@ -12,18 +12,18 @@ namespace Camera.UI.Services
 
     public class BearerTokenHandler : DelegatingHandler
     {
-        private readonly IAccessTokenProvider _accessTokenProvider;
+        private readonly IAuthorizationService _authorization;
 
-        public BearerTokenHandler(IAccessTokenProvider accessTokenProvider)
+        public BearerTokenHandler(IAuthorizationService authorization)
         {
-            _accessTokenProvider = accessTokenProvider;
+            _authorization = authorization;
         }
 
         protected override async Task<HttpResponseMessage> SendAsync(
             HttpRequestMessage request, CancellationToken cancellationToken)
         {
             // Получаем токен от провайдера
-            string accessToken = await _accessTokenProvider.GetAccessToken();
+            string accessToken = _authorization.Token;
 
             // Добавляем заголовок Authorization к каждому запросу
             request.Headers.Authorization = new AuthenticationHeaderValue("Bearer", accessToken);

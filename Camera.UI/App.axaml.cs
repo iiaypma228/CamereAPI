@@ -1,6 +1,7 @@
 using System;
 using System.Net.Http;
 using System.Reactive;
+using System.Threading.Tasks;
 using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Controls.ApplicationLifetimes;
@@ -41,9 +42,9 @@ public partial class App : Application
             ConfigureServices();
 
             desktop.MainWindow.DataContext = this._serviceProvider.GetService<IScreen>();
-            
-            this._serviceProvider.GetService<RoutingState>()!
-                .Navigate.Execute(this._serviceProvider.GetService<LoginViewModel>()!); // NOT NULL!
+
+            this._serviceProvider.GetService<RoutingState>()
+                .Navigate.Execute(this._serviceProvider.GetService<LoginViewModel>()); // NOT NULL!
         }
         base.OnFrameworkInitializationCompleted();
     }
@@ -59,7 +60,10 @@ public partial class App : Application
         // А ТАК ВСЕ СЕРВИСЫ БУДУТ ИСПОЛЬЗОВАТЬ ОБЩИЙ ХТТП КЛИЕНТ
 
 
-        _services.AddHttpClient("", i => { i.BaseAddress = new Uri(configuration["ApiUrl"]); });//.AddHttpMessageHandler<BearerTokenHandler>();
+        _services.AddHttpClient("", i => { i.BaseAddress = new Uri(configuration["ApiUrl"]); });
+        _services.AddHttpClient<ICameraService>(i => i.BaseAddress = new Uri(configuration["ApiUrl"]))
+            .AddHttpMessageHandler<BearerTokenHandler>();
+            ;//.AddHttpMessageHandler<BearerTokenHandler>();
         /*    .AddHttpMessageHandler(provider =>
         {
             var accessTokenProvider = provider.GetRequiredService<IAccessTokenProvider>();
@@ -88,8 +92,8 @@ public partial class App : Application
         _services.AddSingleton<IAuthorizationService, AuthorizationService>();
         _services.AddSingleton<IRegistrationService, RegistrationService>();
         _services.AddSingleton<ICameraService, CameraService>();
-        _services.AddSingleton<BearerTokenHandler>();
-        _services.AddSingleton<IAccessTokenProvider, AccessTokenProvider>();
+        _services.AddTransient<BearerTokenHandler>();
+        //_services.AddSingleton<IAccessTokenProvider, AccessTokenProvider>();
 
         //КОНФИГУРИРУЕМ
         _serviceProvider = _services.BuildServiceProvider();
