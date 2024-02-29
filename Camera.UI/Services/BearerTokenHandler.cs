@@ -6,15 +6,16 @@ using System.Net.Http;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
+using Microsoft.Extensions.Configuration;
 
 namespace Camera.UI.Services
 {
 
     public class BearerTokenHandler : DelegatingHandler
     {
-        private readonly IAuthorizationService _authorization;
+        private readonly IAccessTokenProvider _authorization;
 
-        public BearerTokenHandler(IAuthorizationService authorization)
+        public BearerTokenHandler(IAccessTokenProvider authorization)
         {
             _authorization = authorization;
         }
@@ -23,7 +24,7 @@ namespace Camera.UI.Services
             HttpRequestMessage request, CancellationToken cancellationToken)
         {
             // Получаем токен от провайдера
-            string accessToken = _authorization.Token;
+            string accessToken = _authorization.GetAccessToken();
 
             // Добавляем заголовок Authorization к каждому запросу
             request.Headers.Authorization = new AuthenticationHeaderValue("Bearer", accessToken);
@@ -33,30 +34,17 @@ namespace Camera.UI.Services
     }
     public class AccessTokenProvider : IAccessTokenProvider
     {
-        private string _accessToken;
-        private IAuthorizationService _authorizationService;
+        private string _accessToken = string.Empty;
 
-        public AccessTokenProvider(IAuthorizationService service)
-        {
-            _authorizationService = service;
-        }
+        public string GetAccessToken() => _accessToken;
 
-        public async Task<string> GetAccessToken()
-        {
-            // Вернуть текущий токен или запросить новый токен
-            // Возможно, вам потребуется логика обновления токена
-            return _authorizationService.Token;
-        }
-
-        public void SetAccessToken(string accessToken)
-        {
-            // Установить токен после успешной аутентификации
-            _accessToken = accessToken;
-        }
+        public void SetAccessToken(string accessToken) => _accessToken = accessToken;
+        
     }
     public interface IAccessTokenProvider
     {
-        Task<string> GetAccessToken();
+        void SetAccessToken(string accessToken);
+        string GetAccessToken();
     }
 
 }

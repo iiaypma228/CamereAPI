@@ -60,24 +60,14 @@ public partial class App : Application
         // А ТАК ВСЕ СЕРВИСЫ БУДУТ ИСПОЛЬЗОВАТЬ ОБЩИЙ ХТТП КЛИЕНТ
 
 
-        _services.AddHttpClient("", i => { i.BaseAddress = new Uri(configuration["ApiUrl"]); });
-        _services.AddHttpClient<ICameraService>(i => { 
-            i.BaseAddress = new Uri(configuration["ApiUrl"]);
-            i.DefaultRequestHeaders.Add("Accept", "application/json");
-        })
-            .AddHttpMessageHandler<BearerTokenHandler>();
-            ;//.AddHttpMessageHandler<BearerTokenHandler>();
-        /*    .AddHttpMessageHandler(provider =>
-        {
-            var accessTokenProvider = provider.GetRequiredService<IAccessTokenProvider>();
-            return new BearerTokenHandler(accessTokenProvider);
-        });*/
-
-
+        _services.AddHttpClient("", i => { i.BaseAddress = new Uri(configuration["ApiUrl"]); })
+            .AddHttpMessageHandler(i => new BearerTokenHandler(i.GetService<IAccessTokenProvider>()));
+        
         //РЕГИСТРАЦИЯ СЕРВИСОВ, РАЗНИЦУ МЕЖДУ ТРАНЗИТ И СИНГЛТОН ПОГУГЛИ!!!
         //notify
         //_services.AddSingleton<WindowNotificationManager>();
         _services.AddTransient<INotificationService, NotificationService>();
+        _services.AddSingleton<IConfiguration>(configuration);
         
         //screen
         _services.AddSingleton<RoutingState>();
@@ -95,8 +85,7 @@ public partial class App : Application
         _services.AddSingleton<IAuthorizationService, AuthorizationService>();
         _services.AddSingleton<IRegistrationService, RegistrationService>();
         _services.AddSingleton<ICameraService, CameraService>();
-        _services.AddTransient<BearerTokenHandler>();
-        //_services.AddSingleton<IAccessTokenProvider, AccessTokenProvider>();
+        _services.AddSingleton<IAccessTokenProvider, AccessTokenProvider>();
 
         //КОНФИГУРИРУЕМ
         _serviceProvider = _services.BuildServiceProvider();
