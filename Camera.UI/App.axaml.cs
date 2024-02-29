@@ -1,4 +1,5 @@
 using System;
+using System.Globalization;
 using System.Net.Http;
 using System.Reactive;
 using System.Threading.Tasks;
@@ -28,6 +29,8 @@ public partial class App : Application
 
     public override void OnFrameworkInitializationCompleted()
     {
+        Localize.Resources.Culture = new CultureInfo("uk"); //по дефолту
+        
         if (ApplicationLifetime is IClassicDesktopStyleApplicationLifetime desktop)
         {
             desktop.MainWindow = new MainWindow(_services)

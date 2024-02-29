@@ -1,23 +1,19 @@
 ﻿using Camera.UI.Services;
 using Joint.Data.Models;
 using ReactiveUI;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Avalonia.Controls.Notifications;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection.Extensions;
 using ReactiveUI.Fody.Helpers;
+using ReactiveUI.Validation.Abstractions;
+using ReactiveUI.Validation.Contexts;
+using ReactiveUI.Validation.Extensions;
+using ReactiveUI.Validation.Helpers;
 
 namespace Camera.UI.ViewModels
 {
-    public class LoginViewModel : RoutableViewModelBase
+    public class LoginViewModel : RoutableViewModelBase, IValidatableViewModel
     {
-        //ТАКАЯ ЗАПИСЬ С АТРИБУТОМ РЕАКТИВ САМА ГЕНЕРИРУЕТ КОД С НУЖНЫМИ ГЕТТЕРАМИ И СЕТТЕРАМИ КАК МЫ ДЕЛАЛИ
-        [Reactive] public User User { get; set; } = new User();
-
+        
         //ЗАВИСИМОТИ КОТОРЫЕ Я ПОЛУЧАЮ В КОНСТРУКТОРЕ(Microsoft.DependencyIjection САМ ЛОЖИТ СЕРВИСЫ В КОНСТРУКТОР!!!)
         #region -- Dependency --
 
@@ -49,7 +45,14 @@ namespace Camera.UI.ViewModels
             _service = service;
             _notificationService = notificationService;
             _registrationViewModel = registrationViewModel;
+            this.ValidationRule(
+                viewModel => viewModel.User.Email,
+                name => !string.IsNullOrWhiteSpace(name),
+                "You must specify a valid name");
         }
+        
+        [Reactive] public ValidationContext ValidationContext { get; set; } = new ValidationContext();
+        [Reactive] public User User { get; set; } = new User();
         
         //Events
         public async void Login()
