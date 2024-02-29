@@ -61,7 +61,10 @@ public partial class App : Application
 
 
         _services.AddHttpClient("", i => { i.BaseAddress = new Uri(configuration["ApiUrl"]); });
-        _services.AddHttpClient<ICameraService>(i => i.BaseAddress = new Uri(configuration["ApiUrl"]))
+        _services.AddHttpClient<ICameraService>(i => { 
+            i.BaseAddress = new Uri(configuration["ApiUrl"]);
+            i.DefaultRequestHeaders.Add("Accept", "application/json");
+        })
             .AddHttpMessageHandler<BearerTokenHandler>();
             ;//.AddHttpMessageHandler<BearerTokenHandler>();
         /*    .AddHttpMessageHandler(provider =>
