@@ -5,3 +5,7 @@ riderModule.iml
 /_ReSharper.Caches/
 .idea/
 .vs/
+Camera/appsettings.Development.json
+Camera/appsettings.json
+Camera/Properties/launchSettings.json
+Camera.UI/appsettings.json

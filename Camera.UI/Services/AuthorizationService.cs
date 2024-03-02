@@ -7,6 +7,7 @@ using System.Net.Http.Json;
 using System.Text;
 using System.Threading.Tasks;
 using Camera.UI.Models;
+using Microsoft.Extensions.Configuration;
 
 namespace Camera.UI.Services
 {
@@ -19,9 +20,11 @@ namespace Camera.UI.Services
     public class AuthorizationService : IAuthorizationService
     {
         private readonly HttpClient _httpClient;
-        public AuthorizationService(HttpClient httpClient)
+        private readonly IAccessTokenProvider _accessTokenProvider;
+        public AuthorizationService(HttpClient httpClient, IAccessTokenProvider accessTokenProvider)
         {
             _httpClient = httpClient;
+            _accessTokenProvider = accessTokenProvider;
         }
 
         public string Token => _token;
@@ -39,6 +42,7 @@ namespace Camera.UI.Services
                 {
                     var parsedToken = ServerResponse<string>.ParseToken(token.Data);
                     _token = parsedToken.access_token;
+                    _accessTokenProvider.SetAccessToken(_token);
                 }
                 return token;
             }

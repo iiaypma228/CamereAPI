@@ -26,7 +26,7 @@ namespace Camera.UI.Services
         {
             try
             {
-                var cameras = await _httpClient.GetAsync("camera/camera");
+                var cameras = await _httpClient.GetAsync("api/camera/camera");
                 return await ServerResponse<List<Joint.Data.Models.Camera>>.CreateFromJson(cameras);
             }
             catch (Exception e)
