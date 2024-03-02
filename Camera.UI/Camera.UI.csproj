@@ -47,6 +47,9 @@
 
 
     <ItemGroup>
+      <Compile Update="Views\FormsViews\CameraFormView.axaml.cs">
+        <DependentUpon>CameraFormView.axaml</DependentUpon>
+      </Compile>
       <Compile Update="Views\LoginView.axaml.cs">
         <DependentUpon>LoginView.axaml</DependentUpon>
       </Compile>
@@ -55,6 +58,9 @@
       </Compile>
       <Compile Update="Localize\Resources.Designer.cs">
         <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+        <DesignTime>True</DesignTime>
+        <AutoGen>True</AutoGen>
+        <DependentUpon>Resources.resx</DependentUpon>
       </Compile>
     </ItemGroup>
 
