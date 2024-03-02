@@ -11,6 +11,7 @@ using Avalonia.Markup.Xaml;
 using Avalonia.Platform;
 using Camera.UI.Services;
 using Camera.UI.ViewModels;
+using Camera.UI.ViewModels.FormsViewModels;
 using Camera.UI.Views;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -84,6 +85,7 @@ public partial class App : Application
         _services.AddSingleton<CameraViewModel>();
         _services.AddSingleton<SettingsViewModel>();
         _services.AddSingleton<MainCameraObservableViewModel>();
+        _services.AddSingleton<CameraFormViewModel>();
         
         //Services        
         _services.AddSingleton<IAuthorizationService, AuthorizationService>();

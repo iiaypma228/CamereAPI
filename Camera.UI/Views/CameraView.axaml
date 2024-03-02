@@ -9,11 +9,11 @@
 	
 	<StackPanel Margin="20">
 		<StackPanel Orientation="Horizontal" Margin="0 5 0 5">
-			<Button Margin="0 0 5 0" Classes="icon" Tag="{StaticResource CameraAddIcon}" Content="Add" Command="{Binding LoadCameras}"/>
-			<Button Margin="0 0 5 0" Classes="icon" Tag="{StaticResource CameraEditIcon}" Content="Edit" />
-			<Button Margin="0 0 5 0" Classes="icon" Tag="{StaticResource DeleteIcon}" Content="Delete" />
+			<Button Margin="0 0 5 0" Classes="icon" Tag="{StaticResource CameraAddIcon}" Content="Add" Command="{Binding CreateCamera}"/>
+			<Button Margin="0 0 5 0" Classes="icon" Tag="{StaticResource CameraEditIcon}" Content="Edit" Command="{Binding EditCamera}" />
+			<Button Margin="0 0 5 0" Classes="icon" Tag="{StaticResource DeleteIcon}" Content="Delete" Command="{Binding DeleteCamera}"/>
 		</StackPanel>
-		<DataGrid ItemsSource="{Binding Items}"
+		<DataGrid ItemsSource="{Binding Items}" SelectedItem="{Binding SelectedCamera}"
           IsReadOnly="True"
           CanUserReorderColumns="True"
           CanUserResizeColumns="True"
