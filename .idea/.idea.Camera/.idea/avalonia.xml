@@ -8,6 +8,7 @@
         <entry key="Camera.UI/Views/CameraView.axaml" value="Camera.UI/Camera.UI.csproj" />
         <entry key="Camera.UI/Views/HomeView.axaml" value="Camera.UI/Camera.UI.csproj" />
         <entry key="Camera.UI/Views/LoginView.axaml" value="Camera.UI/Camera.UI.csproj" />
+        <entry key="Camera.UI/Views/MainCameraObservableView.axaml" value="Camera.UI/Camera.UI.csproj" />
         <entry key="Camera.UI/Views/MainWindow.axaml" value="Camera.UI/Camera.UI.csproj" />
         <entry key="Camera.UI/Views/RegistrationView.axaml" value="Camera.UI/Camera.UI.csproj" />
       </map>

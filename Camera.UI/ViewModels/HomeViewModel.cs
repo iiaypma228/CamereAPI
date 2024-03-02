@@ -38,6 +38,7 @@ public class HomeViewModel : RoutableViewModelBase, IScreen
     
     public ObservableCollection<MenuItemTemplate> Items { get; } = new()
     {
+        new MenuItemTemplate(typeof(MainCameraObservableViewModel), "CameraIcon"),
         new MenuItemTemplate(typeof(CameraViewModel), "CameraIcon"),
         new MenuItemTemplate(typeof(SettingsViewModel), "SettingsIcon")
     };

@@ -87,11 +87,13 @@ public partial class App : Application
         _services.AddSingleton<HomeViewModel>();
         _services.AddSingleton<CameraViewModel>();
         _services.AddSingleton<SettingsViewModel>();
+        _services.AddSingleton<MainCameraObservableViewModel>();
         
         //Services        
         _services.AddSingleton<IAuthorizationService, AuthorizationService>();
         _services.AddSingleton<IRegistrationService, RegistrationService>();
         _services.AddSingleton<ICameraService, CameraService>();
+        _services.AddSingleton<ICameraObservableService, CameraObservableService>();
         _services.AddTransient<BearerTokenHandler>();
         //_services.AddSingleton<IAccessTokenProvider, AccessTokenProvider>();
 

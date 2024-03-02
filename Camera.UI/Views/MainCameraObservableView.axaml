@@ -1,0 +1,16 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+             x:Class="Camera.UI.Views.MainCameraObservableView"
+             xmlns:vlc="clr-namespace:LibVLCSharp.Avalonia;assembly=LibVLCSharp.Avalonia"
+             xmlns:vm="using:Camera.UI.ViewModels"
+             x:DataType="vm:MainCameraObservableViewModel"
+             >
+    
+    <StackPanel Orientation="Vertical">
+        <vlc:VideoView MediaPlayer="{Binding MediaPlayer}"  x:Name="videoView" />
+        <Button Height="200" Width="200" Command="{Binding PlayVideo}"></Button>
+    </StackPanel>
+</UserControl>
