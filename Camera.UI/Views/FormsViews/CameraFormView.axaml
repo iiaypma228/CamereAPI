@@ -6,14 +6,23 @@
 			 xmlns:assets="clr-namespace:Camera.UI.Localize"
              x:Class="Camera.UI.Views.FormsViews.CameraFormView"
 			 xmlns:vm="using:Camera.UI.ViewModels.FormsViewModels"
-             x:DataType="vm:CameraFormViewModel"
-             x:CompileBindings="False"
+			 xmlns:generic="clr-namespace:System.Collections.Generic;assembly=System.Runtime"
+             xmlns:constants="clr-namespace:Joint.Data.Constants;assembly=Joint.Data"
+			 x:DataType="vm:CameraFormViewModel"
 			 >
 	<StackPanel Orientation="Vertical">
 		<TextBox Text="{Binding Camera.Name}"></TextBox>
-		<ComboBox SelectedItem="{Binding Camera.Connection, Path=Key }" ItemsSource="{x:Static assets:CameraLocalize.CameraConnection}" >
+		<ComboBox 
+			SelectedValue="{Binding Camera.Connection}"
+			SelectedValueBinding="{ReflectionBinding Path=Key }"
+			ItemsSource="{x:Static assets:CameraLocalize.CameraConnection}" >
+			
 			<ComboBox.ItemTemplate>
 				<DataTemplate>
+					<DataTemplate.DataType>
+						<x:Type TypeName="generic:KeyValuePair" x:TypeArguments="constants:CameraConnection, x:String"/>
+					</DataTemplate.DataType>
+					
 					<TextBlock Text="{Binding Value}"/>
 				</DataTemplate>
 			</ComboBox.ItemTemplate>

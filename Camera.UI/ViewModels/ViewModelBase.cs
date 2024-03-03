@@ -1,7 +1,8 @@
 ﻿using ReactiveUI;
+using ReactiveUI.Validation.Helpers;
 
 namespace Camera.UI.ViewModels;
 
-public class ViewModelBase : ReactiveObject
+public class ViewModelBase : ReactiveValidationObject
 {
 }

@@ -3,6 +3,7 @@ using Camera.UI.ViewModels.FormsViewModels;
 using ReactiveUI;
 using ReactiveUI.Fody.Helpers;
 using System.Collections.ObjectModel;
+using System.Reactive;
 using System.Reactive.Concurrency;
 using System.Threading.Tasks;
 
@@ -25,8 +26,13 @@ public class CameraViewModel : RoutableViewModelBase
         _notificationService = notificationService;
         _cameraFormViewModel = cameraFormViewModel;
         RxApp.MainThreadScheduler.Schedule(LoadCameras);
+        
+        //For data grid row double click
+        EditCameraCommand = ReactiveCommand.Create<object,Unit>(EditCamera);
     }
 
+    public ReactiveCommand<object, Unit> EditCameraCommand { get;  }
+    
     public async void LoadCameras()
     {
         var cameras = await _service.GetCameras();
@@ -37,18 +43,6 @@ public class CameraViewModel : RoutableViewModelBase
         else
         {
             _notificationService.ShowError(cameras.Error);
-        }
-    }
-    public void EditCamera()
-    {
-        if (SelectedCamera == null)
-        {
-            _notificationService.ShowError("Камера не обрана!");
-        }
-        else
-        {
-            _cameraFormViewModel.Camera = SelectedCamera;
-            RoutingState.Navigate.Execute(_cameraFormViewModel);
         }
     }
     public void CreateCamera()
@@ -62,7 +56,7 @@ public class CameraViewModel : RoutableViewModelBase
     {
         if (_cameraFormViewModel.Camera == null)
         {
-            _notificationService.ShowError("Камера не обрана!");
+            _notificationService.ShowError("РљР°РјРµСЂР° РЅРµ РѕР±СЂР°РЅР°!");
         }
         else 
         {
@@ -78,4 +72,20 @@ public class CameraViewModel : RoutableViewModelBase
             }
         }
     }
+    
+    private Unit EditCamera(object p)
+    {
+        if (SelectedCamera == null)
+        {
+            _notificationService.ShowError("РљР°РјРµСЂР° РЅРµ РѕР±СЂР°РЅР°!");
+        }
+        else
+        {
+            _cameraFormViewModel.Camera = SelectedCamera;
+            RoutingState.Navigate.Execute(_cameraFormViewModel);
+        }
+
+        return Unit.Default;
+    }
+    
 }

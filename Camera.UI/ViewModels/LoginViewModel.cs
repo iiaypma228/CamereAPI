@@ -1,4 +1,6 @@
-﻿using Camera.UI.Services;
+﻿using System;
+using System.Reactive.Linq;
+using Camera.UI.Services;
 using Joint.Data.Models;
 using ReactiveUI;
 using Microsoft.Extensions.DependencyInjection;
@@ -29,7 +31,6 @@ namespace Camera.UI.ViewModels
         
         #endregion
         
-        
         public LoginViewModel(IScreen screen, 
             RoutingState routingState, 
             RegistrationViewModel registrationViewModel, 
@@ -45,13 +46,9 @@ namespace Camera.UI.ViewModels
             _service = service;
             _notificationService = notificationService;
             _registrationViewModel = registrationViewModel;
-            this.ValidationRule(
-                viewModel => viewModel.User.Email,
-                name => !string.IsNullOrWhiteSpace(name),
-                "You must specify a valid name");
+            this.ConfigureValidation();
         }
         
-        [Reactive] public ValidationContext ValidationContext { get; set; } = new ValidationContext();
         [Reactive] public User User { get; set; } = new User();
         
         //Events
@@ -79,6 +76,26 @@ namespace Camera.UI.ViewModels
 
         //ЛЯМБДА СОКРАЩЕННАЯ ЗАПИСЬ МЕТОДА, ВМЕСТО 4 СТРОК ОДНА!!
         public void GoToRegistration() => this.RoutingState.Navigate.Execute(_registrationViewModel);
+
+        private void ConfigureValidation()
+        {
+            this.ValidationRule(x => 
+                    x.User.Email,
+                v => !string.IsNullOrEmpty(v), 
+                "Password requerid!");
+            
+            this.WhenAnyValue(i => i.User.Email).Subscribe(x =>
+            {
+                this.User.Password = x;
+            });
+
+            /*this.WhenAnyValue(x => x.User.Email)
+                .Subscribe(name => state.Username = name);
+            this.WhenAnyValue(x => x.Password)
+                .Subscribe(pass => state.Password = pass);*/
+
+        }
         
+
     }
 }
