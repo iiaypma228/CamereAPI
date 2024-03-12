@@ -10,32 +10,53 @@
              xmlns:constants="clr-namespace:Joint.Data.Constants;assembly=Joint.Data"
 			 x:DataType="vm:CameraFormViewModel"
 			 >
-	<StackPanel Orientation="Vertical">
-		<TextBox Text="{Binding Camera.Name}"></TextBox>
-		<ComboBox 
-			SelectedValue="{Binding Camera.Connection}"
-			SelectedValueBinding="{ReflectionBinding Path=Key }"
-			ItemsSource="{x:Static assets:CameraLocalize.CameraConnection}" >
+	<StackPanel VerticalAlignment="Stretch" HorizontalAlignment="Stretch" Orientation="Vertical">
+		<Grid VerticalAlignment="Center" HorizontalAlignment="Center">
 			
-			<ComboBox.ItemTemplate>
-				<DataTemplate>
-					<DataTemplate.DataType>
-						<x:Type TypeName="generic:KeyValuePair" x:TypeArguments="constants:CameraConnection, x:String"/>
-					</DataTemplate.DataType>
+			<Grid.RowDefinitions>
+				<RowDefinition Height="Auto">
 					
-					<TextBlock Text="{Binding Value}"/>
-				</DataTemplate>
-			</ComboBox.ItemTemplate>
-		</ComboBox>
-		<!--<TextBox Text="{Binding Camera.Connection}"></TextBox>-->
-		<TextBox Text="{Binding Camera.ConnectionData}"></TextBox>
-		<StackPanel Orientation="Horizontal">
-			<Button Command="{Binding CameraSave}">
-				<TextBlock Text="{x:Static assets:Resources.textSave}"></TextBlock>
-			</Button>
-			<Button Command="{Binding Cancel}">
-				<TextBlock Text="{x:Static assets:Resources.textCancel}"></TextBlock>
-			</Button>
-		</StackPanel>
+				</RowDefinition>
+			</Grid.RowDefinitions>
+			<Grid.ColumnDefinitions>
+				<ColumnDefinition Width="2*"></ColumnDefinition>
+			</Grid.ColumnDefinitions>
+			
+			<TextBox Grid.Column="0" Grid.Row="0" Text="{Binding Camera.Name}"></TextBox>
+			<ComboBox 
+				Grid.Column="0" Grid.Row="1"
+				SelectedValue="{Binding Camera.Connection}"
+				SelectedValueBinding="{ReflectionBinding Path=Key }"
+				ItemsSource="{x:Static assets:CameraLocalize.CameraConnection}" >
+			
+				<ComboBox.ItemTemplate>
+					<DataTemplate>
+						<DataTemplate.DataType>
+							<x:Type TypeName="generic:KeyValuePair" x:TypeArguments="constants:CameraConnection, x:String"/>
+						</DataTemplate.DataType>
+					
+						<TextBlock Text="{Binding Value}"/>
+					</DataTemplate>
+				</ComboBox.ItemTemplate>
+			</ComboBox>
+			<!--<TextBox Text="{Binding Camera.Connection}"></TextBox>-->
+			<TextBox 
+				Grid.Column="0" Grid.Row="2"
+				Text="{Binding Camera.ConnectionData}"></TextBox>
+			<StackPanel
+				
+				Grid.Column="0" Grid.Row="0"
+				Orientation="Horizontal">
+				<Button Command="{Binding CameraSave}">
+					<TextBlock Text="{x:Static assets:Resources.textSave}"></TextBlock>
+				</Button>
+				<Button Command="{Binding Cancel}">
+					<TextBlock Text="{x:Static assets:Resources.textCancel}"></TextBlock>
+				</Button>
+			</StackPanel>
+			
+			
+		</Grid>
+		
 	</StackPanel>
 </UserControl>

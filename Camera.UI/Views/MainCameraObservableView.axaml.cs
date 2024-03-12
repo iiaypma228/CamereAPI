@@ -14,12 +14,4 @@ public partial class MainCameraObservableView : ReactiveUserControl<MainCameraOb
     {
         InitializeComponent();
     }
-
-    protected override void OnInitialized()
-    {
-        var find = this.Find<VideoView>("videoView");
-        ((MainCameraObservableViewModel)this.DataContext).VideoView = find;
-        find.MediaPlayer = ((MainCameraObservableViewModel)this.DataContext).MediaPlayer;
-        base.OnInitialized();
-    }
 }

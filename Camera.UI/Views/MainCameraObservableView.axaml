@@ -10,7 +10,6 @@
              >
     
     <StackPanel Orientation="Vertical">
-        <vlc:VideoView MediaPlayer="{Binding MediaPlayer}"  x:Name="videoView" />
-        <Button Height="200" Width="200" Command="{Binding PlayVideo}"></Button>
+        <Image Source="{Binding VideoFrame, Mode=TwoWay}" Width="660" Height="700"/>
     </StackPanel>
 </UserControl>

@@ -1,5 +1,11 @@
 using System;
+using Avalonia.Controls;
+using Avalonia.Media.Imaging;
+using Avalonia.Threading;
+using Camera.UI.Extensions;
 using Camera.UI.Services;
+using Emgu.CV;
+using Emgu.CV.Structure;
 using LibVLCSharp.Avalonia;
 using LibVLCSharp.Shared;
 using ReactiveUI;
@@ -10,37 +16,27 @@ namespace Camera.UI.ViewModels;
 public class MainCameraObservableViewModel : RoutableViewModelBase
 {
     private ICameraObservableService _service;
-
-    public MediaPlayer MediaPlayer { get; }
-
-    private LibVLC _libVlc;
-    private VideoView _videoView;
-    public VideoView VideoView
-    {
-        get => _videoView;
-        set
-        {
-            _videoView = value;
-            
-            //_videoView.P
-            //"dshow://"
-            //FromType.FromLocation
-            //this.RaiseAndSetIfChanged()
-            // _service.StartObservable(_videoView);
-        }
-    }
-
+    private VideoCapture capture;
+    [Reactive] public Bitmap VideoFrame { get; set; }
     public MainCameraObservableViewModel(ICameraObservableService cameraObservableService, IScreen screen, RoutingState routingState) : base(screen, routingState)
     {
-        _libVlc = new LibVLC();
-        MediaPlayer = new MediaPlayer(_libVlc);
-        _service = cameraObservableService;
-
+        capture = new VideoCapture(0);
+        DispatcherTimer timer = new DispatcherTimer();
+        timer.Interval = TimeSpan.FromMilliseconds(33);
+        timer.Tick += cameraFPS;
+        timer.Start();
     }
 
-    public void PlayVideo()
+    private void cameraFPS(object sender, EventArgs e)
     {
-        MediaPlayer.Media = new  Media(_libVlc, "http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4", FromType.FromLocation);
-        VideoView.MediaPlayer.Play();
+        Mat frame = capture.QueryFrame();
+        
+        if (frame != null)
+        {
+            var bitmap = frame.ToBitmap();
+            
+            VideoFrame = bitmap.ConvertToAvaloniaBitmap();
+        }
     }
+    
 }
