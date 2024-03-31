@@ -14,9 +14,10 @@
 		<Grid VerticalAlignment="Center" HorizontalAlignment="Center">
 			
 			<Grid.RowDefinitions>
-				<RowDefinition Height="Auto">
-					
-				</RowDefinition>
+				<RowDefinition Height="Auto"></RowDefinition>
+				<RowDefinition Height="Auto"></RowDefinition>
+				<RowDefinition Height="Auto"></RowDefinition>
+				<RowDefinition Height="Auto"></RowDefinition>
 			</Grid.RowDefinitions>
 			<Grid.ColumnDefinitions>
 				<ColumnDefinition Width="2*"></ColumnDefinition>

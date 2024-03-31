@@ -162,4 +162,25 @@
   <data name="textEthernet" xml:space="preserve">
     <value>Інтернет</value>
   </data>
+  <data name="textAuth" xml:space="preserve">
+    <value>Авторизація</value>
+  </data>
+  <data name="textEmailNotTemplate" xml:space="preserve">
+    <value>Пошта не віповідає шаблону</value>
+  </data>
+  <data name="textEmailIsRequired" xml:space="preserve">
+    <value>Поле пошта обов'язкове!</value>
+  </data>
+  <data name="textPasswordIsRequired" xml:space="preserve">
+    <value>Поле пароль обов'язкове!</value>
+  </data>
+  <data name="textCameraObervable" xml:space="preserve">
+    <value>Камера</value>
+  </data>
+  <data name="textCameraCatalog" xml:space="preserve">
+    <value>Довідник</value>
+  </data>
+  <data name="textOptions" xml:space="preserve">
+    <value>Налаштування</value>
+  </data>
 </root>

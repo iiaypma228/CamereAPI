@@ -1,3 +1,4 @@
+using System;
 using Camera.UI.Services;
 using Camera.UI.ViewModels.FormsViewModels;
 using ReactiveUI;
@@ -25,7 +26,11 @@ public class CameraViewModel : RoutableViewModelBase
         _service = service;
         _notificationService = notificationService;
         _cameraFormViewModel = cameraFormViewModel;
-        RxApp.MainThreadScheduler.Schedule(LoadCameras);
+        //RxApp.MainThreadScheduler.Schedule(LoadCameras);
+        _service.CamerasObservable.Subscribe( 
+            onNext: i => this.Items = i,
+            onError: exception => _notificationService.ShowError(exception.Message) 
+            );
         
         //For data grid row double click
         EditCameraCommand = ReactiveCommand.Create<object,Unit>(EditCamera);
@@ -33,22 +38,9 @@ public class CameraViewModel : RoutableViewModelBase
 
     public ReactiveCommand<object, Unit> EditCameraCommand { get;  }
     
-    public async void LoadCameras()
-    {
-        var cameras = await _service.GetCameras();
-        if (cameras.IsSuccess)
-        {
-            Items = new ObservableCollection<Joint.Data.Models.Camera>(cameras.Data);
-        }
-        else
-        {
-            _notificationService.ShowError(cameras.Error);
-        }
-    }
     public void CreateCamera()
     {
         _cameraFormViewModel.Camera = new Joint.Data.Models.Camera();
-        _cameraFormViewModel.CameraCreated = (camera) => { Items.Add(camera);};
         RoutingState.Navigate.Execute(_cameraFormViewModel);
 
     }

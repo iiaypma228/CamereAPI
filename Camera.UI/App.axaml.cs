@@ -70,12 +70,14 @@ public partial class App : Application
         //РЕГИСТРАЦИЯ СЕРВИСОВ, РАЗНИЦУ МЕЖДУ ТРАНЗИТ И СИНГЛТОН ПОГУГЛИ!!!
         //notify
         //_services.AddSingleton<WindowNotificationManager>();
+        _services.AddSingleton<INavigationService, NavigationService>();
         _services.AddTransient<INotificationService, NotificationService>();
         _services.AddSingleton<IConfiguration>(configuration);
         
         //screen
         _services.AddSingleton<RoutingState>();
         _services.AddSingleton<IScreen,MainWindowViewModel>();
+        _services.AddSingleton<MainWindowViewModel>();
         _services.AddSingleton<IServiceCollection>(_services);
         
         //ViewModels
@@ -92,6 +94,7 @@ public partial class App : Application
         _services.AddSingleton<IRegistrationService, RegistrationService>();
         _services.AddSingleton<ICameraService, CameraService>();
         _services.AddSingleton<ICameraObservableService, CameraObservableService>();
+        _services.AddSingleton<ISharedPreferences, SharedPreferences>();
         _services.AddTransient<BearerTokenHandler>();
         //_services.AddSingleton<IAccessTokenProvider, AccessTokenProvider>();
         _services.AddSingleton<IAccessTokenProvider, AccessTokenProvider>();

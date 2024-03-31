@@ -6,45 +6,84 @@
 			 xmlns:assets="clr-namespace:Camera.UI.Localize"
 			 mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
 			 x:DataType="vm:LoginViewModel"
-			 x:Class="Camera.UI.Views.LoginView">
-	
-	
-	<StackPanel Width="500" Orientation="Vertical" VerticalAlignment="Center">
-		<StackPanel Margin="5" Orientation="Horizontal">
-			<TextBlock Width="100" VerticalAlignment="Center" Text="{x:Static assets:Resources.textEmail}"></TextBlock>
+			 x:Class="Camera.UI.Views.LoginView"
+			 Background="#264ECA"
+			 >
+		
+	<UserControl.Styles>
+		<Style Selector="TextBox">
+			<Setter Property="VerticalContentAlignment" Value="Center"></Setter>
+			<Setter Property="HorizontalContentAlignment" Value="Left"></Setter>
+			<Setter Property="MaxWidth" Value="300"></Setter>
+			<Setter Property="MinHeight" Value="50"></Setter>
+			<Setter Property="Background" Value="Transparent"></Setter>
+			<Setter Property="BorderBrush" Value="White"></Setter>
+			<Setter Property="Foreground" Value="White"></Setter>
+		</Style>
+		
+		<Style Selector="TextBox:focus">
 			
+			<Style Selector="^ /template/ Border#PART_BorderElement">
+				<Setter Property="Background" Value="Transparent"/>
+			</Style>
+		</Style>
+		
+	</UserControl.Styles>
+		<Grid  VerticalAlignment="Center" RowDefinitions="*,*,*,*,*" HorizontalAlignment="Stretch" >
 			
-			<StackPanel Orientation="Vertical">
-				<TextBox Width="400" Text="{Binding User.Email, Mode=TwoWay}">
-					<TextBox.InnerLeftContent>
-						<PathIcon Data="{StaticResource PersonIcon}"></PathIcon>
-					</TextBox.InnerLeftContent>
-				</TextBox>
-				<TextBlock x:Name="UserPasswordValidation" Foreground="Red"/>
-			</StackPanel>
-
-		</StackPanel>
-		<StackPanel Margin="5" Orientation="Horizontal" HorizontalAlignment="Stretch">
-			<TextBlock Width="100" VerticalAlignment="Center"  Text="{x:Static assets:Resources.textPassword}"></TextBlock>
+			<TextBlock Grid.Row="0" 
+			           HorizontalAlignment="Center" 
+			           Foreground="White" FontSize="25" 
+			           Text="{x:Static assets:Resources.textAuth}" 
+			           Margin="10"
+			/>
 			
-			<StackPanel Orientation="Vertical">
-				<TextBox PasswordChar="*" Width="400" Text="{Binding User.Password}">
-					<TextBox.InnerLeftContent>
-						<PathIcon Data="{StaticResource KeyIcon}"></PathIcon>
-					</TextBox.InnerLeftContent>
-				</TextBox>
-				<!--<TextBlock IsVisible="{Binding UserPasswordValidation.IsValid}" Text="{Binding UserPasswordValidation.Message}" Foreground="Red"/>-->
-			</StackPanel>
+			<TextBox 
+				Grid.Row="1"
+				Margin="0,0,0,10"
+				Text="{Binding Email}" 
+				Watermark="{x:Static assets:Resources.textEmail}">
+				<TextBox.InnerLeftContent>
+					<PathIcon Foreground="White" Margin="5,0,0,0" Data="{StaticResource PersonIcon}"></PathIcon>
+				</TextBox.InnerLeftContent>
+			</TextBox>
 			
-		</StackPanel>
-		<StackPanel Margin="5">
-			<Button Width="100" Margin="5" VerticalAlignment="Center" HorizontalAlignment="Center" HorizontalContentAlignment="Center" Command="{Binding Login}">
+			<TextBox
+				Name="LoginTextBox"
+				Grid.Row="2"
+				PasswordChar="*" 
+				Text="{Binding Password}" 
+				Watermark="{x:Static assets:Resources.textPassword}">
+				<TextBox.InnerLeftContent>
+					<PathIcon Foreground="White"  Margin="5,0,0,0" Data="{StaticResource KeyIcon}"></PathIcon>
+				</TextBox.InnerLeftContent>
+			</TextBox>
+			<CheckBox Margin="0,0,0,20"
+				      Width="{Binding #LoginTextBox.Bounds.Width}" 
+			          HorizontalAlignment="Center" 
+			          Grid.Row="3" 
+			          IsChecked="{Binding RememberMe}">
+				<TextBlock Foreground="White" Text="Запам'ятати мене"></TextBlock>
+			</CheckBox>
+			<Button  
+					Grid.Row="4"
+			        Background="White"
+			        MaxWidth="300" 
+			        MinHeight="50" 
+			        VerticalAlignment="Stretch" HorizontalAlignment="Stretch" 
+			        HorizontalContentAlignment="Center" VerticalContentAlignment="Center"
+			        Foreground="#2148C0"
+			        FontSize="25"
+			        Command="{Binding Login}">
 				<TextBlock Text="{x:Static assets:Resources.textSignIn}"></TextBlock>
 			</Button>
-			<Button Width="100" Margin="5" VerticalAlignment="Center" HorizontalAlignment="Center" HorizontalContentAlignment="Center" Background="LightBlue" Command="{Binding GoToRegistration}">
-				<TextBlock Text="{x:Static assets:Resources.textRegestration}"></TextBlock>
-			</Button>
-		</StackPanel>
-	</StackPanel>
 
+			<!--<StackPanel Grid.Row="3" Margin="5">
+
+				<Button Width="100" Margin="5" VerticalAlignment="Center" HorizontalAlignment="Center" HorizontalContentAlignment="Center" Background="LightBlue" Command="{Binding GoToRegistration}">
+					<TextBlock Text="{x:Static assets:Resources.textRegestration}"></TextBlock>
+				</Button>
+			</StackPanel>-->
+		</Grid>
+	
 </UserControl>

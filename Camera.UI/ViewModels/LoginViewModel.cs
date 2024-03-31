@@ -1,26 +1,27 @@
-﻿using System;
-using System.Reactive.Linq;
+﻿
+using System;
+using System.ComponentModel.DataAnnotations;
+using System.Linq;
+using System.Reactive.Concurrency;
+using System.Threading.Tasks;
+using Avalonia.Data.Core.Plugins;
+using Camera.UI.Localize;
 using Camera.UI.Services;
 using Joint.Data.Models;
-using ReactiveUI;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection.Extensions;
+using ReactiveUI;
 using ReactiveUI.Fody.Helpers;
-using ReactiveUI.Validation.Abstractions;
-using ReactiveUI.Validation.Contexts;
 using ReactiveUI.Validation.Extensions;
-using ReactiveUI.Validation.Helpers;
 
 namespace Camera.UI.ViewModels
 {
-    public class LoginViewModel : RoutableViewModelBase, IValidatableViewModel
+    public class LoginViewModel : RoutableViewModelBase
     {
-        
         //ЗАВИСИМОТИ КОТОРЫЕ Я ПОЛУЧАЮ В КОНСТРУКТОРЕ(Microsoft.DependencyIjection САМ ЛОЖИТ СЕРВИСЫ В КОНСТРУКТОР!!!)
+
         #region -- Dependency --
-
-        private RegistrationViewModel _registrationViewModel;
-
+        
         private IAuthorizationService _service;
 
         private INotificationService _notificationService;
@@ -28,74 +29,118 @@ namespace Camera.UI.ViewModels
         private readonly IServiceCollection _serviceProvider;
 
         private HomeViewModel _homeViewModel;
-        
+
+        private readonly INavigationService _navigationService;
+
+        private readonly ISharedPreferences _sharedPreferences;
         #endregion
-        
-        public LoginViewModel(IScreen screen, 
-            RoutingState routingState, 
-            RegistrationViewModel registrationViewModel, 
+
+        public LoginViewModel(IScreen screen,
+            INavigationService navigationService,
             IAuthorizationService service,
             INotificationService notificationService,
             IServiceCollection serviceProvider,
+            ISharedPreferences sharedPreferences,
             HomeViewModel homeViewModel
-            ) :
-            base(screen, routingState)
+        ) :
+            base(screen, navigationService.RoutingState)
         {
             _homeViewModel = homeViewModel;
             _serviceProvider = serviceProvider;
             _service = service;
             _notificationService = notificationService;
-            _registrationViewModel = registrationViewModel;
+            _navigationService = navigationService;
+            _sharedPreferences = sharedPreferences;
+            RxApp.MainThreadScheduler.Schedule(GoToProgramIfAuthorized);
             this.ConfigureValidation();
         }
+
+        private User _user { get; set; } = new User();
         
-        [Reactive] public User User { get; set; } = new User();
+        public string Email
+        {
+            get => _user.Email;
+            set
+            {
+                _user.Email = value;
+                this.RaisePropertyChanged();
+            }
+        }
+        
+        public string Password
+        {
+            get => _user.Password;
+            set
+            {
+                _user.Password = value;
+                this.RaisePropertyChanged();
+            }
+        }
+
+
+        [Reactive] public bool RememberMe { get; set; } = false;
         
         //Events
         public async void Login()
         {
-            //_notificationService.ShowInfo("dasdas");
-
-            //МЕТОД ОБЯЗАТЕЛЬНО ДОЛЖЕН БЫТЬ АСИНХРОННЫМ, ЧТО БЫ МЕТОД ЗАПУСКАЛСЯ В ОТЛДЕЛЬНОМ ПОТОКЕ
-            //И НАША ГРАФИКА(ОКНО) НЕ БЫЛО ЗАМОРОЖЕНО ПОТОМУ ЧТО ДРУГОЙ МЕТОД РАБОТАЕТ
-            var res = await _service.AuthorizationAsync(User);
-
-            if (res.IsSuccess)
+            var valid = BindingPlugins.DataValidators.FirstOrDefault(i => i is DataAnnotationsValidationPlugin) as DataAnnotationsValidationPlugin;
+            
+            if (!HasErrors)
             {
-                //TODO LOGIC OLEG!!!
-                _serviceProvider.TryAddSingleton<IScreen>(_homeViewModel);
-                _serviceProvider.TryAddSingleton<RoutingState>(_homeViewModel.Router);
-                this.RoutingState.Navigate.Execute(_homeViewModel);
+                var res = await _service.AuthorizationAsync(_user);
+
+                if (res.IsSuccess)
+                {
+                    if (RememberMe)
+                    {
+                        await this._sharedPreferences.SaveAsync("token", _service.Token);
+                    }
+                    GoToHome();
+                }
+                else
+                {
+                    _notificationService.ShowError(res.Error);
+                }
             }
             else
             {
-                _notificationService.ShowError(res.Error);
+                _notificationService.ShowError("Форма не валідна!");
             }
             
         }
-
-        //ЛЯМБДА СОКРАЩЕННАЯ ЗАПИСЬ МЕТОДА, ВМЕСТО 4 СТРОК ОДНА!!
-        public void GoToRegistration() => this.RoutingState.Navigate.Execute(_registrationViewModel);
+        public void GoToRegistration() => this._navigationService.Navigate<RegistrationViewModel>();
 
         private void ConfigureValidation()
         {
-            this.ValidationRule(x => 
-                    x.User.Email,
-                v => !string.IsNullOrEmpty(v), 
-                "Password requerid!");
-            
-            this.WhenAnyValue(i => i.User.Email).Subscribe(x =>
-            {
-                this.User.Password = x;
-            });
-
-            /*this.WhenAnyValue(x => x.User.Email)
-                .Subscribe(name => state.Username = name);
-            this.WhenAnyValue(x => x.Password)
-                .Subscribe(pass => state.Password = pass);*/
-
+            this.ValidationRule(x => x.Email, v =>  !string.IsNullOrEmpty(v), Resources.textEmailIsRequired);
+            this.ValidationRule(x => x.Email, v => v != null && !v.Contains("@"), Resources.textEmailNotTemplate);
+            this.ValidationRule(x => x.Password, v =>  !string.IsNullOrEmpty(v), Resources.textPasswordIsRequired);
         }
         
+        private async void GoToProgramIfAuthorized()
+        {
+            try
+            {
+                var token = await _sharedPreferences.GetAsync("token");
+                if (!string.IsNullOrEmpty(token))
+                {
+                    this._service.SetToken(token);
+                    GoToHome();
+                }
+            }
+            catch (Exception)
+            {
+                // ignored
+            }
+        }
 
+
+        private void GoToHome()
+        {
+            _serviceProvider.TryAddSingleton<IScreen>(_homeViewModel);
+            _serviceProvider.TryAddSingleton<RoutingState>(_homeViewModel.Router);
+            this.RoutingState.Navigate.Execute(_homeViewModel);
+        }
+        
     }
 }

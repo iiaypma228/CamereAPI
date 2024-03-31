@@ -162,4 +162,25 @@
   <data name="textEthernet" xml:space="preserve">
     <value>Ethernet</value>
   </data>
+  <data name="textAuth" xml:space="preserve">
+    <value>Authorization</value>
+  </data>
+  <data name="textEmailNotTemplate" xml:space="preserve">
+    <value>Email is not template</value>
+  </data>
+  <data name="textEmailIsRequired" xml:space="preserve">
+    <value>Email is required</value>
+  </data>
+  <data name="textPasswordIsRequired" xml:space="preserve">
+    <value>Password is required</value>
+  </data>
+  <data name="textCameraObervable" xml:space="preserve">
+    <value>Camera</value>
+  </data>
+  <data name="textCameraCatalog" xml:space="preserve">
+    <value>Catalogs</value>
+  </data>
+  <data name="textOptions" xml:space="preserve">
+    <value>Options</value>
+  </data>
 </root>

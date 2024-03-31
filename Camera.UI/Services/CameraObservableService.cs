@@ -1,112 +1,120 @@
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Drawing;
 using Avalonia.Media.Imaging;
 using Avalonia.Remote.Protocol.Viewport;
+using Avalonia.Threading;
+using Camera.UI.Extensions;
 using Emgu.CV;
 using Emgu.CV.CvEnum;
 using Emgu.CV.Structure;
+using Emgu.CV.Util;
 using LibVLCSharp.Avalonia;
 using LibVLCSharp.Shared;
+using Bitmap = Avalonia.Media.Imaging.Bitmap;
 
 namespace Camera.UI.Services;
 
 public interface ICameraObservableService
 {
-    
-    void StartObservable(VideoView view, MediaPlayer player);
+    bool IsOpened { get; }
+    bool ReactToMotion { get; set; }
+    event EventHandler ImageGrab;
+    bool StartObservable(int camIndex);
+}
+
+// Создаем класс для данных, связанных с событием
+public class GrabImageEventArgs : EventArgs
+{
+    public Bitmap Bitmap { get; }
+
+    public GrabImageEventArgs(Bitmap bitmap)
+    {
+        this.Bitmap = bitmap;
+    }
 }
 
 public class CameraObservableService : ICameraObservableService
 {
-    private VideoView _videoView;
-    private MediaPlayer _mediaPlayer;
-    public VideoCapture Capture { get; private set; }
-    private bool _motionDetected;
+    private VideoCapture capture;
+    private Mat _prevFrame;
+    private double previousArea ;
+    private BackgroundSubtractorMOG2 bgSubtractor = new BackgroundSubtractorMOG2();
+    private bool motionDetected = false;
+    private DateTime motionStart = DateTime.Now;
+    private bool _isOpened = false;
     
-    public void StartObservable(VideoView videoView, MediaPlayer player)
+    
+    public bool ReactToMotion { get; set; } = true;
+    public bool IsOpened
     {
-        _mediaPlayer = player;
-        _videoView = videoView;
-        Capture = new VideoCapture(0);
-
-        Core.Initialize();
-
-        // Start the camera
-        Capture.ImageGrabbed += VideoCapture_ImageGrabbed;
-        Capture.Start();
+        get => _isOpened;
     }
-    private void VideoCapture_ImageGrabbed(object sender, EventArgs e)
+    public event EventHandler ImageGrab;
+
+    public bool StartObservable(int camIndex = 0)
     {
-        /*// Get the frame from the camera and pass it to LibVLC
-        using (var frame = new Mat())
+        capture = new VideoCapture(camIndex);
+        
+        _isOpened = capture.IsOpened;
+        if (capture.IsOpened)
         {
-            Capture.Retrieve(frame);
-        
-            // Convert the Emgu.CV image to System.Drawing.Bitmap
-            var bitmap = new Bitmap(frame.Width, frame.Height, frame.,
-                System.Drawing.Imaging.PixelFormat.Format24bppRgb, frame.Bitmap.Data);
-        
-            var byteBuffer = ImageToByte(bitmap);
-            _mediaPlayer = new MediaPlayer(new Media());
-        }*/
+            DispatcherTimer timer = new DispatcherTimer();
+            timer.Interval = TimeSpan.FromMilliseconds(33);
+            timer.Tick += GrabImage;
+            timer.Start();
+        }
+
+        return _isOpened;
     }
 
-    /*private byte[] ImageToByte(System.Drawing.Bitmap image)
+    private void GrabImage(object sender, EventArgs e)
     {
-        // Convert the image to a byte array
-        using (var stream = new System.IO.MemoryStream())
+        Mat frame = capture.QueryFrame();
+        if (frame != null && _prevFrame != null)
         {
-            image.Save(stream, System.Drawing.Imaging.ImageFormat.Bmp);
-            return stream.ToArray();
-        }
-    }*/
-    /*private void ProcessFrame(object sender, EventArgs e)
-    {
-        Mat frame = new Mat();
-        Capture.Retrieve(frame, 0);
-
-        if (!frame.IsEmpty)
-        {
-            // Convert EmguCV Mat to LibVLCSharp Bitmap
-            BitmapFormatConverter.ToBitmap(frame, out IntPtr bitmapPtr, out _);
-            var bitmap = new Bitmap(bitmapPtr, frame.Cols, frame.Rows, frame.Cols * 3, PixelFormat.BGR24);
-
-            // Update the VideoView
-            _videoView.Bi = bitmap;
-
-            // Perform motion detection
-            if (MotionDetected(frame))
+            if (ReactToMotion)
             {
-                // Motion detected, you can perform actions here
-                _motionDetected = true;
+                Mat foregroundMask = new Mat();
+                bgSubtractor.Apply(frame, foregroundMask);
+                CvInvoke.Threshold(foregroundMask, foregroundMask, 190, 255, ThresholdType.Binary);
+
+                // Ищем контуры для выделения объектов
+                VectorOfVectorOfPoint contours = new VectorOfVectorOfPoint();
+                CvInvoke.FindContours(foregroundMask, contours, null, RetrType.List, ChainApproxMethod.ChainApproxSimple);
+
+                // Обходим каждый контур и вычисляем его площадь
+                for (int i = 0; i < contours.Size; i++)
+                {
+                    double area = CvInvoke.ContourArea(contours[i]);
+                    if (area > 500) // Произвольный порог площади, который определяет, что это движущийся объект
+                    {
+                        // Движение обнаружено
+                        if (!motionDetected)
+                        {
+                            motionStart = DateTime.Now;
+                            motionDetected = true;
+                        }
+                        else
+                        {
+                            TimeSpan motionDuration = DateTime.Now - motionStart;
+                            if (motionDuration.TotalSeconds > 5)
+                            {
+                                motionStart = DateTime.Now;
+                                //TODO SEND MOTION DETECTED
+                            }
+                        }
+                    }
+                }
             }
-            else
-            {
-                _motionDetected = false;
-            }
+
+            var bitmap = frame.ToBitmap();
+            ImageGrab(this, new GrabImageEventArgs(bitmap.ConvertToAvaloniaBitmap()));            
+            //VideoFrame = bitmap.ConvertToAvaloniaBitmap();
         }
+        _prevFrame = frame;
     }
     
-    private bool MotionDetected(Mat frame)
-    {
-        // Convert the frame to grayscale for motion detection
-        CvInvoke.CvtColor(frame, frame, ColorConversion.Bgr2Gray);
-
-        // Apply GaussianBlur to reduce noise and improve motion detection
-        CvInvoke.GaussianBlur(frame, frame, new Size(21, 21), 0);
-
-
-        // Set a threshold to identify motion
-        double minValues = 10, maxValues = 50;
-        Point minLoc = new Point() , maxLoc = new Point();
-        CvInvoke.MinMaxLoc(frame, ref minValues, ref maxValues, ref minLoc, ref maxLoc);
-
-        // You may need to experiment with the threshold value
-        double threshold = 50;
-
-        return maxValues > threshold;
-    }*/
-
     
 }

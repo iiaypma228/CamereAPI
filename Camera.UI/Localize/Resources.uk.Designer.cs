@@ -28,7 +28,7 @@ namespace Camera.UI.Localize {
         private static global::System.Globalization.CultureInfo resourceCulture;
         
         [global::System.Diagnostics.CodeAnalysis.SuppressMessageAttribute("Microsoft.Performance", "CA1811:AvoidUncalledPrivateCode")]
-        public Resources_uk() {
+        internal Resources_uk() {
         }
         
         /// <summary>
@@ -69,11 +69,56 @@ namespace Camera.UI.Localize {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Авторизація.
+        /// </summary>
+        public static string textAuth {
+            get {
+                return ResourceManager.GetString("textAuth", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Кабель.
+        /// </summary>
+        public static string textCabel {
+            get {
+                return ResourceManager.GetString("textCabel", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Довідник.
+        /// </summary>
+        public static string textCameraCatalog {
+            get {
+                return ResourceManager.GetString("textCameraCatalog", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Камера.
+        /// </summary>
+        public static string textCameraObervable {
+            get {
+                return ResourceManager.GetString("textCameraObervable", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Камери.
         /// </summary>
         public static string textCameras {
             get {
                 return ResourceManager.GetString("textCameras", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Відмінити.
+        /// </summary>
+        public static string textCancel {
+            get {
+                return ResourceManager.GetString("textCancel", resourceCulture);
             }
         }
         
@@ -105,11 +150,38 @@ namespace Camera.UI.Localize {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Поле пошта обов&apos;язкове!.
+        /// </summary>
+        public static string textEmailIsRequired {
+            get {
+                return ResourceManager.GetString("textEmailIsRequired", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Пошта не віповідає шаблону.
+        /// </summary>
+        public static string textEmailNotTemplate {
+            get {
+                return ResourceManager.GetString("textEmailNotTemplate", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Помилка.
         /// </summary>
         public static string textError {
             get {
                 return ResourceManager.GetString("textError", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Інтернет.
+        /// </summary>
+        public static string textEthernet {
+            get {
+                return ResourceManager.GetString("textEthernet", resourceCulture);
             }
         }
         
@@ -132,6 +204,15 @@ namespace Camera.UI.Localize {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Налаштування.
+        /// </summary>
+        public static string textOptions {
+            get {
+                return ResourceManager.GetString("textOptions", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Пароль.
         /// </summary>
         public static string textPassword {
@@ -141,11 +222,29 @@ namespace Camera.UI.Localize {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Поле пароль обов&apos;язкове!.
+        /// </summary>
+        public static string textPasswordIsRequired {
+            get {
+                return ResourceManager.GetString("textPasswordIsRequired", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Реєестрація.
         /// </summary>
         public static string textRegestration {
             get {
                 return ResourceManager.GetString("textRegestration", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Зберегти.
+        /// </summary>
+        public static string textSave {
+            get {
+                return ResourceManager.GetString("textSave", resourceCulture);
             }
         }
         

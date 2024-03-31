@@ -1,9 +1,10 @@
+using System;
 using System.Reactive.Disposables;
-using Avalonia.Controls;
 using Avalonia.ReactiveUI;
 using Camera.UI.ViewModels;
 using ReactiveUI;
 using ReactiveUI.Validation.Extensions;
+using ReactiveUI.Validation.Formatters;
 
 namespace Camera.UI.Views
 {
@@ -12,13 +13,6 @@ namespace Camera.UI.Views
         public LoginView()
         {
             InitializeComponent();
-            this.WhenActivated(disposables =>
-            {
-                //this.Bind
-                
-                this.BindValidation(ViewModel, x => x.User.Email, x => x.UserPasswordValidation.Text)
-                    .DisposeWith(disposables);
-            });
         }
     }
 }

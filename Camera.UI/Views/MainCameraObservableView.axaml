@@ -6,10 +6,38 @@
              x:Class="Camera.UI.Views.MainCameraObservableView"
              xmlns:vlc="clr-namespace:LibVLCSharp.Avalonia;assembly=LibVLCSharp.Avalonia"
              xmlns:vm="using:Camera.UI.ViewModels"
+             xmlns:md="using:Joint.Data.Models"
              x:DataType="vm:MainCameraObservableViewModel"
              >
     
-    <StackPanel Orientation="Vertical">
-        <Image Source="{Binding VideoFrame, Mode=TwoWay}" Width="660" Height="700"/>
-    </StackPanel>
+    <Grid VerticalAlignment="Stretch" HorizontalAlignment="Stretch" RowDefinitions="Auto, *" ColumnDefinitions="*">
+       <StackPanel Margin="40,20,0,0" HorizontalAlignment="Left" VerticalAlignment="Top" Orientation="Horizontal" Grid.Column="0" Grid.Row="0">
+           <TextBlock Margin="0,0,10,0" Text="Обрана камера:"></TextBlock>
+           <ComboBox
+               MinWidth="300"
+               SelectedValue="{Binding SelectedCamera}"
+               ItemsSource="{Binding Cameras}" >
+               <ComboBox.ItemTemplate>
+                   <DataTemplate>
+                       <DataTemplate.DataType>
+                           <x:Type TypeName="md:Camera"/>
+                       </DataTemplate.DataType>
+                       <TextBlock Text="{Binding Name}"/>
+                   </DataTemplate>
+               </ComboBox.ItemTemplate>
+           </ComboBox>
+       </StackPanel>
+
+        
+        <StackPanel Grid.Row="1" VerticalAlignment="Center">
+            <TextBlock IsVisible="{Binding !IsOpened}" VerticalAlignment="Center" TextAlignment="Center" HorizontalAlignment="Center" Text="Не вдалося знайти таку камеру, спробуйте іншу!">
+            </TextBlock>
+        </StackPanel>
+
+        
+        <Image Grid.Row="1"
+               IsVisible="{Binding IsOpened}" 
+               Source="{Binding VideoFrame, Mode=TwoWay}" 
+        />
+    </Grid>
 </UserControl>

@@ -14,6 +14,9 @@ namespace Camera.UI.Services
     public interface IAuthorizationService
     {
         Task<ServerResponse<string>> AuthorizationAsync(User user);
+
+        void SetToken(string token);
+        
         string Token { get; }
     }
     
@@ -25,6 +28,12 @@ namespace Camera.UI.Services
         {
             _httpClient = httpClient;
             _accessTokenProvider = accessTokenProvider;
+        }
+
+        public void SetToken(string token)
+        {
+            _accessTokenProvider.SetAccessToken(token);
+            _token = token;
         }
 
         public string Token => _token;
@@ -42,7 +51,7 @@ namespace Camera.UI.Services
                 {
                     var parsedToken = ServerResponse<string>.ParseToken(token.Data);
                     _token = parsedToken.access_token;
-                    _accessTokenProvider.SetAccessToken(_token);
+                    SetToken(_token);
                 }
                 return token;
             }

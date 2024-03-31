@@ -22,7 +22,9 @@
 							CornerRadius="{StaticResource ControlCornerRadius}"
 							Padding="{TemplateBinding Padding}">
 						<DockPanel>
-							<PathIcon Foreground="{TemplateBinding Foreground}"
+							<PathIcon 
+								FontSize="{TemplateBinding FontSize}"	  
+								Foreground="{TemplateBinding Foreground}"
 									  Data="{TemplateBinding Tag}"
 									  DockPanel.Dock="Left" />
 							<ContentPresenter Content="{TemplateBinding Content}"

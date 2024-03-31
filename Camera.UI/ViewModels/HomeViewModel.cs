@@ -3,7 +3,10 @@ using System.Collections.ObjectModel;
 using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Media;
+using Camera.UI.Localize;
+using Camera.UI.Services;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.DependencyInjection.Extensions;
 using ReactiveUI;
 using ReactiveUI.Fody.Helpers;
 
@@ -12,10 +15,11 @@ namespace Camera.UI.ViewModels;
 public class HomeViewModel : RoutableViewModelBase, IScreen
 {
     private IServiceProvider _serviceProvider;
-    
-    public HomeViewModel(IScreen screen, RoutingState routingState, IServiceProvider serviceProvided) : base(screen, routingState)
+    private IServiceCollection _serviceCollection;
+    public HomeViewModel(IScreen screen, RoutingState routingState, IServiceProvider serviceProvided, IServiceCollection serviceCollection) : base(screen, routingState)
     {
         _serviceProvider = serviceProvided;
+        _serviceCollection = serviceCollection;
     }
     
     [Reactive] public bool IsPaneOpen { get; set; }= false;
@@ -38,10 +42,32 @@ public class HomeViewModel : RoutableViewModelBase, IScreen
     
     public ObservableCollection<MenuItemTemplate> Items { get; } = new()
     {
-        new MenuItemTemplate(typeof(MainCameraObservableViewModel), "CameraIcon"),
-        new MenuItemTemplate(typeof(CameraViewModel), "CameraIcon"),
+        new MenuItemTemplate(typeof(MainCameraObservableViewModel), "CameraSwitchIcon")
+        {
+            Label = Resources.textCameraObervable
+        },
+        new MenuItemTemplate(typeof(CameraViewModel), "CameraIcon")
+        {
+            Label = Resources.textCameraCatalog
+        },
         new MenuItemTemplate(typeof(SettingsViewModel), "SettingsIcon")
+        {
+            Label = Resources.textOptions
+        }
     };
+
+    public async void Logout()
+    {
+        var sharedPreferences = this._serviceProvider.GetService<ISharedPreferences>()!;
+        await sharedPreferences.SaveAsync("token", "");
+
+        var mainWindowViewModel = _serviceProvider.GetService<MainWindowViewModel>()!;
+        
+        _serviceCollection.TryAddSingleton<IScreen>(mainWindowViewModel);
+        _serviceCollection.TryAddSingleton<RoutingState>(mainWindowViewModel.Router);
+        this.RoutingState.Navigate.Execute(_serviceProvider.GetService<LoginViewModel>()!);
+        //this.Router.Navigate.Execute();
+    }
     
 }
 public class MenuItemTemplate
@@ -52,15 +78,16 @@ public class MenuItemTemplate
     public MenuItemTemplate(Type type, string iconKey)
     {
         ModelType = type;
-        Label = type.Name.Replace("PageViewModel", "");
-
+        
+        Label ??= type.Name.Replace("PageViewModel", "");
+        
         // TODO: see if there's a better way to look for a resource by key
         Application.Current!.TryFindResource(iconKey, out var res);
         var streamGeometry = res as StreamGeometry ?? StreamGeometry.Parse(StreamGeometryNotFound);
         ListItemIcon = streamGeometry;
     }
 
-    public string Label { get; }
+    public string Label { get; set; }
     public Type ModelType { get; }
     public StreamGeometry ListItemIcon { get; }
 }
