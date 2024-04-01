@@ -46,7 +46,7 @@ public class CameraViewModel : RoutableViewModelBase
     }
     public async void DeleteCamera()
     {
-        if (_cameraFormViewModel.Camera == null)
+        if (SelectedCamera == null)
         {
             _notificationService.ShowError("Камера не обрана!");
         }

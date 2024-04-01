@@ -6,13 +6,23 @@
              x:Class="Camera.UI.Views.CameraView"
 			 xmlns:vm="using:Camera.UI.ViewModels"
              xmlns:behav="clr-namespace:Camera.UI.Behaviors"
-             x:DataType="vm:CameraViewModel">
+             x:DataType="vm:CameraViewModel"
+             Background="#607088"
+             >
+	
+	<UserControl.Styles>
+		<Style Selector="Button">
+			<Setter Property="Background" Value="#54637A"></Setter>
+			<Setter Property="BorderBrush" Value="#B8C9E2"></Setter>
+			<Setter Property="Foreground" Value="#B8C9E2"></Setter>
+		</Style>
+	</UserControl.Styles>
 	
 	<StackPanel Margin="20">
 		<StackPanel Orientation="Horizontal" Margin="0 5 0 5">
-			<Button Margin="0 0 5 0" Classes="icon" Tag="{StaticResource CameraAddIcon}" Content="Add" Command="{Binding CreateCamera}"/>
-			<Button Margin="0 0 5 0" Classes="icon" Tag="{StaticResource CameraEditIcon}" Content="Edit" Command="{Binding EditCameraCommand}" />
-			<Button Margin="0 0 5 0" Classes="icon" Tag="{StaticResource DeleteIcon}" Content="Delete" Command="{Binding DeleteCamera}"/>
+			<Button FontSize="25" Margin="0 0 10 0" Classes="icon" Tag="{StaticResource CameraAddIcon}" Content="Add" Command="{Binding CreateCamera}"/>
+			<Button FontSize="25" Margin="0 0 10 0" Classes="icon" Tag="{StaticResource CameraEditIcon}" Content="Edit" Command="{Binding EditCameraCommand}" />
+			<Button FontSize="25" Margin="0 0 10 0" Classes="icon" Tag="{StaticResource DeleteIcon}" Content="Delete" Command="{Binding DeleteCamera}"/>
 		</StackPanel>
 		<DataGrid ItemsSource="{Binding Items}" SelectedItem="{Binding SelectedCamera}"
 		  behav:DoubleTappedBehav.Command="{Binding EditCameraCommand}" 
@@ -22,11 +32,51 @@
           CanUserResizeColumns="True"
           CanUserSortColumns="False"
           GridLinesVisibility="All"
-          BorderThickness="1" BorderBrush="Gray">
+		  RowBackground="#445164"
+		  SelectionMode="Single"
+          BorderThickness="1" BorderBrush="#78859A">
+			<DataGrid.Styles>
+				<Style Selector="DataGridColumnHeader">
+					<Setter Property="Background" Value="#445164" />
+					<Setter Property="Foreground" Value="#DEEBFF"></Setter>
+					<Setter Property="FontSize" Value="20"></Setter>
+					<Setter Property="MinHeight" Value="50"></Setter>
+				</Style>
+				<Style Selector="DataGridRow">
+					<Setter Property="Background" Value="#54637A" />
+					<Setter Property="Foreground" Value="#DEEBFF"></Setter>
+					<Setter Property="FontSize" Value="20"></Setter>
+					<Setter Property="MinHeight" Value="50"></Setter>
+				</Style>
+
+				<Style Selector="DataGridRow:selected">
+					<Style Selector="^ /template/ Rectangle#BackgroundRectangle">
+						<Setter Property="Fill" Value="#7F56D9" />
+						<Setter Property="Opacity" Value="100"></Setter>
+					</Style>
+					<!--<Style Selector="^:pointerover /template/ Rectangle#BackgroundRectangle">
+						<Setter Property="Fill" Value="{DynamicResource DataGridRowSelectedHoveredUnfocusedBackgroundBrush}" />
+						<Setter Property="Opacity" Value="{DynamicResource DataGridRowSelectedHoveredUnfocusedBackgroundOpacity}" />
+					</Style>
+					<Style Selector="^:focus /template/ Rectangle#BackgroundRectangle">
+						<Setter Property="Fill" Value="{DynamicResource DataGridRowSelectedBackgroundBrush}" />
+						<Setter Property="Opacity" Value="{DynamicResource DataGridRowSelectedBackgroundOpacity}" />
+					</Style>
+					<Style Selector="^:pointerover:focus /template/ Rectangle#BackgroundRectangle">
+						<Setter Property="Fill" Value="{DynamicResource DataGridRowSelectedHoveredBackgroundBrush}" />
+						<Setter Property="Opacity" Value="{DynamicResource DataGridRowSelectedHoveredBackgroundOpacity}" />
+					</Style>-->
+				</Style>
+				<Style Selector="DataGridRow:nth-child(2)">
+					<Setter Property="Background" Value="#445164" />
+					<Setter Property="Opacity" Value="0.69" />
+				</Style>
+
+			</DataGrid.Styles>
 			<DataGrid.Columns>
-				<DataGridTextColumn Header="Name" Binding="{Binding Name}"/>
-				<DataGridTextColumn Header="Connection" Binding="{Binding Connection}"/>
-				<DataGridTextColumn Header="ConnectionData" Binding="{Binding ConnectionData}"/>
+				<DataGridTextColumn Foreground="#DEEBFF" Header="Name" Binding="{Binding Name}"/>
+				<DataGridTextColumn Foreground="#DEEBFF" Header="Connection" Binding="{Binding Connection}"/>
+				<DataGridTextColumn Foreground="#DEEBFF" Header="ConnectionData" Binding="{Binding ConnectionData}"/>
 			</DataGrid.Columns>
 		</DataGrid>
 	</StackPanel>

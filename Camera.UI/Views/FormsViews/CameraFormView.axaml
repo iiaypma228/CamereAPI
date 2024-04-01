@@ -9,55 +9,100 @@
 			 xmlns:generic="clr-namespace:System.Collections.Generic;assembly=System.Runtime"
              xmlns:constants="clr-namespace:Joint.Data.Constants;assembly=Joint.Data"
 			 x:DataType="vm:CameraFormViewModel"
+             Background="#607088"
 			 >
-	<StackPanel VerticalAlignment="Stretch" HorizontalAlignment="Stretch" Orientation="Vertical">
-		<Grid VerticalAlignment="Center" HorizontalAlignment="Center">
+		<UserControl.Styles>
+		<Style Selector="TextBox">
+			<Setter Property="VerticalContentAlignment" Value="Center"></Setter>
+			<Setter Property="HorizontalContentAlignment" Value="Left"></Setter>
+			<Setter Property="HorizontalAlignment" Value="Stretch"></Setter>
+			<Setter Property="MinHeight" Value="50"></Setter>
+			<Setter Property="Background" Value="#54637A"></Setter>
+			<Setter Property="BorderBrush" Value="White"></Setter>
+			<Setter Property="Foreground" Value="White"></Setter>
+		</Style>
+		
+		<Style Selector="TextBox:focus">
 			
-			<Grid.RowDefinitions>
-				<RowDefinition Height="Auto"></RowDefinition>
-				<RowDefinition Height="Auto"></RowDefinition>
-				<RowDefinition Height="Auto"></RowDefinition>
-				<RowDefinition Height="Auto"></RowDefinition>
-			</Grid.RowDefinitions>
-			<Grid.ColumnDefinitions>
-				<ColumnDefinition Width="2*"></ColumnDefinition>
-			</Grid.ColumnDefinitions>
-			
-			<TextBox Grid.Column="0" Grid.Row="0" Text="{Binding Camera.Name}"></TextBox>
-			<ComboBox 
-				Grid.Column="0" Grid.Row="1"
-				SelectedValue="{Binding Camera.Connection}"
-				SelectedValueBinding="{ReflectionBinding Path=Key }"
-				ItemsSource="{x:Static assets:CameraLocalize.CameraConnection}" >
-			
-				<ComboBox.ItemTemplate>
-					<DataTemplate>
-						<DataTemplate.DataType>
-							<x:Type TypeName="generic:KeyValuePair" x:TypeArguments="constants:CameraConnection, x:String"/>
-						</DataTemplate.DataType>
+			<Style Selector="^ /template/ Border#PART_BorderElement">
+				<Setter Property="Background" Value="#54637A"/>
+			</Style>
+		</Style>
+		
+	</UserControl.Styles>
+	
+	
+		<StackPanel VerticalAlignment="Center" HorizontalAlignment="Center" Orientation="Vertical">
+			<Border Background="#445164" Padding="20" CornerRadius="10"  BorderBrush="#475467" BorderThickness="1">
+				<Grid MinWidth="400" VerticalAlignment="Stretch" HorizontalAlignment="Stretch">
 					
-						<TextBlock Text="{Binding Value}"/>
-					</DataTemplate>
-				</ComboBox.ItemTemplate>
-			</ComboBox>
-			<!--<TextBox Text="{Binding Camera.Connection}"></TextBox>-->
-			<TextBox 
-				Grid.Column="0" Grid.Row="2"
-				Text="{Binding Camera.ConnectionData}"></TextBox>
-			<StackPanel
-				
-				Grid.Column="0" Grid.Row="0"
-				Orientation="Horizontal">
-				<Button Command="{Binding CameraSave}">
+					<Grid.RowDefinitions>
+						<RowDefinition Height="*"></RowDefinition>
+						<RowDefinition Height="*"></RowDefinition>
+						<RowDefinition Height="*"></RowDefinition>
+						<RowDefinition Height="*"></RowDefinition>
+					</Grid.RowDefinitions>
+					<Grid.ColumnDefinitions>
+						<ColumnDefinition Width="2*"></ColumnDefinition>
+					</Grid.ColumnDefinitions>
+			
+					<TextBox 
+						Margin="0,0,0,20"
+						Watermark="Name" 
+						UseFloatingWatermark="True" 
+						Grid.Column="0" Grid.Row="0" 
+						Text="{Binding Camera.Name}">
+					</TextBox>
+					
+					<ComboBox 
+						HorizontalAlignment="Stretch"
+						Grid.Column="0" Grid.Row="1"
+						Margin="0,0,0,20"
+						SelectedValue="{Binding Camera.Connection}"
+						SelectedValueBinding="{ReflectionBinding Path=Key }"
+						ItemsSource="{x:Static assets:CameraLocalize.CameraConnection}" >
+			
+						<ComboBox.ItemTemplate>
+							<DataTemplate>
+								<DataTemplate.DataType>
+									<x:Type TypeName="generic:KeyValuePair" x:TypeArguments="constants:CameraConnection, x:String"/>
+								</DataTemplate.DataType>
+					
+								<TextBlock Text="{Binding Value}"/>
+							</DataTemplate>
+						</ComboBox.ItemTemplate>
+					</ComboBox>
+					<!--<TextBox Text="{Binding Camera.Connection}"></TextBox>-->
+					<TextBox 
+						Grid.Column="0" Grid.Row="2"
+						Text="{Binding Camera.ConnectionData}"></TextBox>
+				</Grid>
+			</Border>
+
+			<StackPanel Margin="0,20,0,0" Orientation="Horizontal">
+				<Button Background="#87DE93"
+				        Classes="icon" 
+				        FontSize="25"
+				        Foreground="#475467"
+				        BorderThickness="1"
+				        BorderBrush="#475467"
+				        Margin="0,0,20,0"
+				        Tag="{StaticResource CheckMarkIcon}" 
+				        Command="{Binding CameraSave}">
+					
 					<TextBlock Text="{x:Static assets:Resources.textSave}"></TextBlock>
 				</Button>
-				<Button Command="{Binding Cancel}">
+				<Button Background="#E3C0D5"
+					Classes="icon"
+					FontSize="25"
+					Foreground="#475467"
+					BorderThickness="1"
+					BorderBrush="#475467"
+					Tag="{StaticResource PaneCloseIcon}" 
+					Command="{Binding Cancel}">
+					
 					<TextBlock Text="{x:Static assets:Resources.textCancel}"></TextBlock>
 				</Button>
 			</StackPanel>
-			
-			
-		</Grid>
-		
-	</StackPanel>
+		</StackPanel>
 </UserControl>

@@ -23,7 +23,9 @@
 							Padding="{TemplateBinding Padding}">
 						<DockPanel>
 							<PathIcon 
-								FontSize="{TemplateBinding FontSize}"	  
+								Width="30"
+								Height="30"
+								FontSize="25"	  
 								Foreground="{TemplateBinding Foreground}"
 									  Data="{TemplateBinding Tag}"
 									  DockPanel.Dock="Left" />
