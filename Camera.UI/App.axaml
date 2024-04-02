@@ -46,5 +46,34 @@
 		<Style Selector="Button.icon:pressed">
 			<Setter Property="Background" Value="{StaticResource ButtonBackgroundPressed}" />
 		</Style>
+        
+        
+        <Style Selector="DataGrid">
+	        <Style Selector="^ DataGridColumnHeader">
+		        <Setter Property="Background" Value="#445164" />
+		        <Setter Property="Foreground" Value="#DEEBFF"></Setter>
+		        <Setter Property="FontSize" Value="20"></Setter>
+		        <Setter Property="MinHeight" Value="50"></Setter>
+	        </Style>
+	        <Style Selector="^ DataGridRow">
+		        <Setter Property="Background" Value="#54637A" />
+		        <Setter Property="Foreground" Value="#DEEBFF"></Setter>
+		        <Setter Property="FontSize" Value="20"></Setter>
+		        <Setter Property="MinHeight" Value="50"></Setter>
+	        </Style>
+
+	        <Style Selector="^ DataGridRow:selected">
+		        <Style Selector="^ /template/ Rectangle#BackgroundRectangle">
+			        <Setter Property="Fill" Value="#7F56D9" />
+			        <Setter Property="Opacity" Value="100"></Setter>
+		        </Style>
+	        </Style>
+	        <Style Selector="^ DataGridRow:nth-child(2)">
+		        <Setter Property="Background" Value="#445164" />
+		        <Setter Property="Opacity" Value="0.69" />
+	        </Style>
+
+        </Style>
+        
     </Application.Styles>
 </Application>

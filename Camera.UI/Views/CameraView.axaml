@@ -35,44 +35,6 @@
 		  RowBackground="#445164"
 		  SelectionMode="Single"
           BorderThickness="1" BorderBrush="#78859A">
-			<DataGrid.Styles>
-				<Style Selector="DataGridColumnHeader">
-					<Setter Property="Background" Value="#445164" />
-					<Setter Property="Foreground" Value="#DEEBFF"></Setter>
-					<Setter Property="FontSize" Value="20"></Setter>
-					<Setter Property="MinHeight" Value="50"></Setter>
-				</Style>
-				<Style Selector="DataGridRow">
-					<Setter Property="Background" Value="#54637A" />
-					<Setter Property="Foreground" Value="#DEEBFF"></Setter>
-					<Setter Property="FontSize" Value="20"></Setter>
-					<Setter Property="MinHeight" Value="50"></Setter>
-				</Style>
-
-				<Style Selector="DataGridRow:selected">
-					<Style Selector="^ /template/ Rectangle#BackgroundRectangle">
-						<Setter Property="Fill" Value="#7F56D9" />
-						<Setter Property="Opacity" Value="100"></Setter>
-					</Style>
-					<!--<Style Selector="^:pointerover /template/ Rectangle#BackgroundRectangle">
-						<Setter Property="Fill" Value="{DynamicResource DataGridRowSelectedHoveredUnfocusedBackgroundBrush}" />
-						<Setter Property="Opacity" Value="{DynamicResource DataGridRowSelectedHoveredUnfocusedBackgroundOpacity}" />
-					</Style>
-					<Style Selector="^:focus /template/ Rectangle#BackgroundRectangle">
-						<Setter Property="Fill" Value="{DynamicResource DataGridRowSelectedBackgroundBrush}" />
-						<Setter Property="Opacity" Value="{DynamicResource DataGridRowSelectedBackgroundOpacity}" />
-					</Style>
-					<Style Selector="^:pointerover:focus /template/ Rectangle#BackgroundRectangle">
-						<Setter Property="Fill" Value="{DynamicResource DataGridRowSelectedHoveredBackgroundBrush}" />
-						<Setter Property="Opacity" Value="{DynamicResource DataGridRowSelectedHoveredBackgroundOpacity}" />
-					</Style>-->
-				</Style>
-				<Style Selector="DataGridRow:nth-child(2)">
-					<Setter Property="Background" Value="#445164" />
-					<Setter Property="Opacity" Value="0.69" />
-				</Style>
-
-			</DataGrid.Styles>
 			<DataGrid.Columns>
 				<DataGridTextColumn Foreground="#DEEBFF" Header="Name" Binding="{Binding Name}"/>
 				<DataGridTextColumn Foreground="#DEEBFF" Header="Connection" Binding="{Binding Connection}"/>
