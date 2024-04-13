@@ -10,6 +10,7 @@ using Emgu.CV;
 using Emgu.CV.CvEnum;
 using Emgu.CV.Structure;
 using Emgu.CV.Util;
+using Joint.Data.Models;
 using LibVLCSharp.Avalonia;
 using LibVLCSharp.Shared;
 using Bitmap = Avalonia.Media.Imaging.Bitmap;
@@ -21,7 +22,7 @@ public interface ICameraObservableService
     bool IsOpened { get; }
     bool ReactToMotion { get; set; }
     event EventHandler ImageGrab;
-    bool StartObservable(int camIndex);
+    bool StartObservable(Joint.Data.Models.Camera camera);
 }
 
 // Создаем класс для данных, связанных с событием
@@ -37,6 +38,8 @@ public class GrabImageEventArgs : EventArgs
 
 public class CameraObservableService : ICameraObservableService
 {
+
+    private Joint.Data.Models.Camera _camera;
     private VideoCapture capture;
     private Mat _prevFrame;
     private double previousArea ;
@@ -53,9 +56,10 @@ public class CameraObservableService : ICameraObservableService
     }
     public event EventHandler ImageGrab;
 
-    public bool StartObservable(int camIndex = 0)
+    public bool StartObservable(Joint.Data.Models.Camera camera)
     {
-        capture = new VideoCapture(camIndex);
+        _camera = camera;
+        capture = new VideoCapture(int.Parse(_camera.ConnectionData));
         
         _isOpened = capture.IsOpened;
         if (capture.IsOpened)
@@ -115,6 +119,18 @@ public class CameraObservableService : ICameraObservableService
         }
         _prevFrame = frame;
     }
-    
-    
+
+    private void SendNotificationToServer()
+    {
+        var notifyToSend = new NotifyToSend()
+        {
+            UserId = _camera.UserId,
+            Camera = _camera,
+            CameraId = _camera.Id,
+            Date = DateTime.Now,
+            Message = $"{DateTime.Now} виявлено рух!"
+        };
+        
+        
+    }
 }

@@ -47,6 +47,17 @@ public class NotificationController : ControllerBase
 
     }
     
+    [HttpGet("notifyByCamera")]
+    public object GetNotifyByCamera(int cameraId)
+    {
+        var claim = User.Claims.FirstOrDefault(c=>c.Type == ClaimTypes.Name);
+
+        var currentUser = _userService.ReadByEmail(claim.Value);
+
+        return this._commonNotificationService.Read(i => i.UserId == currentUser.Id && i.CameraId == cameraId);
+
+    }
+    
     
     [HttpPost("send")]
     public object SendNotify([FromForm]NotifyToSend notify, IFormFile file)

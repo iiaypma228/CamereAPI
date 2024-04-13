@@ -97,7 +97,7 @@ public class MainCameraObservableViewModel : RoutableViewModelBase
         
         if (int.TryParse(this.SelectedCamera.ConnectionData, out int result))
         {
-            IsOpened = _service.StartObservable(result);
+            IsOpened = _service.StartObservable(SelectedCamera);
         }
         else
         {
