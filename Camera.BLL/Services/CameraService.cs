@@ -8,8 +8,6 @@ namespace Camera.BLL.Services;
 public class CameraService : ICameraService
 {
     private readonly ICameraRepository _repository;
-
-    private readonly ICommonNotificationService _notificationService;
     
     public CameraService(ICameraRepository repository)
     {
@@ -72,12 +70,6 @@ public class CameraService : ICameraService
         }
         this._repository.Save();
     }
-
-    public IList<Notification> ReadNotifications(int cameraId)
-    {
-        return this._notificationService.Read(i => i.CameraId == cameraId).ToList();
-    }
-
     public void Dispose()
     {
        this._repository.Dispose();

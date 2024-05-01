@@ -41,7 +41,7 @@ public class EmailService : IEmailService
 
         var message = new MailMessage(_configuration["Email:EmailAddress"], notifyToSend.SendAddress,
             "OLEG CAMERA SERVICE!", notifyToSend.Message);
-        if (string.IsNullOrEmpty(notifyToSend.PathToFile))
+        if (!string.IsNullOrEmpty(notifyToSend.PathToFile))
         {
             message.Attachments.Add(new Attachment(notifyToSend.PathToFile));
         }

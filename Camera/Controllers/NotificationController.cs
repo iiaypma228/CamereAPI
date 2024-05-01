@@ -65,7 +65,7 @@ public class NotificationController : ControllerBase
         var claim = User.Claims.FirstOrDefault(c=>c.Type == ClaimTypes.Name);
 
         var currentUser = _userService.ReadByEmail(claim.Value);
-        
+        notify.UserId = currentUser.Id;
         DateTime epoch = new DateTime(1970, 1, 1, 0, 0, 0, DateTimeKind.Utc);
         
         // Получение времени в секундах с начала эпохи Unix
@@ -73,10 +73,17 @@ public class NotificationController : ControllerBase
         long unixTime = (long)timeSpan.TotalSeconds;
         
         var path = Path.Combine(Directory.GetCurrentDirectory(), currentUser.Email, notify.CameraId.ToString(), $"{unixTime}.jpg" );
-        
-        using var stream = System.IO.File.OpenWrite(path);
-        file.CopyTo(stream);
 
+        if (!Directory.Exists(Path.Combine(Directory.GetCurrentDirectory(), currentUser.Email,
+                notify.CameraId.ToString())))
+        {
+            Directory.CreateDirectory(Path.Combine(Directory.GetCurrentDirectory(), currentUser.Email,
+                notify.CameraId.ToString()));
+        }
+        
+        using var stream = System.IO.File.Create(path);
+        file.CopyTo(stream);
+        stream.Close();
         notify.PathToFile = path;
         if (notify.IsNeedToNotify)
         {

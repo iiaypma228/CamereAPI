@@ -35,9 +35,14 @@ builder.Logging.AddConsole();
 builder.Services.AddScoped<IUserRepository, UserRepository>();
 builder.Services.AddScoped<IUserService, UserService>();
 builder.Services.AddScoped<ICameraRepository, CameraRepository>();
+builder.Services.AddScoped<INotificationRepository, NotificationRepository>();
+builder.Services.AddScoped<INotificationToSendRepository, NotificationToSendRepository>();
+//
 builder.Services.AddScoped<ICameraService, CameraService>();
 builder.Services.AddScoped<ITwilioService, TwilioService>();
 builder.Services.AddScoped<IEmailService, EmailService>();
+builder.Services.AddScoped<INotificationService, NotificationService>();
+builder.Services.AddScoped<ICommonNotificationService, CommonNotificationService>();
 
 builder.Services.AddControllers()    
     .AddNewtonsoftJson(options =>

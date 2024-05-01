@@ -37,7 +37,7 @@ public class CommonNotificationService : ICommonNotificationService
     
     public void Notify(NotifyToSend notifyToSend)
     {
-        var notifyes = this._cameraService.ReadNotifications(notifyToSend.CameraId);
+        var notifyes = this._notificationRepository.Read(i => notifyToSend.CameraId == i.CameraId).ToList();
         this.SendNotify(notifyes, notifyToSend);
     }
 

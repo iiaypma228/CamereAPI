@@ -2,18 +2,24 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Drawing;
+using System.IO;
+using System.Net.Http;
+using System.Threading.Tasks;
 using Avalonia.Media.Imaging;
 using Avalonia.Remote.Protocol.Viewport;
 using Avalonia.Threading;
 using Camera.UI.Extensions;
+using DirectShowLib;
 using Emgu.CV;
 using Emgu.CV.CvEnum;
+using Emgu.CV.Ocl;
 using Emgu.CV.Structure;
 using Emgu.CV.Util;
 using Joint.Data.Models;
 using LibVLCSharp.Avalonia;
 using LibVLCSharp.Shared;
 using Bitmap = Avalonia.Media.Imaging.Bitmap;
+using Device = Emgu.CV.Dai.Device;
 
 namespace Camera.UI.Services;
 
@@ -38,7 +44,7 @@ public class GrabImageEventArgs : EventArgs
 
 public class CameraObservableService : ICameraObservableService
 {
-
+    private readonly HttpClient _httpClient;
     private Joint.Data.Models.Camera _camera;
     private VideoCapture capture;
     private Mat _prevFrame;
@@ -47,8 +53,13 @@ public class CameraObservableService : ICameraObservableService
     private bool motionDetected = false;
     private DateTime motionStart = DateTime.Now;
     private bool _isOpened = false;
-    
-    
+
+    public CameraObservableService(HttpClient httpClient)
+    {
+        _httpClient = httpClient;
+    }
+
+
     public bool ReactToMotion { get; set; } = true;
     public bool IsOpened
     {
@@ -73,7 +84,7 @@ public class CameraObservableService : ICameraObservableService
         return _isOpened;
     }
 
-    private void GrabImage(object sender, EventArgs e)
+    private async  void GrabImage(object sender, EventArgs e)
     {
         Mat frame = capture.QueryFrame();
         if (frame != null && _prevFrame != null)
@@ -82,7 +93,7 @@ public class CameraObservableService : ICameraObservableService
             {
                 Mat foregroundMask = new Mat();
                 bgSubtractor.Apply(frame, foregroundMask);
-                CvInvoke.Threshold(foregroundMask, foregroundMask, 190, 255, ThresholdType.Binary);
+                CvInvoke.Threshold(foregroundMask, foregroundMask, 200, 255, ThresholdType.Binary);
 
                 // Ищем контуры для выделения объектов
                 VectorOfVectorOfPoint contours = new VectorOfVectorOfPoint();
@@ -103,10 +114,12 @@ public class CameraObservableService : ICameraObservableService
                         else
                         {
                             TimeSpan motionDuration = DateTime.Now - motionStart;
-                            if (motionDuration.TotalSeconds > 5)
+                            if (motionDuration.TotalSeconds > 6)
                             {
                                 motionStart = DateTime.Now;
+                                ReactToMotion = false;
                                 //TODO SEND MOTION DETECTED
+                                await SendNotificationToServer(frame.ToBitmap());
                             }
                         }
                     }
@@ -120,7 +133,7 @@ public class CameraObservableService : ICameraObservableService
         _prevFrame = frame;
     }
 
-    private void SendNotificationToServer()
+    private async Task SendNotificationToServer(System.Drawing.Bitmap photo)
     {
         var notifyToSend = new NotifyToSend()
         {
@@ -132,5 +145,29 @@ public class CameraObservableService : ICameraObservableService
         };
         
         
+        // Создаем MultipartFormDataContent для отправки файлов и формы
+        var formData = new MultipartFormDataContent();
+
+        // Добавляем объект notify в форму
+        formData.Add(new StringContent(notifyToSend.Date.ToString()), "Date");
+        formData.Add(new StringContent(notifyToSend.CameraId.ToString()), "CameraId");
+        formData.Add(new StringContent(notifyToSend.Message), "Message");
+        
+        
+        byte[] imageBytes;
+        using (MemoryStream ms = new MemoryStream())
+        {
+            photo.Save(ms, System.Drawing.Imaging.ImageFormat.Jpeg);
+            imageBytes = ms.ToArray();
+        }
+        
+        // Добавляем изображение в форму
+        var imageContent = new ByteArrayContent(imageBytes);
+        imageContent.Headers.ContentType = System.Net.Http.Headers.MediaTypeHeaderValue.Parse("image/jpeg");
+        formData.Add(imageContent, "file", "image.jpg");
+
+        // Отправляем POST запрос на метод контроллера
+        var response = await _httpClient.PostAsync("api/Notification/send", formData);
+
     }
 }

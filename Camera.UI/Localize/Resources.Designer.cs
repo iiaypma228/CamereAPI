@@ -231,11 +231,29 @@ namespace Camera.UI.Localize {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Password not equals retry password.
+        /// </summary>
+        public static string textPasswordNotEqualsRetryPassowrd {
+            get {
+                return ResourceManager.GetString("textPasswordNotEqualsRetryPassowrd", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Regestration.
         /// </summary>
         public static string textRegestration {
             get {
                 return ResourceManager.GetString("textRegestration", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Retry password.
+        /// </summary>
+        public static string textRetryPassword {
+            get {
+                return ResourceManager.GetString("textRetryPassword", resourceCulture);
             }
         }
         

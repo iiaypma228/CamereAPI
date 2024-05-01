@@ -83,8 +83,6 @@ namespace Camera.UI.ViewModels
         //Events
         public async void Login()
         {
-            var valid = BindingPlugins.DataValidators.FirstOrDefault(i => i is DataAnnotationsValidationPlugin) as DataAnnotationsValidationPlugin;
-            
             if (!HasErrors)
             {
                 var res = await _service.AuthorizationAsync(_user);
@@ -113,7 +111,7 @@ namespace Camera.UI.ViewModels
         private void ConfigureValidation()
         {
             this.ValidationRule(x => x.Email, v =>  !string.IsNullOrEmpty(v), Resources.textEmailIsRequired);
-            this.ValidationRule(x => x.Email, v => v != null && !v.Contains("@"), Resources.textEmailNotTemplate);
+            this.ValidationRule(x => x.Email, v => v != null && v.Contains("@"), Resources.textEmailNotTemplate);
             this.ValidationRule(x => x.Password, v =>  !string.IsNullOrEmpty(v), Resources.textPasswordIsRequired);
         }
         

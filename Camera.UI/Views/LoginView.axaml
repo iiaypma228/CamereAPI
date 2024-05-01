@@ -65,6 +65,15 @@
 			          IsChecked="{Binding RememberMe}">
 				<TextBlock Foreground="White" Text="Запам'ятати мене"></TextBlock>
 			</CheckBox>
+			<Button	  Classes="hyperlink"
+				      Margin="230,0,0,20"
+			          HorizontalAlignment="Center" 
+			          Grid.Row="3"
+				      Content="Реєстрація"
+				      Command="{Binding GoToRegistration}"
+			         >
+			</Button>
+			
 			<Button  
 					Grid.Row="4"
 			        Background="White"

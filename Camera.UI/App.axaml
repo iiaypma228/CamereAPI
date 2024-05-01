@@ -23,7 +23,9 @@
 							Padding="{TemplateBinding Padding}">
 						<DockPanel>
 							<PathIcon 
-								FontSize="{TemplateBinding FontSize}"	  
+								Width="30"
+								Height="30"
+								FontSize="25"	  
 								Foreground="{TemplateBinding Foreground}"
 									  Data="{TemplateBinding Tag}"
 									  DockPanel.Dock="Left" />
@@ -44,5 +46,49 @@
 		<Style Selector="Button.icon:pressed">
 			<Setter Property="Background" Value="{StaticResource ButtonBackgroundPressed}" />
 		</Style>
+        
+        <Style Selector="Button.hyperlink">
+	        <Setter Property="Template">
+		        <ControlTemplate>
+			        <TextBlock Text="{TemplateBinding Content}" Foreground="{StaticResource SystemAccentColor}" TextDecorations="Underline">
+				        <TextBlock.Styles>
+					        <Style Selector="TextBlock:pointerover">
+						        <Setter Property="Foreground" Value="{StaticResource SystemAccentColorLight1}"/>
+					        </Style>
+				        </TextBlock.Styles>
+			        </TextBlock>
+		        </ControlTemplate>
+	        </Setter>
+	        <Setter Property="Background" Value="Transparent"/>
+	        <Setter Property="BorderThickness" Value="0"/>
+        </Style>
+        
+        <Style Selector="DataGrid">
+	        <Style Selector="^ DataGridColumnHeader">
+		        <Setter Property="Background" Value="#445164" />
+		        <Setter Property="Foreground" Value="#DEEBFF"></Setter>
+		        <Setter Property="FontSize" Value="20"></Setter>
+		        <Setter Property="MinHeight" Value="50"></Setter>
+	        </Style>
+	        <Style Selector="^ DataGridRow">
+		        <Setter Property="Background" Value="#54637A" />
+		        <Setter Property="Foreground" Value="#DEEBFF"></Setter>
+		        <Setter Property="FontSize" Value="20"></Setter>
+		        <Setter Property="MinHeight" Value="50"></Setter>
+	        </Style>
+
+	        <Style Selector="^ DataGridRow:selected">
+		        <Style Selector="^ /template/ Rectangle#BackgroundRectangle">
+			        <Setter Property="Fill" Value="#7F56D9" />
+			        <Setter Property="Opacity" Value="100"></Setter>
+		        </Style>
+	        </Style>
+	        <Style Selector="^ DataGridRow:nth-child(2)">
+		        <Setter Property="Background" Value="#445164" />
+		        <Setter Property="Opacity" Value="0.69" />
+	        </Style>
+
+        </Style>
+        
     </Application.Styles>
 </Application>

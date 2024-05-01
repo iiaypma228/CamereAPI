@@ -183,4 +183,10 @@
   <data name="textOptions" xml:space="preserve">
     <value>Options</value>
   </data>
+  <data name="textRetryPassword" xml:space="preserve">
+    <value>Retry password</value>
+  </data>
+  <data name="textPasswordNotEqualsRetryPassowrd" xml:space="preserve">
+    <value>Password not equals retry password</value>
+  </data>
 </root>

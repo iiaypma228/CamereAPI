@@ -183,4 +183,10 @@
   <data name="textOptions" xml:space="preserve">
     <value>Налаштування</value>
   </data>
+  <data name="textRetryPassword" xml:space="preserve">
+    <value>Повторити пароль</value>
+  </data>
+  <data name="textPasswordNotEqualsRetryPassowrd" xml:space="preserve">
+    <value>Поле пароль то повторити пароль не збігаються!</value>
+  </data>
 </root>

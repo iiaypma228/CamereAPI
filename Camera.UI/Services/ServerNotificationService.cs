@@ -2,11 +2,13 @@ using System;
 using System.Collections.Generic;
 using System.Net.Http;
 using System.Net.Http.Json;
+
 using System.Threading.Tasks;
 using Camera.UI.Models;
 using Joint.Data.Models;
 
 namespace Camera.UI.Services;
+
 
 public interface IServerNotificationService
 {
@@ -15,7 +17,6 @@ public interface IServerNotificationService
     Task<ServerResponse<List<Notification>>> GetAll();
 
     Task<ServerResponse<List<Notification>>> GetByCamera(int cameraIndex);
-    
 }
 
 public class ServerNotificationService : IServerNotificationService

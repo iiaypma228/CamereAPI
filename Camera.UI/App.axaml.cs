@@ -93,6 +93,7 @@ public partial class App : Application
         _services.AddSingleton<IAuthorizationService, AuthorizationService>();
         _services.AddSingleton<IRegistrationService, RegistrationService>();
         _services.AddSingleton<ICameraService, CameraService>();
+        _services.AddSingleton<IServerNotificationService, ServerNotificationService>();
         _services.AddSingleton<ICameraObservableService, CameraObservableService>();
         _services.AddSingleton<ISharedPreferences, SharedPreferences>();
         _services.AddTransient<BearerTokenHandler>();
