@@ -18,6 +18,11 @@ using Emgu.CV.Structure;
 using Emgu.CV.Util;
 using Joint.Data.Models;
 using LibVLCSharp.Avalonia;
+using Emgu.CV;
+using Emgu.CV.Features2D;
+using Emgu.CV.Flann;
+using Emgu.CV.Structure;
+using Emgu.Util;
 using LibVLCSharp.Shared;
 using Bitmap = Avalonia.Media.Imaging.Bitmap;
 using Device = Emgu.CV.Dai.Device;
@@ -54,7 +59,6 @@ public class CameraObservableService : ICameraObservableService
     private bool motionDetected = false;
     private DateTime motionStart = DateTime.Now;
     private bool _isOpened = false;
-
     public CameraObservableService(HttpClient httpClient)
     {
         _httpClient = httpClient;
@@ -87,51 +91,32 @@ public class CameraObservableService : ICameraObservableService
 
     private async  void GrabImage(object sender, EventArgs e)
     {
+        CascadeClassifier faceCascade = new CascadeClassifier("haarcascade_frontalface_default.xml");
         Mat frame = capture.QueryFrame();
         if (frame != null && _prevFrame != null)
         {
             if (ReactToMotion)
             {
-                Mat foregroundMask = new Mat();
-                bgSubtractor.Apply(frame, foregroundMask);
-                CvInvoke.Threshold(foregroundMask, foregroundMask, 200, 255, ThresholdType.Binary);
+                
+                // Преобразование кадра в чёрно-белый (градаций серого)
+                Mat grayFrame = new Mat();
+                CvInvoke.CvtColor(frame, grayFrame, ColorConversion.Bgr2Gray);
 
-                // Ищем контуры для выделения объектов
-                VectorOfVectorOfPoint contours = new VectorOfVectorOfPoint();
-                CvInvoke.FindContours(foregroundMask, contours, null, RetrType.List, ChainApproxMethod.ChainApproxSimple);
+                // Детекция лиц на кадре
+                Rectangle[] faces = faceCascade.DetectMultiScale(grayFrame, 1.1, 3, Size.Empty);
 
-                // Обходим каждый контур и вычисляем его площадь
-                for (int i = 0; i < contours.Size; i++)
+                // Отрисовка прямоугольников вокруг обнаруженных лиц (людей)
+                foreach (Rectangle face in faces)
                 {
-                    double area = CvInvoke.ContourArea(contours[i]);
-                    if (area > 500) // Произвольный порог площади, который определяет, что это движущийся объект
-                    {
-                        // Движение обнаружено
-                        if (!motionDetected)
-                        {
-                            motionStart = DateTime.Now;
-                            motionDetected = true;
-                        }
-                        else
-                        {
-                            TimeSpan motionDuration = DateTime.Now - motionStart;
-                            if (motionDuration.TotalSeconds > 6)
-                            {
-                                motionStart = DateTime.Now;
-                                ReactToMotion = false;
-                                //TODO SEND MOTION DETECTED
-                                await SendNotificationToServer(frame.ToBitmap());
-                            }
-                        }
-                    }
+                    CvInvoke.Rectangle(frame, face, new MCvScalar(0, 255, 0), 2);
                 }
             }
 
-            var bitmap = frame.ToBitmap();
-            ImageGrab(this, new GrabImageEventArgs(bitmap.ConvertToAvaloniaBitmap()));            
+            ImageGrab(this, new GrabImageEventArgs(frame.ToBitmap().ConvertToAvaloniaBitmap())); 
             //VideoFrame = bitmap.ConvertToAvaloniaBitmap();
         }
         _prevFrame = frame;
+        
     }
 
     private async Task SendNotificationToServer(System.Drawing.Bitmap photo)
