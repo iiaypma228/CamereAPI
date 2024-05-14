@@ -10,6 +10,7 @@ using Avalonia.Remote.Protocol.Viewport;
 using Avalonia.Threading;
 using Camera.UI.Extensions;
 using DirectShowLib;
+using DynamicData;
 using Emgu.CV;
 using Emgu.CV.CvEnum;
 using Emgu.CV.Ocl;
@@ -54,10 +55,8 @@ public class CameraObservableService : ICameraObservableService
     private VideoCapture capture;
     private Mat _prevFrame;
     private double previousArea ;
-    private BackgroundSubtractorMOG2 bgSubtractor = new BackgroundSubtractorMOG2();
-    private bool motionDetected = false;
-    private DateTime motionStart = DateTime.Now;
     private bool _isOpened = false;
+    private DateTime? _lastDetectedMotion = null;
     public CameraObservableService(HttpClient httpClient)
     {
         _httpClient = httpClient;
@@ -108,6 +107,11 @@ public class CameraObservableService : ICameraObservableService
                 foreach (Rectangle face in faces)
                 {
                     CvInvoke.Rectangle(frame, face, new MCvScalar(0, 255, 0), 2);
+                    if (faces.IndexOf(face) == 1 && (_lastDetectedMotion == null || DateTime.Now - _lastDetectedMotion > TimeSpan.FromMinutes(5) ))
+                    {
+                        _lastDetectedMotion = DateTime.Now;
+                        await SendNotificationToServer(frame.ToBitmap());
+                    }
                 }
             }
 
