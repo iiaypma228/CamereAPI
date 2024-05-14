@@ -3,6 +3,7 @@ using System;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Reactive.Concurrency;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using Avalonia.Data.Core.Plugins;
 using Camera.UI.Localize;
@@ -111,7 +112,7 @@ namespace Camera.UI.ViewModels
         private void ConfigureValidation()
         {
             this.ValidationRule(x => x.Email, v =>  !string.IsNullOrEmpty(v), Resources.textEmailIsRequired);
-            this.ValidationRule(x => x.Email, v => v != null && v.Contains("@"), Resources.textEmailNotTemplate);
+            this.ValidationRule(x => x.Email, v => v != null &&  Regex.Match(v, "^[\\w\\.-]+@[a-zA-Z\\d\\.-]+\\.[a-zA-Z]{2,}$").Success, Resources.textEmailNotTemplate);
             this.ValidationRule(x => x.Password, v =>  !string.IsNullOrEmpty(v), Resources.textPasswordIsRequired);
         }
         

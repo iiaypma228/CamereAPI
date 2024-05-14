@@ -23,12 +23,23 @@ builder.Services.AddSwaggerGen();
 var configuration = new ConfigurationBuilder()
     .AddJsonFile("appsettings.Development.json")
     .Build();
-AppContext.SetSwitch("Npgsql.EnableLegacyTimestampBehavior", true);
-builder.Services.AddDbContext<ServerContext>(options =>
+if (!string.IsNullOrEmpty(configuration.GetConnectionString("Postgresql")))
+{
+    AppContext.SetSwitch("Npgsql.EnableLegacyTimestampBehavior", true);
+    builder.Services.AddDbContext<ServerContext>(options =>
     {
         options.UseNpgsql(configuration.GetConnectionString("Postgresql"));
     }
-);
+    );
+}
+else
+{
+    builder.Services.AddDbContext<ServerContext>(options =>
+        {
+            options.UseSqlite(configuration.GetConnectionString("SQLite"));
+        }
+    );
+}
 
 builder.Services.AddLogging();
 builder.Logging.AddConsole();

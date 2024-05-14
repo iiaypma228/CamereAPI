@@ -9,6 +9,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Camera.UI.Localize;
 using ReactiveUI.Validation.Extensions;
+using System.Text.RegularExpressions;
 
 namespace Camera.UI.ViewModels
 {
@@ -87,7 +88,7 @@ namespace Camera.UI.ViewModels
         private void ConfigureValidation()
         {
             this.ValidationRule(x => x.Email, v =>  !string.IsNullOrEmpty(v), Resources.textEmailIsRequired);
-            this.ValidationRule(x => x.Email, v => v != null && v.Contains("@"), Resources.textEmailNotTemplate);
+            this.ValidationRule(x => x.Email, v => v != null && Regex.Match(v, "^[\\w\\.-]+@[a-zA-Z\\d\\.-]+\\.[a-zA-Z]{2,}$").Success, Resources.textEmailNotTemplate);
             this.ValidationRule(x => x.Password, v =>  !string.IsNullOrEmpty(v), Resources.textPasswordIsRequired);
             this.ValidationRule(x => x.RetryPassword, v =>  !string.IsNullOrEmpty(v), Resources.textPasswordIsRequired);
             this.ValidationRule(x => x.RetryPassword, v =>  v == Password, Resources.textPasswordNotEqualsRetryPassowrd);
