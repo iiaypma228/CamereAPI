@@ -143,7 +143,7 @@ public class CameraObservableService : ICameraObservableService
         formData.Add(new StringContent(notifyToSend.CameraId.ToString()), "CameraId");
         formData.Add(new StringContent(notifyToSend.Message), "Message");
         
-        
+        //test
         byte[] imageBytes;
         using (MemoryStream ms = new MemoryStream())
         {
