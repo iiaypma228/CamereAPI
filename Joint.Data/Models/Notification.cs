@@ -10,9 +10,7 @@ public class Notification
 
     public User? User { get; set; }
     
-    public int CameraId { get; set; }
-    
-    public Camera? Camera { get; set; }
+    public string Name { get; set; }
     
     public NotificationType NotificationType { get; set; }
     

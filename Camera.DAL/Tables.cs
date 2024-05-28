@@ -6,4 +6,5 @@ public enum Tables
     Camera,
     Notification,
     NotificationToSend,
+    CameraNotifies
 }
