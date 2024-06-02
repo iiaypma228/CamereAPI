@@ -11,11 +11,7 @@ public class NotificationConfiguration : IEntityTypeConfiguration<Notification>
         builder.ToTable(name: nameof(Tables.Notification)).HasKey(o => o.Id);
 
         builder.HasOne<User>().WithMany().HasForeignKey(i => i.UserId);
-        builder.HasOne<Joint.Data.Models.Camera>().WithMany().HasForeignKey(i => i.CameraId);
 
-        builder.Ignore(i => i.Camera);
         builder.Ignore(i => i.User);
-
-
     }
 }

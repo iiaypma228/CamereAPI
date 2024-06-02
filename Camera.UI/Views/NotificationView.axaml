@@ -1,0 +1,42 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:behaviors="clr-namespace:Camera.UI.Behaviors"
+             xmlns:viewModels="clr-namespace:Camera.UI.ViewModels"
+             mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+             x:Class="Camera.UI.Views.NotificationView"
+             x:DataType="viewModels:NotificationViewModel"
+             Background="#607088"
+             >
+	<UserControl.Styles>
+		<Style Selector="Button">
+			<Setter Property="Background" Value="#54637A"></Setter>
+			<Setter Property="BorderBrush" Value="#B8C9E2"></Setter>
+			<Setter Property="Foreground" Value="#B8C9E2"></Setter>
+		</Style>
+	</UserControl.Styles>
+	
+	<StackPanel Margin="20">
+		<StackPanel Orientation="Horizontal" Margin="0 5 0 5">
+			<Button FontSize="25" Margin="0 0 10 0" Classes="icon" Tag="{StaticResource CameraAddIcon}" Content="Add" />
+			<Button FontSize="25" Margin="0 0 10 0" Classes="icon" Tag="{StaticResource CameraEditIcon}" Content="Edit" />
+			<Button FontSize="25" Margin="0 0 10 0" Classes="icon" Tag="{StaticResource DeleteIcon}" Content="Delete"/>
+		</StackPanel>
+		<DataGrid ItemsSource="{Binding Items}" SelectedItem="{Binding SelectedNotification}"
+		  IsReadOnly="True"
+          CanUserReorderColumns="True"
+          CanUserResizeColumns="True"
+          CanUserSortColumns="False"
+          GridLinesVisibility="All"
+		  RowBackground="#445164"
+		  SelectionMode="Single"
+          BorderThickness="1" BorderBrush="#78859A">
+			<DataGrid.Columns>
+				<DataGridTextColumn Foreground="#DEEBFF" Header="Name" Binding="{Binding Name}"/>
+				<DataGridTextColumn Foreground="#DEEBFF" Header="Connection" Binding="{Binding NotificationType}"/>
+				<DataGridTextColumn Foreground="#DEEBFF" Header="ConnectionData" Binding="{Binding Data}"/>
+			</DataGrid.Columns>
+		</DataGrid>
+	</StackPanel>
+</UserControl>

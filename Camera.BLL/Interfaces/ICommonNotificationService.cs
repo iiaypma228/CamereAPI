@@ -5,4 +5,6 @@ namespace Camera.BLL.Interfaces;
 public interface ICommonNotificationService : ICRUDService<Notification>
 {
     void Notify(NotifyToSend notifyToSend);
+
+    List<Notification> GetNotificationsByCamera(int cameraId);
 }

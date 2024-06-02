@@ -48,6 +48,7 @@ builder.Services.AddScoped<IUserService, UserService>();
 builder.Services.AddScoped<ICameraRepository, CameraRepository>();
 builder.Services.AddScoped<INotificationRepository, NotificationRepository>();
 builder.Services.AddScoped<INotificationToSendRepository, NotificationToSendRepository>();
+builder.Services.AddScoped<ICameraNotifiesRepository, CameraNotifiesRepository>();
 //
 builder.Services.AddScoped<ICameraService, CameraService>();
 builder.Services.AddScoped<ITwilioService, TwilioService>();

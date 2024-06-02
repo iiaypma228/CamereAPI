@@ -4,8 +4,45 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
              xmlns:vm="using:Camera.UI.ViewModels"
+			 xmlns:assets="clr-namespace:Camera.UI.Localize"
 			 x:Class="Camera.UI.Views.SettingsView"
 			 x:DataType="vm:SettingsViewModel"
+			 Background="#264ECA"
 			 >
-  Option View!!
+	<UserControl.Styles>
+		<Style Selector="Button">
+			<Setter Property="Background" Value="#54637A"></Setter>
+			<Setter Property="BorderBrush" Value="#B8C9E2"></Setter>
+			<Setter Property="Foreground" Value="#B8C9E2"></Setter>
+		</Style>
+	</UserControl.Styles>
+	<StackPanel>
+		<TextBlock
+			HorizontalAlignment="Center"
+			Foreground="White" FontSize="25"
+			Text="Зміна почти"
+			Margin="10"
+			/>
+		<TextBox
+			Text="{Binding Email}"
+			Watermark="Змінити почту"
+			>
+		</TextBox>
+		<TextBox
+			Text="{Binding Password}"
+			PasswordChar="*"
+			Watermark="Пароль">
+		</TextBox>
+		<TextBox
+			Text="{Binding RetryPassword}"
+			PasswordChar="*"
+			Watermark="Підтвердити пароль"
+			>
+		</TextBox>
+		<Button
+			Content="Змінити почту"
+			>
+			
+		</Button>
+	</StackPanel>
 </UserControl>

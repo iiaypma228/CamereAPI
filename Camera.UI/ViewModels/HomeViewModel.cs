@@ -50,10 +50,14 @@ public class HomeViewModel : RoutableViewModelBase, IScreen
         {
             Label = Resources.textCameraCatalog
         },
+        new MenuItemTemplate(typeof(NotificationViewModel), "NotificationIcon")
+        {
+            Label = "Сповіщення"
+        },
         new MenuItemTemplate(typeof(SettingsViewModel), "SettingsIcon")
         {
             Label = Resources.textOptions
-        }
+        },
     };
 
     public async void Logout()
