@@ -34,6 +34,7 @@
         <!--Condition below is needed to remove Avalonia.Diagnostics package from build output in Release configuration.-->
         <PackageReference Condition="'$(Configuration)' == 'Debug'" Include="Avalonia.Diagnostics" Version="11.0.9" />
         <PackageReference Include="Avalonia.ReactiveUI" Version="11.0.9" />
+        <PackageReference Include="CommunityToolkit.Mvvm" Version="8.2.2" />
         <PackageReference Include="DirectShowLib" Version="1.0.0" />
         <PackageReference Include="Emgu.CV" Version="4.8.1.5350" />
         <PackageReference Include="Emgu.CV.runtime.windows" Version="4.8.1.5350" />

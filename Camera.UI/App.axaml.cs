@@ -88,6 +88,7 @@ public partial class App : Application
         _services.AddSingleton<MainCameraObservableViewModel>();
         _services.AddSingleton<CameraFormViewModel>();
         _services.AddSingleton<NotificationViewModel>();
+        _services.AddSingleton<NotificationFormViewModel>();
         
         //Services        
         _services.AddSingleton<IAuthorizationService, AuthorizationService>();

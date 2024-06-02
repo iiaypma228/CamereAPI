@@ -4,10 +4,12 @@ using System.Diagnostics;
 using System.Drawing;
 using System.Linq;
 using System.Runtime.InteropServices;
+using System.Threading.Tasks;
 using Avalonia.Controls;
 using Avalonia.Threading;
 using Camera.UI.Extensions;
 using Camera.UI.Services;
+using CommunityToolkit.Mvvm.Input;
 using DynamicData.Binding;
 using Emgu.CV;
 using Emgu.CV.CvEnum;
@@ -22,7 +24,7 @@ using Bitmap = Avalonia.Media.Imaging.Bitmap;
 
 namespace Camera.UI.ViewModels;
 
-public class MainCameraObservableViewModel : RoutableViewModelBase
+public partial class MainCameraObservableViewModel : RoutableViewModelBase
 {
     private readonly ICameraObservableService _service;
     private readonly ICameraService _cameraService;
@@ -42,7 +44,11 @@ public class MainCameraObservableViewModel : RoutableViewModelBase
             {
                 _selectedCamera = value;
                 this.RaisePropertyChanged();
-                this.ConnectCamera();
+                if (this.ConnectCameraCommand.CanBeCanceled)
+                {
+                    this.ConnectCameraCommand.Cancel();
+                }
+                this.ConnectCameraCommand.Execute(null);
             }
 
         }
@@ -83,7 +89,11 @@ public class MainCameraObservableViewModel : RoutableViewModelBase
             if (this.SelectedCamera is null)
             {
                 this.SelectedCamera = Cameras.FirstOrDefault();
-                this.ConnectCamera();
+                if (this.ConnectCameraCommand.CanBeCanceled)
+                {
+                    this.ConnectCameraCommand.Cancel();
+                }
+                this.ConnectCameraCommand.Execute(null);
             }
             
         });
@@ -91,30 +101,31 @@ public class MainCameraObservableViewModel : RoutableViewModelBase
         
     }
 
-    public void ConnectCamera()
+    [RelayCommand]
+    private async Task ConnectCamera()
     {
-        if (SelectedCamera is null)
+         if (SelectedCamera is null)
             return;
 
-        if (SelectedCamera.Connection == CameraConnection.Cabel)
+        await Task.Run(() =>
         {
-            if (int.TryParse(this.SelectedCamera.ConnectionData, out int result))
+            if (SelectedCamera.Connection == CameraConnection.Cabel)
             {
-                IsOpened = _service.StartObservable(SelectedCamera);
+                if (int.TryParse(this.SelectedCamera.ConnectionData, out int result))
+                {
+                    IsOpened = _service.StartObservable(SelectedCamera);
+                }
+                else
+                {
+                    _notificationService.ShowError("Данні для підключення не корректні!");
+                    IsOpened = false;
+                }
             }
             else
             {
-                _notificationService.ShowError("Данні для підключення не корректні!");
-                IsOpened = false;
+                IsOpened = _service.StartObservable(SelectedCamera);
             }
-        }
-        else
-        {
-            IsOpened = _service.StartObservable(SelectedCamera);
-        }
-        
- 
-        
+        });
         
     }
     
