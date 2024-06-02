@@ -5,6 +5,9 @@ using System.Net.Http;
 using System.Net.Http.Json;
 using System.Reactive.Linq;
 using System.Reactive.Subjects;
+using System.Text;
+using System.Text.Json;
+using System.Threading;
 using System.Threading.Tasks;
 using Camera.UI.Models;
 using Joint.Data.Models;
@@ -15,7 +18,7 @@ namespace Camera.UI.Services;
 public interface IServerNotificationService
 {
     Task<ServerResponse<string>> Save(Notification notification);
-
+    Task<ServerResponse<string>> Delete(Notification notification);
     Task<ServerResponse<List<Notification>>> GetAll();
 
     Task<ServerResponse<List<Notification>>> GetByCamera(int cameraIndex);
@@ -51,8 +54,26 @@ public class ServerNotificationService : IServerNotificationService
         {
             var notifies = await _httpClient.PostAsJsonAsync("api/notification/notify", notification);
             var res = await ServerResponse<List<Notification>>.CreateFromString(notifies);
-            
+            await GetAll();
             return res;
+        }
+        catch (Exception e)
+        {
+            return new ServerResponse<string>()
+            {
+                IsSuccess = false,
+                Error = e.Message
+            };
+        }
+    }
+
+    public async Task<ServerResponse<string>> Delete(Notification notification)
+    {
+        try
+        {
+            var notifies = await _httpClient.DeleteAsync($"api/notification/notify?id={notification.Id}");
+            await this.GetAll();
+            return await ServerResponse<string>.CreateFromString(notifies);
         }
         catch (Exception e)
         {

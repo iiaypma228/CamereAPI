@@ -22,7 +22,7 @@ public class NotificationController : ControllerBase
     }
 
     [HttpPost("notify")]
-    public object SaveNotify(Notification notification)
+    public object SaveNotify([FromBody]Notification notification)
     {
         var claim = User.Claims.FirstOrDefault(c=>c.Type == ClaimTypes.Name);
 
@@ -35,6 +35,16 @@ public class NotificationController : ControllerBase
 
         return Ok();
     }
+    
+    [HttpDelete("notify")]
+    public object DeleteNotify(int id)
+    {
+        
+        this._commonNotificationService.Delete(new Notification(){Id = id});
+        
+        return Ok();
+    }
+    
 
     [HttpGet("notify")]
     public object GetNotify()

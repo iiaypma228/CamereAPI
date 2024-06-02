@@ -1,0 +1,111 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:assets="clr-namespace:Camera.UI.Localize"
+             xmlns:formsViewModels="clr-namespace:Camera.UI.ViewModels.FormsViewModels"
+             xmlns:generic="clr-namespace:System.Collections.Generic;assembly=System.Runtime"
+             xmlns:constants="clr-namespace:Joint.Data.Constants;assembly=Joint.Data"
+             mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+             x:Class="Camera.UI.Views.FormsViews.NotificationFormView"
+             x:DataType="formsViewModels:NotificationFormViewModel"
+             Background="#607088"
+             >
+    		<UserControl.Styles>
+		<Style Selector="TextBox">
+			<Setter Property="VerticalContentAlignment" Value="Center"></Setter>
+			<Setter Property="HorizontalContentAlignment" Value="Left"></Setter>
+			<Setter Property="HorizontalAlignment" Value="Stretch"></Setter>
+			<Setter Property="MinHeight" Value="50"></Setter>
+			<Setter Property="Background" Value="#54637A"></Setter>
+			<Setter Property="BorderBrush" Value="White"></Setter>
+			<Setter Property="Foreground" Value="White"></Setter>
+		</Style>
+		
+		<Style Selector="TextBox:focus">
+			
+			<Style Selector="^ /template/ Border#PART_BorderElement">
+				<Setter Property="Background" Value="#54637A"/>
+			</Style>
+		</Style>
+		
+	</UserControl.Styles>
+	
+	
+		<StackPanel VerticalAlignment="Center" HorizontalAlignment="Center" Orientation="Vertical">
+			<Border Background="#445164" Padding="20" CornerRadius="10"  BorderBrush="#475467" BorderThickness="1">
+				<Grid MinWidth="400" VerticalAlignment="Stretch" HorizontalAlignment="Stretch">
+					
+					<Grid.RowDefinitions>
+						<RowDefinition Height="*"></RowDefinition>
+						<RowDefinition Height="*"></RowDefinition>
+						<RowDefinition Height="*"></RowDefinition>
+						<RowDefinition Height="*"></RowDefinition>
+						<RowDefinition Height="*"></RowDefinition>
+					</Grid.RowDefinitions>
+					<Grid.ColumnDefinitions>
+						<ColumnDefinition Width="2*"></ColumnDefinition>
+					</Grid.ColumnDefinitions>
+			
+					<TextBox 
+						Margin="0,0,0,20"
+						Watermark="Name" 
+						UseFloatingWatermark="True" 
+						Grid.Column="0" Grid.Row="0" 
+						Text="{Binding Name}">
+					</TextBox>
+					
+					<ComboBox 
+						HorizontalAlignment="Stretch"
+						Grid.Column="0" Grid.Row="1"
+						Margin="0,0,0,20"
+						SelectedValue="{Binding NotificationType}"
+						SelectedValueBinding="{ReflectionBinding Path=Key }"
+						ItemsSource="{x:Static assets:NotificationLocalize.NotificationType}" >
+			
+						<ComboBox.ItemTemplate>
+							<DataTemplate>
+								<DataTemplate.DataType>
+									<x:Type TypeName="generic:KeyValuePair" x:TypeArguments="constants:NotificationType, x:String"/>
+								</DataTemplate.DataType>
+					
+								<TextBlock Text="{Binding Value}"/>
+							</DataTemplate>
+						</ComboBox.ItemTemplate>
+					</ComboBox>
+					<!--<TextBox Text="{Binding Camera.Connection}"></TextBox>-->
+					<TextBox 
+						x:Name="EthernetTextBox"
+						Grid.Column="0" Grid.Row="2"
+						Text="{Binding Data}"></TextBox>
+					
+				</Grid>
+			</Border>
+
+			<StackPanel Margin="0,20,0,0" Orientation="Horizontal">
+				<Button Background="#87DE93"
+				        Classes="icon" 
+				        FontSize="25"
+				        Foreground="#475467"
+				        BorderThickness="1"
+				        BorderBrush="#475467"
+				        Margin="0,0,20,0"
+				        Tag="{StaticResource CheckMarkIcon}" 
+				        Command="{Binding CameraSave}">
+					
+					<TextBlock Text="{x:Static assets:Resources.textSave}"></TextBlock>
+				</Button>
+				<Button Background="#E3C0D5"
+					Classes="icon"
+					FontSize="25"
+					Foreground="#475467"
+					BorderThickness="1"
+					BorderBrush="#475467"
+					Tag="{StaticResource PaneCloseIcon}" 
+					Command="{Binding Cancel}">
+					
+					<TextBlock Text="{x:Static assets:Resources.textCancel}"></TextBlock>
+				</Button>
+			</StackPanel>
+		</StackPanel>
+</UserControl>

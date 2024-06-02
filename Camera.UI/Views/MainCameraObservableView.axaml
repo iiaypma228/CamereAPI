@@ -7,6 +7,7 @@
              xmlns:vlc="clr-namespace:LibVLCSharp.Avalonia;assembly=LibVLCSharp.Avalonia"
              xmlns:vm="using:Camera.UI.ViewModels"
              xmlns:md="using:Joint.Data.Models"
+             xmlns:avaloniaProgressRing="clr-namespace:AvaloniaProgressRing"
              x:DataType="vm:MainCameraObservableViewModel"
              >
     
@@ -29,11 +30,14 @@
        </StackPanel>
 
         
-        <StackPanel Grid.Row="1" VerticalAlignment="Center">
+        <StackPanel VerticalAlignment="Center" Grid.Row="1" IsVisible="{Binding ConnectCameraCommand.IsRunning}">
+            <avaloniaProgressRing:ProgressRing Width="100" Height="100"/>
+        </StackPanel>
+        
+        <StackPanel IsVisible="{Binding !ConnectCameraCommand.IsRunning}" Grid.Row="1" VerticalAlignment="Center">
             <TextBlock IsVisible="{Binding !IsOpened}" VerticalAlignment="Center" TextAlignment="Center" HorizontalAlignment="Center" Text="Не вдалося знайти таку камеру, спробуйте іншу!">
             </TextBlock>
         </StackPanel>
-
         
         <Image Grid.Row="1"
                IsVisible="{Binding IsOpened}" 

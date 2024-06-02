@@ -10,7 +10,8 @@
     </Application.DataTemplates>
   
     <Application.Styles>
-        <FluentTheme />
+	    <StyleInclude Source="avares://Camera.UI/Assets/ProgressRing.xaml"/>
+	    <FluentTheme />
 		<StyleInclude Source="avares://Avalonia.Controls.DataGrid/Themes/Fluent.xaml"/>
         <StyleInclude Source="avares://Camera.UI/Assets/Icons.axaml"></StyleInclude>
 		<Style Selector="Button.icon">

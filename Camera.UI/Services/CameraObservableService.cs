@@ -74,6 +74,12 @@ public class CameraObservableService : ICameraObservableService
 
     public bool StartObservable(Joint.Data.Models.Camera camera)
     {
+        if (capture != null && capture.IsOpened)
+        {
+            capture.Stop();
+            capture.Dispose();
+        }
+        
         _camera = camera;
         if (camera.Connection == CameraConnection.Ethernet)
         {
@@ -90,14 +96,14 @@ public class CameraObservableService : ICameraObservableService
         {
             DispatcherTimer timer = new DispatcherTimer();
             timer.Interval = TimeSpan.FromMilliseconds(33);
-            timer.Tick += GrabImage;
+            timer.Tick += async (e, obj) => await GrabImage();
             timer.Start();
         }
 
         return _isOpened;
     }
 
-    private async  void GrabImage(object sender, EventArgs e)
+    private async Task GrabImage()
     {
         CascadeClassifier faceCascade = new CascadeClassifier("haarcascade_frontalface_default.xml");
         Mat frame = capture.QueryFrame();
