@@ -13,6 +13,7 @@ using Emgu.CV;
 using Emgu.CV.CvEnum;
 using Emgu.CV.Structure;
 using Emgu.CV.Util;
+using Joint.Data.Constants;
 using LibVLCSharp.Avalonia;
 using LibVLCSharp.Shared;
 using ReactiveUI;
@@ -94,16 +95,25 @@ public class MainCameraObservableViewModel : RoutableViewModelBase
     {
         if (SelectedCamera is null)
             return;
-        
-        if (int.TryParse(this.SelectedCamera.ConnectionData, out int result))
+
+        if (SelectedCamera.Connection == CameraConnection.Cabel)
         {
-            IsOpened = _service.StartObservable(SelectedCamera);
+            if (int.TryParse(this.SelectedCamera.ConnectionData, out int result))
+            {
+                IsOpened = _service.StartObservable(SelectedCamera);
+            }
+            else
+            {
+                _notificationService.ShowError("Данні для підключення не корректні!");
+                IsOpened = false;
+            }
         }
         else
         {
-            _notificationService.ShowError("Данні для підключення не корректні!");
-            IsOpened = false;
+            IsOpened = _service.StartObservable(SelectedCamera);
         }
+        
+ 
         
         
     }

@@ -13,6 +13,6 @@ public class CameraConfiguration : IEntityTypeConfiguration<Joint.Data.Models.Ca
 
         builder.HasOne<User>().WithMany().HasForeignKey(i => i.UserId);
         builder.Ignore(i => i.User);
-        builder.Ignore(i => i.Notifications);33333
+        builder.Ignore(i => i.Notifications);
     }
 }

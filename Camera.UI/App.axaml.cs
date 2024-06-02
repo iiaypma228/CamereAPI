@@ -30,8 +30,6 @@ public partial class App : Application
 
     public override void OnFrameworkInitializationCompleted()
     {
-        Localize.Resources.Culture = new CultureInfo("uk"); //по дефолту
-        
         if (ApplicationLifetime is IClassicDesktopStyleApplicationLifetime desktop)
         {
             desktop.MainWindow = new MainWindow(_services)
@@ -50,6 +48,7 @@ public partial class App : Application
             this._serviceProvider.GetService<RoutingState>()
                 .Navigate.Execute(this._serviceProvider.GetService<LoginViewModel>()); // NOT NULL!
         }
+        Localize.Resources.Culture = new CultureInfo(_serviceProvider.GetService<IConfiguration>()["Localize"]);
         base.OnFrameworkInitializationCompleted();
     }
 
