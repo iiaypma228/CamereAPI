@@ -49,12 +49,14 @@ builder.Services.AddScoped<ICameraRepository, CameraRepository>();
 builder.Services.AddScoped<INotificationRepository, NotificationRepository>();
 builder.Services.AddScoped<INotificationToSendRepository, NotificationToSendRepository>();
 builder.Services.AddScoped<ICameraNotifiesRepository, CameraNotifiesRepository>();
+builder.Services.AddScoped<IBotClientRepository, BotClientRepository>();
 //
 builder.Services.AddScoped<ICameraService, CameraService>();
 builder.Services.AddScoped<ITwilioService, TwilioService>();
 builder.Services.AddScoped<IEmailService, EmailService>();
 builder.Services.AddScoped<INotificationService, NotificationService>();
 builder.Services.AddScoped<ICommonNotificationService, CommonNotificationService>();
+builder.Services.AddSingleton<ITelegramService, TelegramService>();
 
 builder.Services.AddControllers()    
     .AddNewtonsoftJson(options =>
@@ -118,6 +120,7 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
     });
 
 var app = builder.Build();
+app.Services.GetService<ITelegramService>().Init();
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())

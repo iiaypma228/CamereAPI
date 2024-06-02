@@ -24,6 +24,7 @@ using Emgu.CV.Features2D;
 using Emgu.CV.Flann;
 using Emgu.CV.Structure;
 using Emgu.Util;
+using Joint.Data.Constants;
 using LibVLCSharp.Shared;
 using Bitmap = Avalonia.Media.Imaging.Bitmap;
 using Device = Emgu.CV.Dai.Device;
@@ -74,7 +75,15 @@ public class CameraObservableService : ICameraObservableService
     public bool StartObservable(Joint.Data.Models.Camera camera)
     {
         _camera = camera;
-        capture = new VideoCapture(int.Parse(_camera.ConnectionData));
+        if (camera.Connection == CameraConnection.Ethernet)
+        {
+            capture = new VideoCapture(camera.ConnectionData);
+        }
+        else
+        {
+            capture = new VideoCapture(int.Parse(_camera.ConnectionData));
+        }
+        
         
         _isOpened = capture.IsOpened;
         if (capture.IsOpened)
