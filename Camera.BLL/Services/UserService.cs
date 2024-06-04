@@ -27,6 +27,10 @@ public class UserService : Service, IUserService
         {
             if (item.Id == 0 || this.Read(item.Id) == null)
             {
+                if (this.ReadByEmail(item.Email) != null)
+                {
+                    throw new Exception("Користувач вже існує");
+                }
                 var password = item.Password;
                 if (string.IsNullOrEmpty(password))
                     password = item.Email;

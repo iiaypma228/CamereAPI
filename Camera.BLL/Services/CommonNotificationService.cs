@@ -18,6 +18,7 @@ public class CommonNotificationService : ICommonNotificationService
     //NOTIFICATION IMPLEMETATION SERVICE
     private readonly IEmailService _emailService; // email
     private readonly ITwilioService _twilioService; //SMS
+    private readonly ITelegramService _telegramService; //tg
     
     
     public CommonNotificationService(ICameraService cameraService, 
@@ -25,7 +26,8 @@ public class CommonNotificationService : ICommonNotificationService
         IEmailService emailService,
         ITwilioService twilioService,
         INotificationToSendRepository notificationToSendRepository,
-        ILogger<CommonNotificationService> logger)
+        ILogger<CommonNotificationService> logger,
+        ITelegramService telegramService)
     {
         this._cameraService = cameraService;
         this._notificationRepository = notificationRepository;
@@ -33,6 +35,7 @@ public class CommonNotificationService : ICommonNotificationService
         this._twilioService = twilioService;
         this._notificationToSendRepository = notificationToSendRepository;
         this._logger = logger;
+        this._telegramService = telegramService;
     }
     
     public void Notify(NotifyToSend notifyToSend)
@@ -127,7 +130,7 @@ public class CommonNotificationService : ICommonNotificationService
                     _notificationService = _emailService;
                     break;
                 case NotificationType.Telegram:
-                    throw new Exception("TELEGRAM NOTIFY IS DEVELOPED");
+                    _notificationService = _telegramService;
                     break;
                 default:
                     throw new Exception("Not allowed notification type!");

@@ -86,7 +86,7 @@
                              Background="#667A8A"
                              Tag="{StaticResource SignOutIcon}"
                              Command="{Binding Logout}"
-                             Content="Logout"
+                             Content="Вийти"
                     />
 
                     

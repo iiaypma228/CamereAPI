@@ -19,6 +19,7 @@ public class ServerContext : DbContext
         modelBuilder.ApplyConfiguration(new NotificationConfiguration());
         modelBuilder.ApplyConfiguration(new NotificationToSendConfiguration());
         modelBuilder.ApplyConfiguration(new CameraNotifiesConfiguration());
+        modelBuilder.ApplyConfiguration(new BotClientConfiguration()); 
         base.OnModelCreating(modelBuilder);
     }
 
@@ -31,5 +32,7 @@ public class ServerContext : DbContext
     public DbSet<NotifyToSend> NotifyToSends { get; set; }
     
     public DbSet<CameraNotifies> CameraNotifies { get; set; }
+
+    public DbSet<BotClient> BotClients { get; set; }
     
 }

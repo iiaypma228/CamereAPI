@@ -4,8 +4,82 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
              xmlns:vm="using:Camera.UI.ViewModels"
+			 xmlns:assets="clr-namespace:Camera.UI.Localize"
 			 x:Class="Camera.UI.Views.SettingsView"
+			 xmlns:generic="clr-namespace:System.Collections.Generic;assembly=System.Runtime"
 			 x:DataType="vm:SettingsViewModel"
+			 Background="#264ECA"
 			 >
-  Option View!!
+	<UserControl.Styles>
+		<Style Selector="Button">
+			<Setter Property="Background" Value="#54637A"></Setter>
+			<Setter Property="BorderBrush" Value="#B8C9E2"></Setter>
+			<Setter Property="Foreground" Value="#B8C9E2"></Setter>
+		</Style>
+	</UserControl.Styles>
+	<StackPanel>
+		<StackPanel>
+			<TextBlock
+				HorizontalAlignment="Center"
+				Foreground="White" FontSize="25"
+				Text="Зміна почти"
+				Margin="10"
+			/>
+			<TextBox
+				Text="{Binding Email}"
+				Watermark="Змінити почту"
+			>
+			</TextBox>
+			<TextBox
+				Text="{Binding Password}"
+				PasswordChar="*"
+				Watermark="Пароль">
+			</TextBox>
+			<TextBox
+				Text="{Binding RetryPassword}"
+				PasswordChar="*"
+				Watermark="Підтвердити пароль"
+			>
+			</TextBox>
+			<Button
+				Content="Змінити почту"
+			>
+			</Button>
+		</StackPanel>
+		<StackPanel>
+			<ComboBox
+               MinWidth="300"
+               SelectedValue="{Binding LocalizeDeffault}"
+			   SelectedValueBinding="{ReflectionBinding Path=Key }"
+               ItemsSource="{Binding Localize}" >
+				<ComboBox.ItemTemplate>
+					<DataTemplate>
+						<DataTemplate.DataType>
+							<x:Type TypeName="generic:KeyValuePair" x:TypeArguments="x:String, x:String"/>
+						</DataTemplate.DataType>
+
+						<TextBlock Text="{Binding Value}"/>
+					</DataTemplate>
+				</ComboBox.ItemTemplate>
+			</ComboBox>
+			<TextBlock>ТУТ ЛОКАЛИЗАЦИЯ</TextBlock>
+
+		</StackPanel>
+		<StackPanel>
+			<TextBox
+				Text="{Binding Phone}"
+				Watermark="Телефон"
+			>
+			</TextBox>
+			<Button
+				Content="Підключити"
+			>
+			</Button>
+			<Button
+				Content="Telegram"
+				Command="{Binding OpenTG}"
+				></Button>
+			<TextBlock>ПОДКЛЮЧЕНИЕ ТЕЛЕФОНА И ТЕЛЕГИ</TextBlock>
+		</StackPanel>
+	</StackPanel>
 </UserControl>
