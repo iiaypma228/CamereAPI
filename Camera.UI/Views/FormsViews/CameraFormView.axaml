@@ -98,11 +98,11 @@
 					
 					<StackPanel Grid.Row="4" Margin="20">
 						<StackPanel Orientation="Horizontal" Margin="0 5 0 5">
-							<Button FontSize="25" Margin="0 0 10 0" Classes="icon" Tag="{StaticResource CameraAddIcon}" Content="Add"/>
-							<Button FontSize="25" Margin="0 0 10 0" Classes="icon" Tag="{StaticResource CameraEditIcon}" Content="Edit" />
-							<Button FontSize="25" Margin="0 0 10 0" Classes="icon" Tag="{StaticResource DeleteIcon}" Content="Delete"/>
+							<Button FontSize="25" Margin="0 0 10 0" Classes="icon" Tag="{StaticResource AlertOn}" Content="Зв'язати" Command="{Binding AddNotification}"/>
+							<Button FontSize="25" Margin="0 0 10 0" Classes="icon" Tag="{StaticResource AlertOff}" Content="Відв'язати" Command="{Binding UnlinkNotification}"/>
 						</StackPanel>
 						<DataGrid ItemsSource="{Binding CameraNotification}"
+						          SelectedItem="{Binding SelectedNotification}"
 						          IsReadOnly="True"
 						          CanUserReorderColumns="True"
 						          CanUserResizeColumns="True"
@@ -112,8 +112,9 @@
 						          SelectionMode="Single"
 						          BorderThickness="1" BorderBrush="#78859A">
 							<DataGrid.Columns>
-								<DataGridTextColumn Foreground="#DEEBFF" Header="Notification Type" Binding="{Binding NotificationType }"/>
-								<DataGridTextColumn Foreground="#DEEBFF" Header="Data" Binding="{Binding Data}"/>
+								<DataGridTextColumn Foreground="#DEEBFF" Header="Назва" Binding="{Binding Name}"/>
+								<DataGridTextColumn Foreground="#DEEBFF" Header="Спосіб" Binding="{Binding NotificationType }"/>
+								<DataGridTextColumn Foreground="#DEEBFF" Header="Данні отримувача" Binding="{Binding Data}"/>
 							</DataGrid.Columns>
 						</DataGrid>
 					</StackPanel>

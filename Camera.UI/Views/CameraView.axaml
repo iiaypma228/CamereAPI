@@ -20,9 +20,9 @@
 	
 	<StackPanel Margin="20">
 		<StackPanel Orientation="Horizontal" Margin="0 5 0 5">
-			<Button FontSize="25" Margin="0 0 10 0" Classes="icon" Tag="{StaticResource CameraAddIcon}" Content="Add" Command="{Binding CreateCamera}"/>
-			<Button FontSize="25" Margin="0 0 10 0" Classes="icon" Tag="{StaticResource CameraEditIcon}" Content="Edit" Command="{Binding EditCameraCommand}" />
-			<Button FontSize="25" Margin="0 0 10 0" Classes="icon" Tag="{StaticResource DeleteIcon}" Content="Delete" Command="{Binding DeleteCamera}"/>
+			<Button FontSize="25" Margin="0 0 10 0" Classes="icon" Tag="{StaticResource CameraAddIcon}" Content="Додати" Command="{Binding CreateCamera}"/>
+			<Button FontSize="25" Margin="0 0 10 0" Classes="icon" Tag="{StaticResource CameraEditIcon}" Content="Змінити" Command="{Binding EditCameraCommand}" />
+			<Button FontSize="25" Margin="0 0 10 0" Classes="icon" Tag="{StaticResource DeleteIcon}" Content="Видалити" Command="{Binding DeleteCamera}"/>
 		</StackPanel>
 		<DataGrid ItemsSource="{Binding Items}" SelectedItem="{Binding SelectedCamera}"
 		  behav:DoubleTappedBehav.Command="{Binding EditCameraCommand}" 
@@ -36,9 +36,9 @@
 		  SelectionMode="Single"
           BorderThickness="1" BorderBrush="#78859A">
 			<DataGrid.Columns>
-				<DataGridTextColumn Foreground="#DEEBFF" Header="Name" Binding="{Binding Name}"/>
-				<DataGridTextColumn Foreground="#DEEBFF" Header="Connection" Binding="{Binding Connection}"/>
-				<DataGridTextColumn Foreground="#DEEBFF" Header="ConnectionData" Binding="{Binding ConnectionData}"/>
+				<DataGridTextColumn Foreground="#DEEBFF" Header="Назва" Binding="{Binding Name}"/>
+				<DataGridTextColumn Foreground="#DEEBFF" Header="Спосіб підключення" Binding="{Binding Connection}"/>
+				<DataGridTextColumn Foreground="#DEEBFF" Header="Данні для підключення" Binding="{Binding ConnectionData}"/>
 			</DataGrid.Columns>
 		</DataGrid>
 	</StackPanel>

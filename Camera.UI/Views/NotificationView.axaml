@@ -4,6 +4,7 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:behaviors="clr-namespace:Camera.UI.Behaviors"
              xmlns:viewModels="clr-namespace:Camera.UI.ViewModels"
+             xmlns:assets="clr-namespace:Camera.UI.Localize"
              mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
              x:Class="Camera.UI.Views.NotificationView"
              x:DataType="viewModels:NotificationViewModel"
@@ -19,9 +20,9 @@
 	
 	<StackPanel Margin="20">
 		<StackPanel Orientation="Horizontal" Margin="0 5 0 5">
-			<Button FontSize="25" Margin="0 0 10 0" Classes="icon" Tag="{StaticResource CameraAddIcon}" Content="Add" Command="{Binding CreateNotification}" />
-			<Button FontSize="25" Margin="0 0 10 0" Classes="icon" Tag="{StaticResource CameraEditIcon}" Content="Edit" Command="{Binding EditNotificationCommand}" />
-			<Button FontSize="25" Margin="0 0 10 0" Classes="icon" Tag="{StaticResource DeleteIcon}" Content="Delete" Command="{Binding DeleteCamera}" />
+			<Button FontSize="25" Margin="0 0 10 0" Classes="icon" Tag="{StaticResource AlertOn}" Content="Додати" Command="{Binding CreateNotification}" />
+			<Button FontSize="25" Margin="0 0 10 0" Classes="icon" Tag="{StaticResource NotificationIcon}" Content="Змінити" Command="{Binding EditNotificationCommand}" />
+			<Button FontSize="25" Margin="0 0 10 0" Classes="icon" Tag="{StaticResource DeleteIcon}" Content="Видалити" Command="{Binding DeleteCamera}" />
 		</StackPanel>
 		<DataGrid ItemsSource="{Binding Items}" SelectedItem="{Binding SelectedNotification}"
           behaviors:DoubleTappedBehav.Command="{Binding EditNotificationCommand}" 
@@ -35,10 +36,36 @@
 		  SelectionMode="Single"
           BorderThickness="1" BorderBrush="#78859A">
 			<DataGrid.Columns>
-				<DataGridTextColumn Foreground="#DEEBFF" Header="Name" Binding="{Binding Name}"/>
-				<DataGridTextColumn Foreground="#DEEBFF" Header="Connection" Binding="{Binding NotificationType}"/>
-				<DataGridTextColumn Foreground="#DEEBFF" Header="ConnectionData" Binding="{Binding Data}"/>
+				<DataGridTextColumn Foreground="#DEEBFF" Header="Назва" Binding="{Binding Name}"/>
+				<DataGridTextColumn Foreground="#DEEBFF" Header="Спосіб оповіщення" Binding="{Binding NotificationType}"/>
+				<DataGridTextColumn Foreground="#DEEBFF" Header="Данні отримувача" Binding="{Binding Data}"/>
 			</DataGrid.Columns>
 		</DataGrid>
+		
+		<StackPanel HorizontalAlignment="Center" IsVisible="{Binding SelectableMode}" Margin="0,20,0,0" Orientation="Horizontal">
+			<Button Background="#87DE93"
+			        Classes="icon" 
+			        FontSize="25"
+			        Foreground="#475467"
+			        BorderThickness="1"
+			        BorderBrush="#475467"
+			        Margin="0,0,20,0"
+			        Tag="{StaticResource CheckMarkIcon}" 
+			        Command="{Binding SelectedConfirm}">
+					
+				<TextBlock Text="Обрати"></TextBlock>
+			</Button>
+			<Button Background="#E3C0D5"
+			        Classes="icon"
+			        FontSize="25"
+			        Foreground="#475467"
+			        BorderThickness="1"
+			        BorderBrush="#475467"
+			        Tag="{StaticResource PaneCloseIcon}" 
+			        Command="{Binding Back}">
+					
+				<TextBlock Text="Відміна"></TextBlock>
+			</Button>
+		</StackPanel>
 	</StackPanel>
 </UserControl>

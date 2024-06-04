@@ -1,5 +1,7 @@
 using System.Security.Claims;
 using Camera.BLL.Interfaces;
+using Camera.DAL.Interfaces.Repositories;
+using Joint.Data.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
@@ -11,10 +13,12 @@ public class CameraController : ControllerBase
 {
     private readonly ICameraService _service;
     private readonly IUserService _userService;
-    public CameraController(ICameraService service, IUserService userService)
+    private readonly ICameraNotifiesRepository _cameraNotifiesRepository;
+    public CameraController(ICameraService service, IUserService userService, ICameraNotifiesRepository cameraNotifiesRepository)
     {
         this._service = service;
         this._userService = userService;
+        _cameraNotifiesRepository = cameraNotifiesRepository;
     }
 
     [HttpGet("camera")]
@@ -39,6 +43,30 @@ public class CameraController : ControllerBase
 
         return Ok();
     }
+    
+    [HttpPost("linkNotify")]
+    public object LinkNotify(int cameraId, int notificationId)
+    {
+        _cameraNotifiesRepository.Create(new CameraNotifies
+        {
+            CameraId = cameraId,
+            Camera = null,
+            NotificationId = notificationId,
+            Notification = null
+        });
+        _cameraNotifiesRepository.Save();
+        return Ok();
+    }
+    
+    [HttpDelete("linkNotify")]
+    public object UnlinkNotify(int cameraId, int notificationId)
+    {
+        var res =_cameraNotifiesRepository.Read(i => i.CameraId == cameraId && i.NotificationId == notificationId);
+        _cameraNotifiesRepository.Delete(res.FirstOrDefault());
+        _cameraNotifiesRepository.Save();
+        return Ok();
+    }
+    
 
     [HttpDelete("camera")]
     public object DeleteCamera(int id)

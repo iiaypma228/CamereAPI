@@ -20,8 +20,11 @@ public interface IServerNotificationService
     Task<ServerResponse<string>> Save(Notification notification);
     Task<ServerResponse<string>> Delete(Notification notification);
     Task<ServerResponse<List<Notification>>> GetAll();
-
     Task<ServerResponse<List<Notification>>> GetByCamera(int cameraIndex);
+
+    Task<ServerResponse<string>> LinkWithCamera(int cameraIndex, int notificationId);
+
+    Task<ServerResponse<string>> UnlinkWithCamera(int cameraIndex, int notificationId);
     
     IObservable<ObservableCollection<Joint.Data.Models.Notification>> NotificationsObservable { get; }
 }
@@ -31,6 +34,45 @@ public class ServerNotificationService : IServerNotificationService
     private readonly HttpClient _httpClient;
     private BehaviorSubject<ObservableCollection<Joint.Data.Models.Notification>?> _notificationsSubject =
         new (null);
+
+    public async Task<ServerResponse<string>> LinkWithCamera(int cameraIndex, int notificationId)
+    {
+       
+        try
+        {
+            var notifies = await _httpClient.PostAsync($"api/camera/linkNotify?cameraId={cameraIndex}&notificationId={notificationId}", new StringContent(""));
+            var res = await ServerResponse<List<Notification>>.CreateFromString(notifies);
+            return res;
+        }
+        catch (Exception e)
+        {
+            return new ServerResponse<string>()
+            {
+                IsSuccess = false,
+                Error = e.Message
+            };
+        }
+    }
+
+    public async Task<ServerResponse<string>> UnlinkWithCamera(int cameraIndex, int notificationId)
+    {
+       
+        try
+        {
+            var notifies = await _httpClient.DeleteAsync($"api/camera/linkNotify?cameraId={cameraIndex}&notificationId={notificationId}");
+            var res = await ServerResponse<List<Notification>>.CreateFromString(notifies);
+            return res;
+        }
+        catch (Exception e)
+        {
+            return new ServerResponse<string>()
+            {
+                IsSuccess = false,
+                Error = e.Message
+            };
+        }
+    }
+    
     public IObservable<ObservableCollection<Joint.Data.Models.Notification>> NotificationsObservable
     {
         get => _notificationsSubject.SelectMany(async (i) =>
@@ -111,7 +153,7 @@ public class ServerNotificationService : IServerNotificationService
     {
         try
         {
-            var notifies = await _httpClient.GetAsync($"api/notification/notify?cameraId={cameraIndex}");
+            var notifies = await _httpClient.GetAsync($"api/notification/notifyByCamera?cameraId={cameraIndex}");
             var res = await ServerResponse<List<Joint.Data.Models.Notification>>.CreateFromJson(notifies);
             
             return res;

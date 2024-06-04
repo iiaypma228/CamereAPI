@@ -15,6 +15,10 @@ public class NotificationViewModel : RoutableViewModelBase
     private NotificationFormViewModel _notificationFormViewModel;
     [Reactive] public ObservableCollection<Joint.Data.Models.Notification> Items { get; set; } = new();
     [Reactive] public Joint.Data.Models.Notification SelectedNotification { get; set; }
+
+    [Reactive] public bool SelectableMode { get; set; } = false;
+    
+    public Action<Joint.Data.Models.Notification> NotificationSelected;
     public ReactiveCommand<object, Unit> EditNotificationCommand { get;  }
     
     public NotificationViewModel(IScreen screen, RoutingState routingState, IServerNotificationService service, INotificationService notificationService, NotificationFormViewModel notificationFormViewModel) : base(screen, routingState)
@@ -28,6 +32,25 @@ public class NotificationViewModel : RoutableViewModelBase
             onError: exception => _notificationService.ShowError(exception.Message) 
         );
     }
+
+    public void Back()
+    {
+        SelectableMode = false;
+        this.RoutingState.NavigateBack.Execute();
+    }
+
+    public void SelectedConfirm()
+    {
+        if (SelectedNotification == null)
+        {
+            _notificationService.ShowError("Оповіщення не обрано!");
+        }
+        else
+        {
+            NotificationSelected(SelectedNotification);
+        }
+    }
+    
     public void CreateNotification()
     {
         _notificationFormViewModel.Notification = new Joint.Data.Models.Notification();
