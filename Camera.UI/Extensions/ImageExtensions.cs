@@ -23,5 +23,10 @@ public static class ImageExtensions
         bitmapTmp.Dispose();
         return bitmap1;
     }
+    public static byte[] ImageToByte(this Image img)
+    {
+        ImageConverter converter = new ImageConverter();
+        return (byte[])converter.ConvertTo(img, typeof(byte[]));
+    }
 
 }

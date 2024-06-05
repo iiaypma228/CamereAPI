@@ -45,9 +45,9 @@
         <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="7.0.0" />
         <PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="7.0.0" />
         <PackageReference Include="Microsoft.Extensions.Http" Version="7.0.0" />
-        <PackageReference Include="OpenCVSharp" Version="2.4.0.1" />
+        <PackageReference Include="OpenCvSharp4" Version="4.9.0.20240103" />
+        <PackageReference Include="OpenCvSharp4.runtime.win" Version="4.9.0.20240103" />
         <PackageReference Include="ReactiveUI.Fody" Version="19.5.41" />
-        <PackageReference Include="VideoLAN.LibVLC.Windows" Version="3.0.20" />
         <PackageReference Include="ReactiveUI.Validation" Version="3.1.7" />
     </ItemGroup>
 

@@ -50,9 +50,10 @@ namespace Camera.UI.ViewModels.FormsViewModels
                 this.RaisePropertyChanged();
             }
         }
-        
-        [Reactive] public ObservableCollection<Joint.Data.Models.Notification> CameraNotification { get; set; }
-        
+
+        [Reactive]
+        public ObservableCollection<Joint.Data.Models.Notification> CameraNotification { get; set; } =
+            new ObservableCollection<Notification>();
         [Reactive] public Notification SelectedNotification { get; set; }
         [Reactive] public ObservableCollection<DsDevice> LocalCameras { get; set; }
         
@@ -76,8 +77,6 @@ namespace Camera.UI.ViewModels.FormsViewModels
             _serverNotificationService = serverNotificationService;
             _notificationViewModel = notificationViewModel;
             //RxApp.MainThreadScheduler.Schedule(LoadCameraNotification);
-            LocalCameras =
-                new ObservableCollection<DsDevice>(DsDevice.GetDevicesOfCat(FilterCategory.VideoInputDevice));
         }
 
         public async Task CameraSave()
@@ -111,21 +110,14 @@ namespace Camera.UI.ViewModels.FormsViewModels
                     return;
                 }
 
-                var res = await this._serverNotificationService.LinkWithCamera(Camera.Id, notification.Id);
-
-                if (res.IsSuccess)
+                Camera.Notifications.Add(notification);
+                CameraNotification.Add(notification);
+                this.RoutingState.NavigateBack.Execute();
+                Dispatcher.UIThread.Post(() =>
                 {
-                    this.CameraNotification.Add(notification);
-                    this.RoutingState.NavigateBack.Execute();
-                    Dispatcher.UIThread.Post(() =>
-                    {
-                        _notificationViewModel.SelectableMode = false;
-                    });
-                }
-                else
-                {
-                    _notificationService.ShowError(res.Error);
-                }
+                    _notificationViewModel.SelectableMode = false;
+                });
+                
             });
         }
 
@@ -137,15 +129,8 @@ namespace Camera.UI.ViewModels.FormsViewModels
             }
             else
             {
-                var res =await _serverNotificationService.UnlinkWithCamera(Camera.Id, SelectedNotification.Id);
-                if (res.IsSuccess)
-                {
-                    CameraNotification.Remove(SelectedNotification);
-                }
-                else
-                {
-                    _notificationService.ShowError(res.Error);
-                }
+                Camera.Notifications.Remove(SelectedNotification);
+                CameraNotification.Remove(SelectedNotification);
             }
         }
         
@@ -156,8 +141,16 @@ namespace Camera.UI.ViewModels.FormsViewModels
 
 
         private async void LoadCameraNotification()
-        {
-           this.CameraNotification = new ObservableCollection<Notification>((await this._serverNotificationService.GetByCamera(this.Camera.Id)).Data!);
+        { 
+            LocalCameras =
+                new ObservableCollection<DsDevice>(DsDevice.GetDevicesOfCat(FilterCategory.VideoInputDevice));
+            this.CameraNotification.Clear();
+            var notifications = (await this._serverNotificationService.GetByCamera(this.Camera.Id)).Data;
+            
+           this.CameraNotification = new ObservableCollection<Notification>(notifications);
+           Camera.Notifications ??= new List<Notification>();
+           Camera.Notifications.Clear();
+           Camera.Notifications.AddRange(notifications);
         }
     }
 }

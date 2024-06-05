@@ -34,8 +34,27 @@ public class CameraService : ICameraService
             else
             {
                 this._repository.Create(item);
+                this._repository.Save();
             }
 
+            if (item.Notifications != null)
+            {
+                var oldNotify = _notifiesRepository.Read(i => i.CameraId == item.Id);
+                
+                oldNotify.ToList().ForEach(i => _notifiesRepository.Delete(i));
+                
+                foreach (var notify in item.Notifications)
+                {
+                    _notifiesRepository.Create(new CameraNotifies
+                    {
+                        CameraId = item.Id,
+                        Camera = item,
+                        NotificationId = notify.Id,
+                        Notification = notify
+                    });
+                }
+            }
+            
         }
         this._repository.Save();
     }

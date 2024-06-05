@@ -20,7 +20,7 @@ public class NotificationRepository : Repository<Notification>, INotificationRep
             .SelectMany(o => o.n.DefaultIfEmpty(), (cn, n) => new { cn.cn, cn.c, n })
             .GroupJoin(this.context.Users, cn => cn.n.UserId, u => u.Id, (cn, u) => new { cn.cn, cn.c, cn.n, u })
             .SelectMany(o => o.u.DefaultIfEmpty(), (cn, u) => new { cn.cn, cn.c, cn.n, u })
-
+            .Where(i => i.c.Id == cameraId)
             .Select(i => new Notification
             {
                 Id = i.n.Id,
