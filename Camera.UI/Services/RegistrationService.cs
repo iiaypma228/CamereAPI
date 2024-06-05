@@ -13,6 +13,7 @@ namespace Camera.UI.Services
     public interface IRegistrationService
     {
         public Task<ServerResponse<string>> Registration(User user);
+        public Task<ServerResponse<User>> GetMe();
     }
     
     public class RegistrationService : IRegistrationService
@@ -34,6 +35,23 @@ namespace Camera.UI.Services
             catch (Exception e)
             {
                 return new ServerResponse<string>()
+                {
+                    IsSuccess = false,
+                    Error = e.Message
+                };
+            }
+        }
+
+        public async Task<ServerResponse<User>> GetMe()
+        {
+            try
+            {
+                var res = await _httpClient.GetAsync("api/user/currentuser");
+                return await ServerResponse<Joint.Data.Models.User>.CreateFromJson(res);
+            }
+            catch (Exception e)
+            {
+                return new ServerResponse<User>()
                 {
                     IsSuccess = false,
                     Error = e.Message

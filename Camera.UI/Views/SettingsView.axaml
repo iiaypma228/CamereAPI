@@ -43,10 +43,12 @@
 			</TextBox>
 			<Button
 				Content="Змінити почту"
+				Command="{Binding ChangeEmail}"
 			>
 			</Button>
 		</StackPanel>
 		<StackPanel>
+			<TextBlock>Зміна мови</TextBlock>
 			<ComboBox
                MinWidth="300"
                SelectedValue="{Binding LocalizeDeffault}"
@@ -62,10 +64,11 @@
 					</DataTemplate>
 				</ComboBox.ItemTemplate>
 			</ComboBox>
-			<TextBlock>ТУТ ЛОКАЛИЗАЦИЯ</TextBlock>
+			
 
 		</StackPanel>
 		<StackPanel>
+			<TextBlock>Підключення телефону та телеграму</TextBlock>
 			<TextBox
 				Text="{Binding Phone}"
 				Watermark="Телефон"
@@ -73,13 +76,14 @@
 			</TextBox>
 			<Button
 				Content="Підключити"
+				Command="{Binding ChangePhone}"
 			>
 			</Button>
 			<Button
 				Content="Telegram"
 				Command="{Binding OpenTG}"
 				></Button>
-			<TextBlock>ПОДКЛЮЧЕНИЕ ТЕЛЕФОНА И ТЕЛЕГИ</TextBlock>
+			
 		</StackPanel>
 	</StackPanel>
 </UserControl>

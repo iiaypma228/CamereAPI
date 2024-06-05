@@ -12,6 +12,7 @@ public class CommonNotificationService : ICommonNotificationService
     private readonly ICameraService _cameraService;
     private readonly INotificationRepository _notificationRepository;
     private readonly INotificationToSendRepository _notificationToSendRepository;
+    private readonly ICameraNotifiesRepository _cameraNotifiesRepository;
 
     private readonly ILogger _logger;
     
@@ -27,7 +28,8 @@ public class CommonNotificationService : ICommonNotificationService
         ITwilioService twilioService,
         INotificationToSendRepository notificationToSendRepository,
         ILogger<CommonNotificationService> logger,
-        ITelegramService telegramService)
+        ITelegramService telegramService,
+        ICameraNotifiesRepository cameraNotifiesRepository)
     {
         this._cameraService = cameraService;
         this._notificationRepository = notificationRepository;
@@ -36,6 +38,7 @@ public class CommonNotificationService : ICommonNotificationService
         this._notificationToSendRepository = notificationToSendRepository;
         this._logger = logger;
         this._telegramService = telegramService;
+        _cameraNotifiesRepository = cameraNotifiesRepository;
     }
     
     public void Notify(NotifyToSend notifyToSend)
@@ -108,6 +111,11 @@ public class CommonNotificationService : ICommonNotificationService
 
             if (old != null)
             {
+                var notifies = _cameraNotifiesRepository.Read(i => i.NotificationId == item.Id);
+                if (notifies.Any())
+                {
+                    _cameraNotifiesRepository.Delete(notifies.First());
+                }
                 this._notificationRepository.Delete(old);
             }
         }

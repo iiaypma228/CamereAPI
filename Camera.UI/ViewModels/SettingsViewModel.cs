@@ -1,4 +1,5 @@
-﻿using Joint.Data.Models;
+﻿using Camera.UI.Services;
+using Joint.Data.Models;
 using Microsoft.Extensions.Configuration;
 using ReactiveUI;
 using ReactiveUI.Fody.Helpers;
@@ -14,9 +15,12 @@ namespace Camera.UI.ViewModels
     public  class SettingsViewModel : RoutableViewModelBase
     {
         private readonly IConfiguration _configuration;
-        public SettingsViewModel(IScreen screen, RoutingState routingState, IConfiguration configuration) : base(screen, routingState)
+        private readonly IRegistrationService _registrationService;
+        public SettingsViewModel(IScreen screen, RoutingState routingState, IConfiguration configuration,
+            IRegistrationService registrationService) : base(screen, routingState)
         {
             _configuration = configuration;
+            _registrationService = registrationService;
             LocalizeDeffault = new KeyValuePair<string, string>(_configuration["Localize"], Localize[_configuration["Localize"]]);
         }
         private User _user { get; set; } = new User();
@@ -96,6 +100,26 @@ namespace Camera.UI.ViewModels
             }*/
             _configuration["Localize"] = newLocale;
             return res;
+        }
+
+        async public void ChangeEmail()
+        {
+            var user = await _registrationService.GetMe();
+            if (user.IsSuccess)
+            {
+                user.Data.Email = Email;
+                await _registrationService.Registration(user.Data);
+            }
+        }
+
+        async public void ChangePhone()
+        {
+            var user = await _registrationService.GetMe();
+            if (user.IsSuccess)
+            {
+                user.Data.Phone = Phone;
+                await _registrationService.Registration(user.Data);
+            }
         }
     }
 }

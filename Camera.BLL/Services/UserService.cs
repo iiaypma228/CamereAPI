@@ -46,6 +46,8 @@ public class UserService : Service, IUserService
             }
             else
             {
+                var oldUser = Read(item.Id);
+                item.Password = oldUser.Password;
                 this._repository.Update(item);
             }
         }

@@ -8,14 +8,17 @@ namespace Camera.BLL.Services;
 public class CameraService : ICameraService
 {
     private readonly ICameraRepository _repository;
-    
-    public CameraService(ICameraRepository repository)
+    private readonly ICameraNotifiesRepository _notifiesRepository;
+
+    public CameraService(ICameraRepository repository,
+        ICameraNotifiesRepository cameraNotifiesRepository)
     {
         this._repository = repository;
+        _notifiesRepository = cameraNotifiesRepository;
     }
     public void Save(Joint.Data.Models.Camera item)
     {
-        this.Save(new List<Joint.Data.Models.Camera>() {item});
+        this.Save(new List<Joint.Data.Models.Camera>() { item });
     }
 
     public void Save(IList<Joint.Data.Models.Camera> items)
@@ -32,7 +35,7 @@ public class CameraService : ICameraService
             {
                 this._repository.Create(item);
             }
-            
+
         }
         this._repository.Save();
     }
@@ -54,7 +57,7 @@ public class CameraService : ICameraService
 
     public void Delete(Joint.Data.Models.Camera item)
     {
-        this.Delete(new List<Joint.Data.Models.Camera>(){item});
+        this.Delete(new List<Joint.Data.Models.Camera>() { item });
     }
 
     public void Delete(IList<Joint.Data.Models.Camera> items)
@@ -65,14 +68,20 @@ public class CameraService : ICameraService
 
             if (old.Any())
             {
+                var notifies = _notifiesRepository.Read(i => i.CameraId == item.Id);
+                if (notifies.Any())
+                {
+                    _notifiesRepository.Delete(notifies.First());
+                }
                 this._repository.Delete(old.FirstOrDefault());
+
             }
         }
         this._repository.Save();
     }
     public void Dispose()
     {
-       this._repository.Dispose();
+        this._repository.Dispose();
     }
-    
+
 }

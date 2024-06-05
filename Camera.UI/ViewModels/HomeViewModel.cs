@@ -21,9 +21,9 @@ public class HomeViewModel : RoutableViewModelBase, IScreen
         _serviceProvider = serviceProvided;
         _serviceCollection = serviceCollection;
     }
-    
-    [Reactive] public bool IsPaneOpen { get; set; }= false;
-    
+
+    [Reactive] public bool IsPaneOpen { get; set; } = false;
+
     private MenuItemTemplate? _selectedListItem;
 
     public MenuItemTemplate? SelectedListItem
@@ -31,15 +31,17 @@ public class HomeViewModel : RoutableViewModelBase, IScreen
         get => _selectedListItem;
         set
         {
+
             this.Router.Navigate.Execute((RoutableViewModelBase)_serviceProvider.GetService(value.ModelType));
+
             this.RaiseAndSetIfChanged(ref _selectedListItem, value);
         }
     }
-    
+
     public RoutingState Router { get; } = new RoutingState();
-    
+
     public void TriggerPane() => IsPaneOpen = !IsPaneOpen;
-    
+
     public ObservableCollection<MenuItemTemplate> Items { get; } = new()
     {
         new MenuItemTemplate(typeof(MainCameraObservableViewModel), "CameraSwitchIcon")
@@ -66,13 +68,13 @@ public class HomeViewModel : RoutableViewModelBase, IScreen
         await sharedPreferences.SaveAsync("token", "");
 
         var mainWindowViewModel = _serviceProvider.GetService<MainWindowViewModel>()!;
-        
+
         _serviceCollection.TryAddSingleton<IScreen>(mainWindowViewModel);
         _serviceCollection.TryAddSingleton<RoutingState>(mainWindowViewModel.Router);
         this.RoutingState.Navigate.Execute(_serviceProvider.GetService<LoginViewModel>()!);
         //this.Router.Navigate.Execute();
     }
-    
+
 }
 public class MenuItemTemplate
 {
@@ -82,9 +84,9 @@ public class MenuItemTemplate
     public MenuItemTemplate(Type type, string iconKey)
     {
         ModelType = type;
-        
+
         Label ??= type.Name.Replace("PageViewModel", "");
-        
+
         // TODO: see if there's a better way to look for a resource by key
         Application.Current!.TryFindResource(iconKey, out var res);
         var streamGeometry = res as StreamGeometry ?? StreamGeometry.Parse(StreamGeometryNotFound);

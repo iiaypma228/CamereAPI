@@ -1,8 +1,10 @@
 using Camera.BLL.Interfaces;
+using Camera.BLL.Services;
 using Camera.Localize;
 using Joint.Data.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using System.Security.Claims;
 
 namespace Camera.Controllers;
 
@@ -33,5 +35,14 @@ public class UserController : ControllerBase
         this._service.Save(user);
 
         return Ok(Resources.userCreated);
-    }    
+    }
+
+    [HttpGet("currentuser")]
+    public User GetCurrentUser()
+    {
+        var claim = User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.Name);
+        var currentUser = _service.ReadByEmail(claim.Value);
+
+        return currentUser;
+    }
 }

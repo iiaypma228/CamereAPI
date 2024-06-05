@@ -109,6 +109,7 @@ public partial class MainCameraObservableViewModel : RoutableViewModelBase
 
         await Task.Run(() =>
         {
+            IsOpened = false;
             if (SelectedCamera.Connection == CameraConnection.Cabel)
             {
                 if (int.TryParse(this.SelectedCamera.ConnectionData, out int result))

@@ -56,9 +56,11 @@ public class CameraObservableService : ICameraObservableService
     private Joint.Data.Models.Camera _camera;
     private VideoCapture capture;
     private Mat _prevFrame;
-    private double previousArea ;
+    private DispatcherTimer timer;
+    private double previousArea;
     private bool _isOpened = false;
     private DateTime? _lastDetectedMotion = null;
+    static readonly string modelPath = string.Concat(Directory.GetCurrentDirectory(), "/haarcascade_frontalface_default.xml");
     public CameraObservableService(HttpClient httpClient)
     {
         _httpClient = httpClient;
@@ -74,13 +76,15 @@ public class CameraObservableService : ICameraObservableService
 
     public bool StartObservable(Joint.Data.Models.Camera camera)
     {
-        if (capture != null && capture.IsOpened)
+        if (capture != null)//&& capture.IsOpened
         {
+            timer.Stop();
             capture.Stop();
             capture.Dispose();
         }
-        
+
         _camera = camera;
+
         if (camera.Connection == CameraConnection.Ethernet)
         {
             capture = new VideoCapture(camera.ConnectionData);
@@ -89,12 +93,12 @@ public class CameraObservableService : ICameraObservableService
         {
             capture = new VideoCapture(int.Parse(_camera.ConnectionData));
         }
-        
-        
+
+
         _isOpened = capture.IsOpened;
         if (capture.IsOpened)
         {
-            DispatcherTimer timer = new DispatcherTimer();
+            timer = new DispatcherTimer();
             timer.Interval = TimeSpan.FromMilliseconds(33);
             timer.Tick += async (e, obj) => await GrabImage();
             timer.Start();
@@ -105,37 +109,50 @@ public class CameraObservableService : ICameraObservableService
 
     private async Task GrabImage()
     {
-        CascadeClassifier faceCascade = new CascadeClassifier("haarcascade_frontalface_default.xml");
-        Mat frame = capture.QueryFrame();
-        if (frame != null && _prevFrame != null)
+        try
         {
-            if (ReactToMotion)
+            if (capture == null ||capture.Ptr == nint.Zero)
             {
-                
-                // Преобразование кадра в чёрно-белый (градаций серого)
-                Mat grayFrame = new Mat();
-                CvInvoke.CvtColor(frame, grayFrame, ColorConversion.Bgr2Gray);
+                return;
+            }
+            CascadeClassifier faceCascade = new CascadeClassifier(modelPath);
+            Mat frame = capture.QueryFrame();
 
-                // Детекция лиц на кадре
-                Rectangle[] faces = faceCascade.DetectMultiScale(grayFrame, 1.1, 3, Size.Empty);
-
-                // Отрисовка прямоугольников вокруг обнаруженных лиц (людей)
-                foreach (Rectangle face in faces)
+            if (frame != null && _prevFrame != null)
+            {
+                if (ReactToMotion)
                 {
-                    CvInvoke.Rectangle(frame, face, new MCvScalar(0, 255, 0), 2);
-                    if (faces.IndexOf(face) == 1 && (_lastDetectedMotion == null || DateTime.Now - _lastDetectedMotion > TimeSpan.FromMinutes(5) ))
+
+                    // Преобразование кадра в чёрно-белый (градаций серого)
+                    Mat grayFrame = new Mat();
+                    CvInvoke.CvtColor(frame, grayFrame, ColorConversion.Bgr2Gray);
+
+                    // Детекция лиц на кадре
+                    Rectangle[] faces = faceCascade.DetectMultiScale(grayFrame, 1.1, 3, Size.Empty);
+
+                    // Отрисовка прямоугольников вокруг обнаруженных лиц (людей)
+                    foreach (Rectangle face in faces)
                     {
-                        _lastDetectedMotion = DateTime.Now;
-                        await SendNotificationToServer(frame.ToBitmap());
+                        //CvInvoke.Rectangle(frame, face, new MCvScalar(0, 255, 0), 2);
+                        if (_lastDetectedMotion == null || DateTime.Now - _lastDetectedMotion > TimeSpan.FromMinutes(5))
+                        {
+                            _lastDetectedMotion = DateTime.Now;
+                            await SendNotificationToServer(frame.ToBitmap());
+                        }
                     }
                 }
-            }
 
-            ImageGrab(this, new GrabImageEventArgs(frame.ToBitmap().ConvertToAvaloniaBitmap())); 
-            //VideoFrame = bitmap.ConvertToAvaloniaBitmap();
+                ImageGrab(this, new GrabImageEventArgs(frame.ToBitmap().ConvertToAvaloniaBitmap()));
+                //VideoFrame = bitmap.ConvertToAvaloniaBitmap();
+            }
+            _prevFrame = frame;
+
         }
-        _prevFrame = frame;
-        
+        catch (Exception)
+        {
+
+        }
+
     }
 
     private async Task SendNotificationToServer(System.Drawing.Bitmap photo)
@@ -148,8 +165,8 @@ public class CameraObservableService : ICameraObservableService
             Date = DateTime.Now,
             Message = $"{DateTime.Now} виявлено рух!"
         };
-        
-        
+
+
         // Создаем MultipartFormDataContent для отправки файлов и формы
         var formData = new MultipartFormDataContent();
 
@@ -157,7 +174,7 @@ public class CameraObservableService : ICameraObservableService
         formData.Add(new StringContent(notifyToSend.Date.ToString()), "Date");
         formData.Add(new StringContent(notifyToSend.CameraId.ToString()), "CameraId");
         formData.Add(new StringContent(notifyToSend.Message), "Message");
-        
+
         //test
         byte[] imageBytes;
         using (MemoryStream ms = new MemoryStream())
@@ -165,7 +182,7 @@ public class CameraObservableService : ICameraObservableService
             photo.Save(ms, System.Drawing.Imaging.ImageFormat.Jpeg);
             imageBytes = ms.ToArray();
         }
-        
+
         // Добавляем изображение в форму
         var imageContent = new ByteArrayContent(imageBytes);
         imageContent.Headers.ContentType = System.Net.Http.Headers.MediaTypeHeaderValue.Parse("image/jpeg");

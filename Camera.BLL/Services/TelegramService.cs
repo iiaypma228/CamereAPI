@@ -65,10 +65,12 @@ namespace Camera.BLL.Services
             var chatId = Read(i => i.UserId == notifyToSend.UserId).FirstOrDefault();
             if (chatId != null)
             {
-                _botClient.SendPhotoAsync(
-                    chatId: chatId.TelegramId,
-                    photo: InputFile.FromStream(System.IO.File.Open(notifyToSend.PathToFile, FileMode.Open)),
-                    caption: notifyToSend.Message);
+                var file = System.IO.File.Open(notifyToSend.PathToFile, FileMode.Open);
+                var res = _botClient.SendPhotoAsync(
+                      chatId: chatId.TelegramId,
+                      photo: InputFile.FromStream(file),
+                      caption: notifyToSend.Message).Result;
+                file.Close();
             }
 
         }
@@ -139,7 +141,7 @@ namespace Camera.BLL.Services
                     {
                         await botClient.SendTextMessageAsync(
                         chatId: chatId,
-                        text: "Сука угадал!");
+                        text: "Ви зареєстровані");
                         user.Step = Joint.Data.Constants.BotSteps.Authorizated;
                         Save(user);
                     }
@@ -165,7 +167,7 @@ namespace Camera.BLL.Services
                         chatId: chatId,
                         text: "Ви авторизовані!" +
                         "\nТут будуть приходити сповіщення." +
-                        "\nВаші камери: " + resultColumn);
+                        "\nВаші камери:\n" + resultColumn);
                 }
 
                 Console.WriteLine($"Received a '{messageText}' message in chat {chatId}.");
