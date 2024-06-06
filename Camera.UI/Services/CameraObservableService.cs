@@ -60,7 +60,8 @@ public class CameraObservableService : ICameraObservableService
     private double previousArea ;
     private bool _isOpened = false;
     private DateTime? _lastDetectedMotion = null;
-    private DispatcherTimer timer;
+
+    private DispatcherTimer timer = new DispatcherTimer();
     public CameraObservableService(HttpClient httpClient)
     {
         _httpClient = httpClient;
@@ -84,6 +85,15 @@ public class CameraObservableService : ICameraObservableService
         }*/
 
         _camera = camera;
+
+        if (capture != null)
+        {
+            capture.Stop();
+            capture.Dispose();
+            timer.Stop();
+        }
+        
+        
         if (camera.Connection == CameraConnection.Ethernet)
         {
             capture = new VideoCapture(camera.ConnectionData);
@@ -98,6 +108,7 @@ public class CameraObservableService : ICameraObservableService
         if (capture.IsOpened)
         {
             timer = new DispatcherTimer();
+
             timer.Interval = TimeSpan.FromMilliseconds(33);
             timer.Tick += GrabImage;
             timer.Start();
