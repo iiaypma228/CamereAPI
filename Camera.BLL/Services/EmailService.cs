@@ -37,15 +37,20 @@ public class EmailService : IEmailService
     
     public void Notify(NotifyToSend notifyToSend)
     {
+        Attachment? attachment = null;
         _logger.LogInformation($"SEND MESSAGE TO EMAIL:{notifyToSend.SendAddress}\nMESSAGE:{notifyToSend.Message}");
 
         var message = new MailMessage(_configuration["Email:EmailAddress"], notifyToSend.SendAddress,
             "OLEG CAMERA SERVICE!", notifyToSend.Message);
         if (!string.IsNullOrEmpty(notifyToSend.PathToFile))
         {
-            message.Attachments.Add(new Attachment(notifyToSend.PathToFile));
+            attachment = new Attachment(notifyToSend.PathToFile);
+            message.Attachments.Add(attachment);
         }
-        
         _smtpClient.Send(message);
+
+        //close stream if not null
+        attachment?.ContentStream.Close();
+
     }
 }
