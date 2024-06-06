@@ -28,6 +28,7 @@ using Joint.Data.Constants;
 using LibVLCSharp.Shared;
 using Bitmap = Avalonia.Media.Imaging.Bitmap;
 using Device = Emgu.CV.Dai.Device;
+using System.Timers;
 
 namespace Camera.UI.Services;
 
@@ -59,6 +60,7 @@ public class CameraObservableService : ICameraObservableService
     private double previousArea ;
     private bool _isOpened = false;
     private DateTime? _lastDetectedMotion = null;
+    private DispatcherTimer timer;
     public CameraObservableService(HttpClient httpClient)
     {
         _httpClient = httpClient;
@@ -74,6 +76,13 @@ public class CameraObservableService : ICameraObservableService
 
     public bool StartObservable(Joint.Data.Models.Camera camera)
     {
+        /*if (capture != null && capture.IsOpened)//&& capture.IsOpened
+        {
+            timer.Stop();
+            capture.Stop();
+            capture.Dispose();
+        }*/
+
         _camera = camera;
         if (camera.Connection == CameraConnection.Ethernet)
         {
@@ -88,7 +97,7 @@ public class CameraObservableService : ICameraObservableService
         _isOpened = capture.IsOpened;
         if (capture.IsOpened)
         {
-            DispatcherTimer timer = new DispatcherTimer();
+            timer = new DispatcherTimer();
             timer.Interval = TimeSpan.FromMilliseconds(33);
             timer.Tick += GrabImage;
             timer.Start();
@@ -117,7 +126,7 @@ public class CameraObservableService : ICameraObservableService
                 foreach (Rectangle face in faces)
                 {
                     CvInvoke.Rectangle(frame, face, new MCvScalar(0, 255, 0), 2);
-                    if (faces.IndexOf(face) == 1 && (_lastDetectedMotion == null || DateTime.Now - _lastDetectedMotion > TimeSpan.FromMinutes(5) ))
+                    if (_lastDetectedMotion == null || DateTime.Now - _lastDetectedMotion > TimeSpan.FromMinutes(5) )
                     {
                         _lastDetectedMotion = DateTime.Now;
                         await SendNotificationToServer(frame.ToBitmap());
