@@ -59,7 +59,8 @@ public class CameraObservableService : ICameraObservableService
     private double previousArea ;
     private bool _isOpened = false;
     private DateTime? _lastDetectedMotion = null;
-    private DispatcherTimer timer = new DispatcherTimer();
+    CascadeClassifier faceCascade = new CascadeClassifier("haarcascade_frontalface_default.xml");
+    private DispatcherTimer timer ;
     public CameraObservableService(HttpClient httpClient)
     {
         _httpClient = httpClient;
@@ -77,11 +78,15 @@ public class CameraObservableService : ICameraObservableService
     {
         _camera = camera;
 
+        if (timer != null)
+        {
+            timer.Stop();
+        }
+        
         if (capture != null)
         {
             capture.Stop();
-            capture.Dispose();
-            timer.Stop();
+            capture = null;
         }
         
         
@@ -100,21 +105,20 @@ public class CameraObservableService : ICameraObservableService
         {
            timer = new DispatcherTimer();
             timer.Interval = TimeSpan.FromMilliseconds(33);
-            timer.Tick += GrabImage;
+            timer.Tick += async (o, e) => await GrabImage();
             timer.Start();
         }
 
         return _isOpened;
     }
 
-    private async  void GrabImage(object sender, EventArgs e)
+    private async  Task GrabImage()
     {
         if (capture == null || capture.Ptr == nint.Zero)
         {
             return;
         }
         
-        CascadeClassifier faceCascade = new CascadeClassifier("haarcascade_frontalface_default.xml");
         Mat frame = capture.QueryFrame();
         if (frame != null && _prevFrame != null)
         {
