@@ -32,10 +32,13 @@ namespace Camera.UI.Views.FormsViews
 
         private void LocalCamerasListBox_OnSelectionChanged(object? sender, SelectionChangedEventArgs e)
         {
+            
             var cameraComboBox = sender as ComboBox;
-
-            this.ViewModel.CameraName = (cameraComboBox.SelectedItem as DsDevice).Name;
-            this.ViewModel.Camera.ConnectionData = cameraComboBox.SelectedIndex.ToString();
+            if (cameraComboBox?.SelectedItem is DsDevice)
+            {
+                this.ViewModel.CameraName = cameraComboBox.Name;
+                this.ViewModel.Camera.ConnectionData = cameraComboBox.SelectedIndex.ToString();   
+            }
         }
     }
 }

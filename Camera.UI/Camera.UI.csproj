@@ -13,7 +13,6 @@
     </ItemGroup>
 
     <ItemGroup>
-      <None Remove="appsettings.json" />
       <None Update="haarcascade_frontalface_default.xml">
         <CopyToOutputDirectory>Always</CopyToOutputDirectory>
       </None>

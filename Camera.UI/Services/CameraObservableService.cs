@@ -108,13 +108,17 @@ public class CameraObservableService : ICameraObservableService
 
     private async  void GrabImage(object sender, EventArgs e)
     {
+        if (capture == null || capture.Ptr == nint.Zero)
+        {
+            return;
+        }
+        
         CascadeClassifier faceCascade = new CascadeClassifier("haarcascade_frontalface_default.xml");
         Mat frame = capture.QueryFrame();
         if (frame != null && _prevFrame != null)
         {
             if (ReactToMotion)
             {
-                
                 // Преобразование кадра в чёрно-белый (градаций серого)
                 Mat grayFrame = new Mat();
                 CvInvoke.CvtColor(frame, grayFrame, ColorConversion.Bgr2Gray);
