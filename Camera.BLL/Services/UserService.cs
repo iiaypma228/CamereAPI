@@ -46,6 +46,10 @@ public class UserService : Service, IUserService
             }
             else
             {
+                if (this.ReadByEmail(item.Email) != null)
+                {
+                    throw new Exception("Користувач вже існує з цією почтою вже існує");
+                }
                 var oldUser = Read(item.Id);
                 item.Password = oldUser.Password;
                 this._repository.Update(item);
