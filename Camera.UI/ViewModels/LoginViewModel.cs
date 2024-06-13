@@ -3,6 +3,7 @@ using System;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Reactive.Concurrency;
+using System.Reactive.Linq;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using Avalonia.Data.Core.Plugins;
@@ -13,6 +14,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection.Extensions;
 using ReactiveUI;
 using ReactiveUI.Fody.Helpers;
+using ReactiveUI.Validation.Contexts;
 using ReactiveUI.Validation.Extensions;
 
 namespace Camera.UI.ViewModels
@@ -53,7 +55,8 @@ namespace Camera.UI.ViewModels
             _navigationService = navigationService;
             _sharedPreferences = sharedPreferences;
             RxApp.MainThreadScheduler.Schedule(GoToProgramIfAuthorized);
-            this.ConfigureValidation();
+
+            this.WhenAnyValue(x => x.Email, x => x.Password).Skip(1).Take(1).Subscribe(onNext: i => ConfigureValidation());
         }
 
         private User _user { get; set; } = new User();
@@ -84,6 +87,7 @@ namespace Camera.UI.ViewModels
         //Events
         public async void Login()
         {
+            ConfigureValidation();
             if (!HasErrors)
             {
                 var res = await _service.AuthorizationAsync(_user);
@@ -111,9 +115,13 @@ namespace Camera.UI.ViewModels
 
         private void ConfigureValidation()
         {
-            this.ValidationRule(x => x.Email, v =>  !string.IsNullOrEmpty(v), Resources.textEmailIsRequired);
-            this.ValidationRule(x => x.Email, v => v != null &&  Regex.Match(v, "^[\\w\\.-]+@[a-zA-Z\\d\\.-]+\\.[a-zA-Z]{2,}$").Success, Resources.textEmailNotTemplate);
-            this.ValidationRule(x => x.Password, v =>  !string.IsNullOrEmpty(v), Resources.textPasswordIsRequired);
+            if (ValidationContext.Validations.Count == 0)
+            {
+                this.ValidationRule(x => x.Email, v =>  !string.IsNullOrEmpty(v), Resources.textEmailIsRequired);
+                this.ValidationRule(x => x.Email, v => v != null &&  Regex.Match(v, "^[\\w\\.-]+@[a-zA-Z\\d\\.-]+\\.[a-zA-Z]{2,}$").Success, Resources.textEmailNotTemplate);
+                this.ValidationRule(x => x.Password, v =>  !string.IsNullOrEmpty(v), Resources.textPasswordIsRequired);
+    
+            }
         }
         
         private async void GoToProgramIfAuthorized()

@@ -5,6 +5,7 @@ using ReactiveUI.Fody.Helpers;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reactive.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Camera.UI.Localize;
@@ -54,7 +55,7 @@ namespace Camera.UI.ViewModels
         {
             _service = registrationService;
             _notificationService = notificationService;
-            this.ConfigureValidation();
+            this.WhenAnyValue(x => x.Email, x => x.Password, x => x.RetryPassword).Skip(1).Take(1).Subscribe(onNext: i => ConfigureValidation());
         }
 
 
@@ -87,11 +88,15 @@ namespace Camera.UI.ViewModels
         
         private void ConfigureValidation()
         {
-            this.ValidationRule(x => x.Email, v =>  !string.IsNullOrEmpty(v), Resources.textEmailIsRequired);
-            this.ValidationRule(x => x.Email, v => v != null && Regex.Match(v, "^[\\w\\.-]+@[a-zA-Z\\d\\.-]+\\.[a-zA-Z]{2,}$").Success, Resources.textEmailNotTemplate);
-            this.ValidationRule(x => x.Password, v =>  !string.IsNullOrEmpty(v), Resources.textPasswordIsRequired);
-            this.ValidationRule(x => x.RetryPassword, v =>  !string.IsNullOrEmpty(v), Resources.textPasswordIsRequired);
-            this.ValidationRule(x => x.RetryPassword, v =>  v == Password, Resources.textPasswordNotEqualsRetryPassowrd);
+            if (ValidationContext.Validations.Count > 0)
+            {
+                this.ValidationRule(x => x.Email, v =>  !string.IsNullOrEmpty(v), Resources.textEmailIsRequired);
+                this.ValidationRule(x => x.Email, v => v != null && Regex.Match(v, "^[\\w\\.-]+@[a-zA-Z\\d\\.-]+\\.[a-zA-Z]{2,}$").Success, Resources.textEmailNotTemplate);
+                this.ValidationRule(x => x.Password, v =>  !string.IsNullOrEmpty(v), Resources.textPasswordIsRequired);
+                this.ValidationRule(x => x.RetryPassword, v =>  !string.IsNullOrEmpty(v), Resources.textPasswordIsRequired);
+                this.ValidationRule(x => x.RetryPassword, v =>  v == Password, Resources.textPasswordNotEqualsRetryPassowrd);
+
+            }
         }
     }
 }
