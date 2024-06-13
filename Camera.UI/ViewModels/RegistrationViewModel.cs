@@ -27,7 +27,6 @@ namespace Camera.UI.ViewModels
             set
             {
                 _user.Email = value;
-                _user.Login = value;
                 this.RaisePropertyChanged();
             }
         }
@@ -87,7 +86,7 @@ namespace Camera.UI.ViewModels
         
         private void ConfigureValidation()
         {
-            this.ValidationRule(x => x.Email, v =>  !string.IsNullOrEmpty(v), Resources.textEmailIsRequired);
+            this.ValidationRule(x => x.Email, v => !string.IsNullOrEmpty(v), Resources.textEmailIsRequired);
             this.ValidationRule(x => x.Email, v => v != null && Regex.Match(v, "^[\\w\\.-]+@[a-zA-Z\\d\\.-]+\\.[a-zA-Z]{2,}$").Success, Resources.textEmailNotTemplate);
             this.ValidationRule(x => x.Password, v =>  !string.IsNullOrEmpty(v), Resources.textPasswordIsRequired);
             this.ValidationRule(x => x.RetryPassword, v =>  !string.IsNullOrEmpty(v), Resources.textPasswordIsRequired);

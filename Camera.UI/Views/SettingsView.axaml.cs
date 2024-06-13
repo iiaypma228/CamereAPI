@@ -10,5 +10,6 @@ namespace Camera.UI.Views
         {
             InitializeComponent();
         }
+
     }
 }

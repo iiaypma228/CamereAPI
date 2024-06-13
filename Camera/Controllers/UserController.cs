@@ -1,6 +1,7 @@
 using Camera.BLL.Interfaces;
 using Camera.BLL.Services;
 using Camera.Localize;
+using Camera.RequestModel;
 using Joint.Data.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -44,5 +45,19 @@ public class UserController : ControllerBase
         var currentUser = _service.ReadByEmail(claim.Value);
 
         return currentUser;
+    }
+
+    [HttpPost("changeuser")]
+    public object ChangeUser([FromBody] User user)
+    {
+        var isAuth = this._service.IsUserAuth(new User() { Email = user.Email, Password = user.Password });
+
+        if (isAuth == null)
+        {
+            throw new Exception(Resources.wrongAuth);
+        }
+        this._service.Save(user);
+
+        return Ok();
     }
 }

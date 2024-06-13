@@ -189,4 +189,7 @@
   <data name="textPasswordNotEqualsRetryPassowrd" xml:space="preserve">
     <value>Password not equals retry password</value>
   </data>
+  <data name="textChangeEmailSuccess" xml:space="preserve">
+    <value>Mail changed successfully!</value>
+  </data>
 </root>

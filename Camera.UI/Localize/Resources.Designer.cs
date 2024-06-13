@@ -124,6 +124,15 @@ namespace Camera.UI.Localize {
         }
         
         /// <summary>
+        ///   Ищет локализованную строку, похожую на Mail changed successfully!.
+        /// </summary>
+        public static string textChangeEmailSuccess {
+            get {
+                return ResourceManager.GetString("textChangeEmailSuccess", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Ищет локализованную строку, похожую на Delete.
         /// </summary>
         public static string textDelete {
