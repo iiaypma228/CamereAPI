@@ -9,17 +9,35 @@ using System.Threading.Tasks;
 
 namespace TestAPI
 {
-
+    
     public class BaseTest
     {
         protected readonly HttpClient _httpClient;
 
+        protected User _user = new User()
+        {
+            Id = 0,
+            Email = "marszemlya212312@gmail.com",
+            Password = "123",
+            TelegramVerified = false
+        };
+
+        protected User _userExist = new User()
+        {
+            Id = 1,
+            Email = "123@gmail.com",
+            Password = "123",
+            TelegramVerified = true
+        };
+        
         public BaseTest()
         {
             _httpClient = new HttpClient()
             {
                 BaseAddress = new Uri("http://localhost:5000")
             };
+            
+            GetToken(_userExist);
         }
 
         protected void GetToken(User user)

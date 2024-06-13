@@ -1,4 +1,11 @@
 ﻿<wpf:ResourceDictionary xml:space="preserve" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:s="clr-namespace:System;assembly=mscorlib" xmlns:ss="urn:shemas-jetbrains-com:settings-storage-xaml" xmlns:wpf="http://schemas.microsoft.com/winfx/2006/xaml/presentation">
+	<s:String x:Key="/Default/Environment/UnitTesting/UnitTestSessionStore/Sessions/=9822a7a7_002Dfa8b_002D4d77_002D81fd_002D84327e90e570/@EntryIndexedValue">&lt;SessionState ContinuousTestingMode="0" IsActive="True" Name="UserTest" xmlns="urn:schemas-jetbrains-com:jetbrains-ut-session"&gt;&#xD;
+  &lt;TestAncestor&gt;&#xD;
+    &lt;TestId&gt;xUnit::751F8549-8031-4158-9EED-B1C79F3077E1::net7.0::TestAPI.UserTest&lt;/TestId&gt;&#xD;
+    &lt;TestId&gt;xUnit::751F8549-8031-4158-9EED-B1C79F3077E1::net7.0::TestAPI.NotifyTest&lt;/TestId&gt;&#xD;
+    &lt;TestId&gt;xUnit::751F8549-8031-4158-9EED-B1C79F3077E1::net7.0::TestAPI.CameraTest&lt;/TestId&gt;&#xD;
+  &lt;/TestAncestor&gt;&#xD;
+&lt;/SessionState&gt;</s:String>
 	<s:Boolean x:Key="/Default/ResxEditorPersonal/CheckedGroups/=Camera_002FLocalize_002FResources/@EntryIndexedValue">True</s:Boolean>
 	
 	<s:Boolean x:Key="/Default/ResxEditorPersonal/CheckedGroups/=Client_002FCamera_002EUI_002FLocalize_002FResources/@EntryIndexedValue">True</s:Boolean>

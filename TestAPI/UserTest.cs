@@ -8,21 +8,6 @@ namespace TestAPI
 {
     public class UserTest : BaseTest
     {
-        private User _user = new User()
-        {
-            Id = 0,
-            Email = "marszemlya2312@gmail.com",
-            Password = "123",
-            TelegramVerified = false
-        };
-
-        private User _userExist = new User()
-        {
-            Id = 1,
-            Email = "123@gmail.com",
-            Password = "123",
-            TelegramVerified = true
-        };
 
         [Fact]
         public void TestRegistration()
@@ -34,7 +19,6 @@ namespace TestAPI
         [Fact]
         public void TestGetMe()
         {
-            GetToken(_userExist);
             var res = _httpClient.GetAsync($"/api/User/currentuser").Result;
             var jsonStr = res.Content.ReadAsStringAsync().Result;
             var user = System.Text.Json.JsonSerializer.Deserialize<User>(jsonStr);
