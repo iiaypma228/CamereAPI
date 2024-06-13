@@ -39,6 +39,7 @@
 			/>
 			
 			<TextBox 
+				x:Name="EmailTextBox"
 				Grid.Row="1"
 				Margin="0,0,0,10"
 				Text="{Binding Email}" 
@@ -49,7 +50,7 @@
 			</TextBox>
 			
 			<TextBox
-				Name="LoginTextBox"
+				Name="PasswordTextBox"
 				Grid.Row="2"
 				PasswordChar="*" 
 				Text="{Binding Password}" 
@@ -59,13 +60,15 @@
 				</TextBox.InnerLeftContent>
 			</TextBox>
 			<CheckBox Margin="0,0,0,20"
-				      Width="{Binding #LoginTextBox.Bounds.Width}" 
+				      Width="{Binding #PasswordTextBox.Bounds.Width}" 
 			          HorizontalAlignment="Center" 
 			          Grid.Row="3" 
 			          IsChecked="{Binding RememberMe}">
 				<TextBlock Foreground="White" Text="Запам'ятати мене"></TextBlock>
 			</CheckBox>
-			<Button	  Classes="hyperlink"
+			<Button	  
+				Name="GoToRegistration"
+				Classes="hyperlink"
 				      Margin="230,0,0,20"
 			          HorizontalAlignment="Center" 
 			          Grid.Row="3"
@@ -75,6 +78,8 @@
 			</Button>
 			
 			<Button  
+				
+					Name="LoginButton"
 					Grid.Row="4"
 			        Background="White"
 			        MaxWidth="300" 

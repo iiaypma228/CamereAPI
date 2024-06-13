@@ -39,6 +39,7 @@
 			/>
 			
 			<TextBox 
+				Name="EmailTextBox"
 				Grid.Row="1"
 				Margin="0,0,0,10"
 				Text="{Binding Email}" 
@@ -49,7 +50,7 @@
 			</TextBox>
 			
 			<TextBox
-				Name="LoginTextBox"
+				Name="PasswordTextBox"
 				Margin="0,0,0,10"
 				Grid.Row="2"
 				PasswordChar="*" 
@@ -61,6 +62,7 @@
 			</TextBox>
 			
 			<TextBox
+				Name="RetryPasswordTextBox"
 				Grid.Row="3"
 				PasswordChar="*" 
 				Text="{Binding RetryPassword}" 
@@ -72,6 +74,7 @@
 			
 			<StackPanel Margin="0,20,0,0" MaxWidth="300" VerticalAlignment="Stretch" HorizontalAlignment="Stretch"  Grid.Row="4" Orientation="Horizontal">
 				<Button  
+					Name="RegistrationButton"
 					Margin="0,0,40,0"
 					Background="White"
 					MaxWidth="160" 

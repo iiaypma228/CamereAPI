@@ -1,9 +1,17 @@
 ﻿<wpf:ResourceDictionary xml:space="preserve" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:s="clr-namespace:System;assembly=mscorlib" xmlns:ss="urn:shemas-jetbrains-com:settings-storage-xaml" xmlns:wpf="http://schemas.microsoft.com/winfx/2006/xaml/presentation">
+	<s:String x:Key="/Default/Environment/UnitTesting/UnitTestSessionStore/Sessions/=4f292cd8_002Dbbf4_002D40ef_002Da949_002Dc06119f05818/@EntryIndexedValue">&lt;SessionState ContinuousTestingMode="0" Name="TestDoLogin" xmlns="urn:schemas-jetbrains-com:jetbrains-ut-session"&gt;&#xD;
+  &lt;TestAncestor&gt;&#xD;
+    &lt;TestId&gt;xUnit::C4CB838E-C259-4815-9E5C-A18AF73F2B50::net7.0::Camera.UI.Test.TestLogin.TestDoLogin&lt;/TestId&gt;&#xD;
+  &lt;/TestAncestor&gt;&#xD;
+&lt;/SessionState&gt;</s:String>
 	<s:String x:Key="/Default/Environment/UnitTesting/UnitTestSessionStore/Sessions/=9822a7a7_002Dfa8b_002D4d77_002D81fd_002D84327e90e570/@EntryIndexedValue">&lt;SessionState ContinuousTestingMode="0" IsActive="True" Name="UserTest" xmlns="urn:schemas-jetbrains-com:jetbrains-ut-session"&gt;&#xD;
   &lt;TestAncestor&gt;&#xD;
     &lt;TestId&gt;xUnit::751F8549-8031-4158-9EED-B1C79F3077E1::net7.0::TestAPI.UserTest&lt;/TestId&gt;&#xD;
     &lt;TestId&gt;xUnit::751F8549-8031-4158-9EED-B1C79F3077E1::net7.0::TestAPI.NotifyTest&lt;/TestId&gt;&#xD;
     &lt;TestId&gt;xUnit::751F8549-8031-4158-9EED-B1C79F3077E1::net7.0::TestAPI.CameraTest&lt;/TestId&gt;&#xD;
+    &lt;TestId&gt;xUnit::C4CB838E-C259-4815-9E5C-A18AF73F2B50::net7.0::Camera.UI.Test.TestLogin&lt;/TestId&gt;&#xD;
+    &lt;TestId&gt;xUnit::C4CB838E-C259-4815-9E5C-A18AF73F2B50::net7.0::Camera.UI.Test.CameraTest&lt;/TestId&gt;&#xD;
+    &lt;TestId&gt;xUnit::C4CB838E-C259-4815-9E5C-A18AF73F2B50::net7.0::Camera.UI.Test.NotificationTest&lt;/TestId&gt;&#xD;
   &lt;/TestAncestor&gt;&#xD;
 &lt;/SessionState&gt;</s:String>
 	<s:Boolean x:Key="/Default/ResxEditorPersonal/CheckedGroups/=Camera_002FLocalize_002FResources/@EntryIndexedValue">True</s:Boolean>
