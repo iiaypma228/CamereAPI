@@ -144,6 +144,8 @@ namespace Camera.BLL.Services
                         text: "Ви зареєстровані");
                         user.Step = Joint.Data.Constants.BotSteps.Authorizated;
                         Save(user);
+                        programUser.TelegramVerified = true;
+                        scope.ServiceProvider.GetRequiredService<IUserService>().Save(programUser);
                     }
                     else
                     {

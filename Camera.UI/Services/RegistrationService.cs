@@ -14,6 +14,7 @@ namespace Camera.UI.Services
     {
         public Task<ServerResponse<string>> Registration(User user);
         public Task<ServerResponse<User>> GetMe();
+        Task<ServerResponse<string>> ChangeUser(User user);
     }
     
     public class RegistrationService : IRegistrationService
@@ -52,6 +53,22 @@ namespace Camera.UI.Services
             catch (Exception e)
             {
                 return new ServerResponse<User>()
+                {
+                    IsSuccess = false,
+                    Error = e.Message
+                };
+            }
+        }
+        public async Task<ServerResponse<string>> ChangeUser(User user)
+        {
+            try
+            {
+                var res = await _httpClient.PostAsJsonAsync("api/user/changeuser", user);
+                return await ServerResponse<string>.CreateFromString(res);
+            }
+            catch (Exception e)
+            {
+                return new ServerResponse<string>()
                 {
                     IsSuccess = false,
                     Error = e.Message

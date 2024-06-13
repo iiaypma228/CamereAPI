@@ -189,4 +189,7 @@
   <data name="textPasswordNotEqualsRetryPassowrd" xml:space="preserve">
     <value>Поле пароль то повторити пароль не збігаються!</value>
   </data>
+  <data name="textChangeEmailSuccess" xml:space="preserve">
+    <value>Почта змінена успішно!</value>
+  </data>
 </root>

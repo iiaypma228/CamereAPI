@@ -1,60 +1,93 @@
-﻿using Camera.UI.Services;
+﻿using Camera.UI.Localize;
+using Camera.UI.Services;
 using Joint.Data.Models;
 using Microsoft.Extensions.Configuration;
 using ReactiveUI;
 using ReactiveUI.Fody.Helpers;
+using ReactiveUI.Validation.Extensions;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
-using System.Linq;
+using System.IO;
+using System.Reactive.Concurrency;
+using System.Reactive.Linq;
 using System.Text;
+using System.Text.Json;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
+using System.Xml;
 
 namespace Camera.UI.ViewModels
 {
-    public  class SettingsViewModel : RoutableViewModelBase
+    public class SettingsViewModel : RoutableViewModelBase
     {
         private readonly IConfiguration _configuration;
         private readonly IRegistrationService _registrationService;
+        private readonly INotificationService _notificationService;
         public SettingsViewModel(IScreen screen, RoutingState routingState, IConfiguration configuration,
-            IRegistrationService registrationService) : base(screen, routingState)
+            IRegistrationService registrationService,
+            INotificationService notificationService) : base(screen, routingState)
         {
             _configuration = configuration;
             _registrationService = registrationService;
-            LocalizeDeffault = new KeyValuePair<string, string>(_configuration["Localize"], Localize[_configuration["Localize"]]);
+            _notificationService = notificationService;
+            //LocalizeDeffault = new KeyValuePair<string, string>(_configuration["Localize"], Localize[_configuration["Localize"]]);
+            //this.ConfigureValidation();
+            LoadCurrentLocale();
+            this.WhenAnyValue(x => x.Email).Skip(1).Take(1)
+                .Subscribe(i => this.ValidationRule(x => x.Email, v => v != null && Regex.Match(v, "^[\\w\\.-]+@[a-zA-Z\\d\\.-]+\\.[a-zA-Z]{2,}$").Success, Resources.textEmailNotTemplate));
+            this.WhenAnyValue(x => x.Password).Skip(1).Take(1).Subscribe(i => this.ValidationRule(x => x.Password, v => !string.IsNullOrEmpty(v), Resources.textPasswordIsRequired));
+            this.WhenAnyValue(x => x.RetryPassword).Skip(1).Take(1).Subscribe(i =>
+            {
+                this.ValidationRule(x => x.RetryPassword, v => !string.IsNullOrEmpty(v), Resources.textPasswordIsRequired);
+                this.ValidationRule(x => x.RetryPassword, v => v == Password, Resources.textPasswordNotEqualsRetryPassowrd);
+            });        
         }
-        private User _user { get; set; } = new User();
+        [Reactive] public Dictionary<string, string> Localize { get; set; } = new Dictionary<string, string> { { "uk", "Українська" }, { "en", "English (Англійська)" } };
+
+        [Reactive] public User User { get; set; }
 
         public string Email
         {
-            get => _user.Email;
+            get =>  User?.Email;
             set
             {
-                _user.Email = value;
+                User.Email = value;
                 this.RaisePropertyChanged();
             }
         }
 
         public string Password
         {
-            get => _user.Password;
+            get => User?.Password;
             set
             {
-                _user.Password = value;
+                User.Password = value;
                 this.RaisePropertyChanged();
             }
         }
-        public string Phone
+        
+        public bool TelegramVerified
         {
-            get => _user.Phone;
+            get => User?.TelegramVerified ?? false;
             set
             {
-                _user.Phone = value;
+                User.TelegramVerified = value;
                 this.RaisePropertyChanged();
             }
         }
+        
 
         [Reactive] public string RetryPassword { get; set; }
+
+        public async void LoadUser()
+        {
+            var d = (await _registrationService.GetMe()).Data;
+            d.Password = "";
+            User = d;
+            Email = d.Email;
+            TelegramVerified = d.TelegramVerified;
+        }
 
         public void OpenTG()
         {
@@ -65,60 +98,85 @@ namespace Camera.UI.ViewModels
                 UseShellExecute = true
             });
         }
-
-        [Reactive] public Dictionary<string, string> Localize { get; set; } = new Dictionary<string, string> { { "uk", "Українська" }, { "en","English (Англійська)" } };
-
-        public KeyValuePair<string, string> LocalizeDeffault { 
-            get => _localizeDeffault;
+        
+        public KeyValuePair<string, string> LocalizeDeffault
+        {
+            get => _localizeDeffault ?? new KeyValuePair<string, string>();
             set
             {
+                if (_localizeDeffault != null)
+                {
+                    CurrentLocale(value.Key);
+                }
                 _localizeDeffault = value;
-                CurrentLocale(value.Key);
                 this.RaisePropertyChanged();
-                
+
             }
         }
-        private KeyValuePair<string, string> _localizeDeffault;
+        private KeyValuePair<string, string>? _localizeDeffault = null;
 
-        private string CurrentLocale(string newLocale)
+        public async void ChangeEmail()
         {
-            string res = "";
-       /*     switch (newLocale)
+            ConfigureValidation();
+            if (HasErrors)
             {
-                case "uk":
-                    {
-                        res = "Українська";
-                        break;
-                    }
-                case "en":
-                    {
-                        res = "English (Англійська)";
-                        break;
-                    }
-                default:
-                    break;
-            }*/
-            _configuration["Localize"] = newLocale;
-            return res;
-        }
+                _notificationService.ShowError("Форма не валідна!");
+                return;
+            }
 
-        async public void ChangeEmail()
-        {
-            var user = await _registrationService.GetMe();
-            if (user.IsSuccess)
+            User.Email = Email;
+            User.Password = Password;
+
+            var res = await _registrationService.ChangeUser(User);
+            if (!res.IsSuccess)
             {
-                user.Data.Email = Email;
-                await _registrationService.Registration(user.Data);
+                _notificationService.ShowError(res.Error);
+            }
+            else
+            {
+                _notificationService.ShowInfo("");
             }
         }
-
-        async public void ChangePhone()
+        
+        private void CurrentLocale(string newLocale)
         {
-            var user = await _registrationService.GetMe();
-            if (user.IsSuccess)
+            UpdateAppSetting("Localize", newLocale);
+        }
+
+        private void LoadCurrentLocale()
+        {
+            var code = _configuration["Localize"];
+
+            if (code == "en")
             {
-                user.Data.Phone = Phone;
-                await _registrationService.Registration(user.Data);
+                LocalizeDeffault = new KeyValuePair<string, string>( "en", "English (Англійська)" );
+            }
+            else
+            {
+                LocalizeDeffault = new KeyValuePair<string, string>("uk", "Українська");
+            }
+            
+            
+        }
+        
+        private void UpdateAppSetting(string key, string value)
+        {
+            var configJson = File.ReadAllText("appsettings.json");
+            var config = JsonSerializer.Deserialize<Dictionary<string, object>>(configJson);
+            config[key] = value;
+            var updatedConfigJson = JsonSerializer.Serialize(config, new JsonSerializerOptions { WriteIndented = true });
+            File.WriteAllText("appsettings.json", updatedConfigJson);
+        }
+        
+        private void ConfigureValidation()
+        {
+            if (ValidationContext.Validations.Count < 4)
+            {
+                this.ValidationRule(x => x.Email, v => v != null && Regex.Match(v, "^[\\w\\.-]+@[a-zA-Z\\d\\.-]+\\.[a-zA-Z]{2,}$").Success, Resources.textEmailNotTemplate);
+                this.ValidationRule(x => x.Password, v => !string.IsNullOrEmpty(v), Resources.textPasswordIsRequired);
+                this.ValidationRule(x => x.RetryPassword, v => !string.IsNullOrEmpty(v), Resources.textPasswordIsRequired);
+                this.ValidationRule(x => x.RetryPassword, v => v == Password, Resources.textPasswordNotEqualsRetryPassowrd);
+
             }
         }
     }

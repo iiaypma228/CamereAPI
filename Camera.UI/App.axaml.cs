@@ -2,6 +2,7 @@ using System;
 using System.Globalization;
 using System.Net.Http;
 using System.Reactive;
+using System.Threading;
 using System.Threading.Tasks;
 using Avalonia;
 using Avalonia.Controls;
@@ -42,13 +43,22 @@ public partial class App : Application
             //ЗАЙДИ В ЭТОТ МЕТОД
 
             ConfigureServices();
+            CultureInfo.CurrentUICulture = new CultureInfo(_serviceProvider.GetService<IConfiguration>()["Localize"]);
+            CultureInfo.CurrentCulture = new CultureInfo(_serviceProvider.GetService<IConfiguration>()["Localize"]);
+            CultureInfo.DefaultThreadCurrentUICulture = new CultureInfo(_serviceProvider.GetService<IConfiguration>()["Localize"]);
+            CultureInfo.DefaultThreadCurrentCulture = new CultureInfo(_serviceProvider.GetService<IConfiguration>()["Localize"]);
+        
+            Thread.CurrentThread.CurrentCulture = new CultureInfo(_serviceProvider.GetService<IConfiguration>()["Localize"]);
+            Thread.CurrentThread.CurrentUICulture = new CultureInfo(_serviceProvider.GetService<IConfiguration>()["Localize"]);
+        
+            Localize.Resources.Culture = new CultureInfo(_serviceProvider.GetService<IConfiguration>()["Localize"]);
 
             desktop.MainWindow.DataContext = this._serviceProvider.GetService<IScreen>();
 
             this._serviceProvider.GetService<RoutingState>()
                 .Navigate.Execute(this._serviceProvider.GetService<LoginViewModel>()); // NOT NULL!
         }
-        Localize.Resources.Culture = new CultureInfo(_serviceProvider.GetService<IConfiguration>()["Localize"]);
+
         base.OnFrameworkInitializationCompleted();
     }
 

@@ -1,6 +1,7 @@
 using Avalonia.Controls;
 using Avalonia.ReactiveUI;
 using Camera.UI.ViewModels;
+using ReactiveUI;
 
 namespace Camera.UI.Views
 {
@@ -9,6 +10,15 @@ namespace Camera.UI.Views
         public SettingsView()
         {
             InitializeComponent();
+        }
+
+        protected override void OnInitialized()
+        {
+            base.OnInitialized();
+            this.WhenActivated(i =>
+            {
+                this.ViewModel.LoadUser();
+            });
         }
     }
 }

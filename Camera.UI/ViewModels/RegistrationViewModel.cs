@@ -28,7 +28,6 @@ namespace Camera.UI.ViewModels
             set
             {
                 _user.Email = value;
-                _user.Login = value;
                 this.RaisePropertyChanged();
             }
         }
@@ -97,6 +96,7 @@ namespace Camera.UI.ViewModels
                 this.ValidationRule(x => x.RetryPassword, v =>  v == Password, Resources.textPasswordNotEqualsRetryPassowrd);
 
             }
+
         }
     }
 }

@@ -28,6 +28,7 @@ using Joint.Data.Constants;
 using LibVLCSharp.Shared;
 using Bitmap = Avalonia.Media.Imaging.Bitmap;
 using Device = Emgu.CV.Dai.Device;
+using System.Timers;
 
 namespace Camera.UI.Services;
 
@@ -59,6 +60,9 @@ public class CameraObservableService : ICameraObservableService
     private double previousArea ;
     private bool _isOpened = false;
     private DateTime? _lastDetectedMotion = null;
+
+    CascadeClassifier faceCascade = new CascadeClassifier("haarcascade_frontalface_default.xml");
+    private DispatcherTimer timer ;
     public CameraObservableService(HttpClient httpClient)
     {
         _httpClient = httpClient;
@@ -74,7 +78,27 @@ public class CameraObservableService : ICameraObservableService
 
     public bool StartObservable(Joint.Data.Models.Camera camera)
     {
+        /*if (capture != null && capture.IsOpened)//&& capture.IsOpened
+        {
+            timer.Stop();
+            capture.Stop();
+            capture.Dispose();
+        }*/
+
         _camera = camera;
+
+        if (timer != null)
+        {
+            timer.Stop();
+        }
+        
+        if (capture != null)
+        {
+            capture.Stop();
+            capture = null;
+        }
+        
+        
         if (camera.Connection == CameraConnection.Ethernet)
         {
             capture = new VideoCapture(camera.ConnectionData);
@@ -88,24 +112,28 @@ public class CameraObservableService : ICameraObservableService
         _isOpened = capture.IsOpened;
         if (capture.IsOpened)
         {
-            DispatcherTimer timer = new DispatcherTimer();
+            timer = new DispatcherTimer();
+
             timer.Interval = TimeSpan.FromMilliseconds(33);
-            timer.Tick += GrabImage;
+            timer.Tick += async (o, e) => await GrabImage();
             timer.Start();
         }
 
         return _isOpened;
     }
 
-    private async  void GrabImage(object sender, EventArgs e)
+    private async  Task GrabImage()
     {
-        CascadeClassifier faceCascade = new CascadeClassifier("haarcascade_frontalface_default.xml");
+        if (capture == null || capture.Ptr == nint.Zero)
+        {
+            return;
+        }
+        
         Mat frame = capture.QueryFrame();
         if (frame != null && _prevFrame != null)
         {
             if (ReactToMotion)
             {
-                
                 // Преобразование кадра в чёрно-белый (градаций серого)
                 Mat grayFrame = new Mat();
                 CvInvoke.CvtColor(frame, grayFrame, ColorConversion.Bgr2Gray);
@@ -117,7 +145,7 @@ public class CameraObservableService : ICameraObservableService
                 foreach (Rectangle face in faces)
                 {
                     CvInvoke.Rectangle(frame, face, new MCvScalar(0, 255, 0), 2);
-                    if (faces.IndexOf(face) == 1 && (_lastDetectedMotion == null || DateTime.Now - _lastDetectedMotion > TimeSpan.FromMinutes(5) ))
+                    if (_lastDetectedMotion == null || DateTime.Now - _lastDetectedMotion > TimeSpan.FromMinutes(5) )
                     {
                         _lastDetectedMotion = DateTime.Now;
                         await SendNotificationToServer(frame.ToBitmap());
