@@ -3,21 +3,21 @@ namespace Camera.UI.Test;
 public class NotificationTest
 {
     [Fact]
-    public void AddNotification()
+    public async void AddNotification()
     {
-        
+        await Task.Delay(3000);
     }
     
     [Fact]
-    public void GetNotification()
+    public async void GetNotification()
     {
-         
+        await Task.Delay(4000);
     }
     
     [Fact]
-    public void DeleteNotification()
+    public async void DeleteNotification()
     {
-         
+        await Task.Delay(1500);
     }
     
  }

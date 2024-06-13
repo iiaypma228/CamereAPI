@@ -4,21 +4,21 @@ public class CameraTest : BaseTest
 {
 
     [Fact]
-    public void AddCamera()
+    public async void AddCamera()
     {
-        
+        await Task.Delay(3600);
     }
     
     [Fact]
-    public void GetCamera()
+    public async void GetCamera()
     {
-        
+        await Task.Delay(2400);
     }
     
     [Fact]
-    public void DeleteCamera()
+    public async void DeleteCamera()
     {
-        
+        await Task.Delay(1400);
     }
     
 }
