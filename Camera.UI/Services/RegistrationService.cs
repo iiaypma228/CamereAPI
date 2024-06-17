@@ -15,6 +15,7 @@ namespace Camera.UI.Services
         public Task<ServerResponse<string>> Registration(User user);
         public Task<ServerResponse<User>> GetMe();
         Task<ServerResponse<string>> ChangeUser(User user);
+        public Task<ServerResponse<string>> UnlinkTelegram();
     }
     
     public class RegistrationService : IRegistrationService
@@ -64,6 +65,23 @@ namespace Camera.UI.Services
             try
             {
                 var res = await _httpClient.PostAsJsonAsync("api/user/changeuser", user);
+                return await ServerResponse<string>.CreateFromString(res);
+            }
+            catch (Exception e)
+            {
+                return new ServerResponse<string>()
+                {
+                    IsSuccess = false,
+                    Error = e.Message
+                };
+            }
+        }
+
+        public async Task<ServerResponse<string>> UnlinkTelegram()
+        {
+            try
+            {
+                var res = await _httpClient.DeleteAsync("api/user/unlinktelegram");
                 return await ServerResponse<string>.CreateFromString(res);
             }
             catch (Exception e)

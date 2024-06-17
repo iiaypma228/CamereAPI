@@ -61,6 +61,15 @@ namespace Camera.UI.Localize {
         }
         
         /// <summary>
+        ///   Ищет локализованную строку, похожую на .
+        /// </summary>
+        public static string String1 {
+            get {
+                return ResourceManager.GetString("String1", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Ищет локализованную строку, похожую на Add.
         /// </summary>
         public static string textAdd {
@@ -97,6 +106,15 @@ namespace Camera.UI.Localize {
         }
         
         /// <summary>
+        ///   Ищет локализованную строку, похожую на Name.
+        /// </summary>
+        public static string textCameraName {
+            get {
+                return ResourceManager.GetString("textCameraName", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Ищет локализованную строку, похожую на Camera.
         /// </summary>
         public static string textCameraObervable {
@@ -124,11 +142,47 @@ namespace Camera.UI.Localize {
         }
         
         /// <summary>
+        ///   Ищет локализованную строку, похожую на Change mail.
+        /// </summary>
+        public static string textChangeEmail {
+            get {
+                return ResourceManager.GetString("textChangeEmail", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Ищет локализованную строку, похожую на Mail changed successfully!.
         /// </summary>
         public static string textChangeEmailSuccess {
             get {
                 return ResourceManager.GetString("textChangeEmailSuccess", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Change language.
+        /// </summary>
+        public static string textChangeLanguage {
+            get {
+                return ResourceManager.GetString("textChangeLanguage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Connect.
+        /// </summary>
+        public static string textConnectTg {
+            get {
+                return ResourceManager.GetString("textConnectTg", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Data for connection.
+        /// </summary>
+        public static string textDataConnection {
+            get {
+                return ResourceManager.GetString("textDataConnection", resourceCulture);
             }
         }
         
@@ -147,6 +201,15 @@ namespace Camera.UI.Localize {
         public static string textEdit {
             get {
                 return ResourceManager.GetString("textEdit", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Change of mail.
+        /// </summary>
+        public static string textEditEmail {
+            get {
+                return ResourceManager.GetString("textEditEmail", resourceCulture);
             }
         }
         
@@ -187,6 +250,15 @@ namespace Camera.UI.Localize {
         }
         
         /// <summary>
+        ///   Ищет локализованную строку, похожую на Couldn&apos;t find this camera, try another one!.
+        /// </summary>
+        public static string textErrorLoadCamera {
+            get {
+                return ResourceManager.GetString("textErrorLoadCamera", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Ищет локализованную строку, похожую на Ethernet.
         /// </summary>
         public static string textEthernet {
@@ -210,6 +282,33 @@ namespace Camera.UI.Localize {
         public static string textLogin {
             get {
                 return ResourceManager.GetString("textLogin", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Logout.
+        /// </summary>
+        public static string textLogout {
+            get {
+                return ResourceManager.GetString("textLogout", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Notification.
+        /// </summary>
+        public static string textNotification {
+            get {
+                return ResourceManager.GetString("textNotification", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Name.
+        /// </summary>
+        public static string textNotificationName {
+            get {
+                return ResourceManager.GetString("textNotificationName", resourceCulture);
             }
         }
         
@@ -250,11 +349,29 @@ namespace Camera.UI.Localize {
         }
         
         /// <summary>
+        ///   Ищет локализованную строку, похожую на Recipient data.
+        /// </summary>
+        public static string textRecipientData {
+            get {
+                return ResourceManager.GetString("textRecipientData", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Ищет локализованную строку, похожую на Registration.
         /// </summary>
         public static string textRegestration {
             get {
                 return ResourceManager.GetString("textRegestration", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Remember me.
+        /// </summary>
+        public static string textRememberMe {
+            get {
+                return ResourceManager.GetString("textRememberMe", resourceCulture);
             }
         }
         
@@ -277,11 +394,92 @@ namespace Camera.UI.Localize {
         }
         
         /// <summary>
+        ///   Ищет локализованную строку, похожую на Select.
+        /// </summary>
+        public static string textSelect {
+            get {
+                return ResourceManager.GetString("textSelect", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Selected camera:.
+        /// </summary>
+        public static string textSelectedCamera {
+            get {
+                return ResourceManager.GetString("textSelectedCamera", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Settings.
+        /// </summary>
+        public static string textSettings {
+            get {
+                return ResourceManager.GetString("textSettings", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Ищет локализованную строку, похожую на Sing in.
         /// </summary>
         public static string textSignIn {
             get {
                 return ResourceManager.GetString("textSignIn", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на SMS.
+        /// </summary>
+        public static string textSms {
+            get {
+                return ResourceManager.GetString("textSms", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Telegram chatbot.
+        /// </summary>
+        public static string textTelegram {
+            get {
+                return ResourceManager.GetString("textTelegram", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Connection method.
+        /// </summary>
+        public static string textTypeConnection {
+            get {
+                return ResourceManager.GetString("textTypeConnection", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Method of notification.
+        /// </summary>
+        public static string textTypeNotification {
+            get {
+                return ResourceManager.GetString("textTypeNotification", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Disable.
+        /// </summary>
+        public static string textUnconnectTg {
+            get {
+                return ResourceManager.GetString("textUnconnectTg", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Welcome to the web camera human motion detection software system!.
+        /// </summary>
+        public static string textWelcome {
+            get {
+                return ResourceManager.GetString("textWelcome", resourceCulture);
             }
         }
     }

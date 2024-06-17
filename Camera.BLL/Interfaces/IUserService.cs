@@ -6,4 +6,5 @@ public interface IUserService : ICRUDService<User>
 {
     User ReadByEmail(string email);
     User IsUserAuth(User user);
+    void Change(User user);
 }

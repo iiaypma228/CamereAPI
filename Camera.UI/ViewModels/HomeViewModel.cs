@@ -54,7 +54,7 @@ public class HomeViewModel : RoutableViewModelBase, IScreen
         },
         new MenuItemTemplate(typeof(NotificationViewModel), "NotificationIcon")
         {
-            Label = "Сповіщення"
+            Label = Resources.textNotification
         },
         new MenuItemTemplate(typeof(SettingsViewModel), "SettingsIcon")
         {

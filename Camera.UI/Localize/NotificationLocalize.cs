@@ -10,9 +10,9 @@ public class NotificationLocalize
         {
             return new Dictionary<Joint.Data.Constants.NotificationType, string>()
             {
-                {Joint.Data.Constants.NotificationType.Email, "email" },
-                {Joint.Data.Constants.NotificationType.SMS, "sms"},
-                {Joint.Data.Constants.NotificationType.Telegram, "telegram"}
+                {Joint.Data.Constants.NotificationType.Email, Resources.textEmail },
+                {Joint.Data.Constants.NotificationType.SMS, Resources.textSms},
+                {Joint.Data.Constants.NotificationType.Telegram, Resources.textTelegram}
             };
         }
     }

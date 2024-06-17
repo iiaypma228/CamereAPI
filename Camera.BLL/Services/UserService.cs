@@ -121,6 +121,14 @@ public class UserService : Service, IUserService
         return userExsist;
     }
 
+    public void Change(User user)
+    {
+        var oldUser = Read(user.Id);
+        user.Password = oldUser.Password;
+        this._repository.Update(user);
+        this._repository.Save();
+    }
+
     public void Dispose()
     {
         _repository.Dispose();

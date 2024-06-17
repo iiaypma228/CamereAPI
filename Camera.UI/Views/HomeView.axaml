@@ -6,6 +6,7 @@
              x:Class="Camera.UI.Views.HomeView"
              xmlns:rxui="http://reactiveui.net"
              xmlns:app="clr-namespace:Camera.UI"
+			 xmlns:assets="clr-namespace:Camera.UI.Localize"
              xmlns:vm="using:Camera.UI.ViewModels"
               x:DataType="vm:HomeViewModel"
              Background="#607088"
@@ -86,7 +87,7 @@
                              Background="#667A8A"
                              Tag="{StaticResource SignOutIcon}"
                              Command="{Binding Logout}"
-                             Content="Вийти"
+                             Content="{x:Static assets:Resources.textLogout}"
                     />
 
                     
@@ -98,7 +99,7 @@
                         Background="#607088">
                     <rxui:RoutedViewHost Router="{Binding Router}">
                         <rxui:RoutedViewHost.DefaultContent>
-                            <TextBlock Text="Default content"
+                            <TextBlock Text="{x:Static assets:Resources.textWelcome}"
                                        HorizontalAlignment="Center"
                                        VerticalAlignment="Center" />
                         </rxui:RoutedViewHost.DefaultContent>

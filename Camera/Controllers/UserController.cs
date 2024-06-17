@@ -14,10 +14,12 @@ namespace Camera.Controllers;
 public class UserController : ControllerBase
 {
     private readonly IUserService _service;
+    private readonly ITelegramService _telegramService;
     
-    public UserController(IUserService service)
+    public UserController(IUserService service, ITelegramService telegramService)
     {
         this._service = service;
+        this._telegramService = telegramService;
     }
 
     [HttpGet("user")]
@@ -57,6 +59,26 @@ public class UserController : ControllerBase
             throw new Exception(Resources.wrongAuth);
         }
         this._service.Save(user);
+
+        return Ok();
+    }
+
+    [HttpDelete("unlinktelegram")]
+    public object UnlinkTelegram()
+    {
+        var claim = User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.Name);
+        var currentUser = _service.ReadByEmail(claim.Value);
+
+        var res = _telegramService.Read(i=>i.UserId == currentUser.Id).FirstOrDefault();
+
+        if (res == null)
+        {
+            throw new Exception("Помилка відв'язки!");
+        }
+
+        _telegramService.Delete(res);
+        currentUser.TelegramVerified = false;
+        _service.Change(currentUser);
 
         return Ok();
     }

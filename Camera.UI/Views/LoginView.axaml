@@ -64,7 +64,7 @@
 			          HorizontalAlignment="Center" 
 			          Grid.Row="3" 
 			          IsChecked="{Binding RememberMe}">
-				<TextBlock Foreground="White" Text="Запам'ятати мене"></TextBlock>
+				<TextBlock Foreground="White" Text="{x:Static assets:Resources.textRememberMe}"></TextBlock>
 			</CheckBox>
 			<Button	  
 				Name="GoToRegistration"
@@ -72,7 +72,7 @@
 				      Margin="230,0,0,20"
 			          HorizontalAlignment="Center" 
 			          Grid.Row="3"
-				      Content="Реєстрація"
+				      Content="{x:Static assets:Resources.textRegestration}"
 				      Command="{Binding GoToRegistration}"
 			         >
 			</Button>

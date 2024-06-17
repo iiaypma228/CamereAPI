@@ -192,4 +192,67 @@
   <data name="textChangeEmailSuccess" xml:space="preserve">
     <value>Почта змінена успішно!</value>
   </data>
+  <data name="textCameraName" xml:space="preserve">
+    <value>Назва</value>
+  </data>
+  <data name="textChangeEmail" xml:space="preserve">
+    <value>Змінити почту</value>
+  </data>
+  <data name="textChangeLanguage" xml:space="preserve">
+    <value>Змінити мову</value>
+  </data>
+  <data name="textConnectTg" xml:space="preserve">
+    <value>Підключити</value>
+  </data>
+  <data name="textDataConnection" xml:space="preserve">
+    <value>Данні для підключення</value>
+  </data>
+  <data name="textEditEmail" xml:space="preserve">
+    <value>Зміна почти</value>
+  </data>
+  <data name="textErrorLoadCamera" xml:space="preserve">
+    <value>Не вдалося знайти таку камеру, спробуйте іншу!</value>
+  </data>
+  <data name="textLogout" xml:space="preserve">
+    <value>Вийти</value>
+  </data>
+  <data name="textNotification" xml:space="preserve">
+    <value>Сповіщення</value>
+  </data>
+  <data name="textNotificationName" xml:space="preserve">
+    <value>Назва</value>
+  </data>
+  <data name="textRecipientData" xml:space="preserve">
+    <value>Дані отримувача</value>
+  </data>
+  <data name="textRememberMe" xml:space="preserve">
+    <value>Запам'ятати мене</value>
+  </data>
+  <data name="textSelect" xml:space="preserve">
+    <value>Обрати</value>
+  </data>
+  <data name="textSelectedCamera" xml:space="preserve">
+    <value>Обрана камера:</value>
+  </data>
+  <data name="textSettings" xml:space="preserve">
+    <value>Налаштування</value>
+  </data>
+  <data name="textTelegram" xml:space="preserve">
+    <value>Чат-бот телеграм</value>
+  </data>
+  <data name="textTypeConnection" xml:space="preserve">
+    <value>Спосіб підключення</value>
+  </data>
+  <data name="textTypeNotification" xml:space="preserve">
+    <value>Спосіб сповіщення</value>
+  </data>
+  <data name="textUnconnectTg" xml:space="preserve">
+    <value>Відключити</value>
+  </data>
+  <data name="textWelcome" xml:space="preserve">
+    <value>Ласкаво просимо до програмної системи виявлення рухів людей вебкамерами!</value>
+  </data>
+  <data name="textSms" xml:space="preserve">
+    <value>СМС</value>
+  </data>
 </root>

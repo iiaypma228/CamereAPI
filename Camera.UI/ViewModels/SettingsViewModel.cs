@@ -1,4 +1,5 @@
-﻿using Camera.UI.Localize;
+﻿using Avalonia.Threading;
+using Camera.UI.Localize;
 using Camera.UI.Services;
 using Joint.Data.Models;
 using Microsoft.Extensions.Configuration;
@@ -41,15 +42,16 @@ namespace Camera.UI.ViewModels
             {
                 this.ValidationRule(x => x.RetryPassword, v => !string.IsNullOrEmpty(v), Resources.textPasswordIsRequired);
                 this.ValidationRule(x => x.RetryPassword, v => v == Password, Resources.textPasswordNotEqualsRetryPassowrd);
-            });        
+            });
         }
+        private DispatcherTimer timer;
         [Reactive] public Dictionary<string, string> Localize { get; set; } = new Dictionary<string, string> { { "uk", "Українська" }, { "en", "English (Англійська)" } };
 
         [Reactive] public User User { get; set; }
 
         public string Email
         {
-            get =>  User?.Email;
+            get => User?.Email;
             set
             {
                 User.Email = value;
@@ -66,7 +68,7 @@ namespace Camera.UI.ViewModels
                 this.RaisePropertyChanged();
             }
         }
-        
+
         public bool TelegramVerified
         {
             get => User?.TelegramVerified ?? false;
@@ -76,7 +78,7 @@ namespace Camera.UI.ViewModels
                 this.RaisePropertyChanged();
             }
         }
-        
+
 
         [Reactive] public string RetryPassword { get; set; }
 
@@ -91,14 +93,42 @@ namespace Camera.UI.ViewModels
 
         public void OpenTG()
         {
+            timer = new DispatcherTimer();
+            timer.Interval = TimeSpan.FromSeconds(5);
+            timer.Tick += async (o, e) =>
+            {
+                var res = await _registrationService.GetMe();
+                if (res.Data.TelegramVerified)
+                {
+                    Dispatcher.UIThread.Post(() => { TelegramVerified = true; });
+                    timer.Stop();
+                }
+            };
+            timer.Start();
             var url = "https://t.me/OlegCameraNotification_bot";
             Process.Start(new ProcessStartInfo
             {
                 FileName = url,
                 UseShellExecute = true
             });
+
         }
-        
+
+        public async void UnlinkTG()
+        {
+            var res = await _registrationService.UnlinkTelegram();
+
+            if (res.IsSuccess)
+            {
+                _notificationService.ShowInfo("Успіх");
+                TelegramVerified = false;
+            }
+            else
+            {
+                _notificationService.ShowError("Помилка");
+            }
+        }
+
         public KeyValuePair<string, string> LocalizeDeffault
         {
             get => _localizeDeffault ?? new KeyValuePair<string, string>();
@@ -137,7 +167,7 @@ namespace Camera.UI.ViewModels
                 _notificationService.ShowInfo("");
             }
         }
-        
+
         private void CurrentLocale(string newLocale)
         {
             UpdateAppSetting("Localize", newLocale);
@@ -149,16 +179,16 @@ namespace Camera.UI.ViewModels
 
             if (code == "en")
             {
-                LocalizeDeffault = new KeyValuePair<string, string>( "en", "English (Англійська)" );
+                LocalizeDeffault = new KeyValuePair<string, string>("en", "English (Англійська)");
             }
             else
             {
                 LocalizeDeffault = new KeyValuePair<string, string>("uk", "Українська");
             }
-            
-            
+
+
         }
-        
+
         private void UpdateAppSetting(string key, string value)
         {
             var configJson = File.ReadAllText("appsettings.json");
@@ -167,7 +197,7 @@ namespace Camera.UI.ViewModels
             var updatedConfigJson = JsonSerializer.Serialize(config, new JsonSerializerOptions { WriteIndented = true });
             File.WriteAllText("appsettings.json", updatedConfigJson);
         }
-        
+
         private void ConfigureValidation()
         {
             if (ValidationContext.Validations.Count < 4)

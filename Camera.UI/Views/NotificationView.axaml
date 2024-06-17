@@ -20,9 +20,9 @@
 	
 	<StackPanel Margin="20">
 		<StackPanel Orientation="Horizontal" Margin="0 5 0 5">
-			<Button FontSize="25" Margin="0 0 10 0" Classes="icon" Tag="{StaticResource AlertOn}" Content="Додати" Command="{Binding CreateNotification}" />
-			<Button FontSize="25" Margin="0 0 10 0" Classes="icon" Tag="{StaticResource NotificationIcon}" Content="Змінити" Command="{Binding EditNotificationCommand}" />
-			<Button FontSize="25" Margin="0 0 10 0" Classes="icon" Tag="{StaticResource DeleteIcon}" Content="Видалити" Command="{Binding DeleteCamera}" />
+			<Button FontSize="25" Margin="0 0 10 0" Classes="icon" Tag="{StaticResource AlertOn}" Content="{x:Static assets:Resources.textAdd}" Command="{Binding CreateNotification}" />
+			<Button FontSize="25" Margin="0 0 10 0" Classes="icon" Tag="{StaticResource NotificationIcon}" Content="{x:Static assets:Resources.textEdit}" Command="{Binding EditNotificationCommand}" />
+			<Button FontSize="25" Margin="0 0 10 0" Classes="icon" Tag="{StaticResource DeleteIcon}" Content="{x:Static assets:Resources.textDelete}" Command="{Binding DeleteCamera}" />
 		</StackPanel>
 		<DataGrid ItemsSource="{Binding Items}" SelectedItem="{Binding SelectedNotification}"
           behaviors:DoubleTappedBehav.Command="{Binding EditNotificationCommand}" 
@@ -36,9 +36,9 @@
 		  SelectionMode="Single"
           BorderThickness="1" BorderBrush="#78859A">
 			<DataGrid.Columns>
-				<DataGridTextColumn Foreground="#DEEBFF" Header="Назва" Binding="{Binding Name}"/>
-				<DataGridTextColumn Foreground="#DEEBFF" Header="Спосіб оповіщення" Binding="{Binding NotificationType}"/>
-				<DataGridTextColumn Foreground="#DEEBFF" Header="Данні отримувача" Binding="{Binding Data}"/>
+				<DataGridTextColumn Foreground="#DEEBFF" Header="{x:Static assets:Resources.textNotificationName}" Binding="{Binding Name}"/>
+				<DataGridTextColumn Foreground="#DEEBFF" Header="{x:Static assets:Resources.textTypeNotification}" Binding="{Binding NotificationType}"/>
+				<DataGridTextColumn Foreground="#DEEBFF" Header="{x:Static assets:Resources.textRecipientData}" Binding="{Binding Data}"/>
 			</DataGrid.Columns>
 		</DataGrid>
 		
@@ -53,7 +53,7 @@
 			        Tag="{StaticResource CheckMarkIcon}" 
 			        Command="{Binding SelectedConfirm}">
 					
-				<TextBlock Text="Обрати"></TextBlock>
+				<TextBlock Text="{x:Static assets:Resources.textSelect}"></TextBlock>
 			</Button>
 			<Button Background="#E3C0D5"
 			        Classes="icon"
@@ -64,7 +64,7 @@
 			        Tag="{StaticResource PaneCloseIcon}" 
 			        Command="{Binding Back}">
 					
-				<TextBlock Text="Відміна"></TextBlock>
+				<TextBlock Text="{x:Static assets:Resources.textCancel}"></TextBlock>
 			</Button>
 		</StackPanel>
 	</StackPanel>

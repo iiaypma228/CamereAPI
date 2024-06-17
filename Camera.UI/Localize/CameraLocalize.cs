@@ -14,8 +14,8 @@ namespace Camera.UI.Localize
             {
                 return new Dictionary<Joint.Data.Constants.CameraConnection, string>()
                 {
-                    {Joint.Data.Constants.CameraConnection.Cabel, "cabel" },
-                    {Joint.Data.Constants.CameraConnection.Ethernet, "ethernet"}
+                    {Joint.Data.Constants.CameraConnection.Cabel, Resources.textCabel },
+                    {Joint.Data.Constants.CameraConnection.Ethernet, Resources.textEthernet }
                 };
             }
         }

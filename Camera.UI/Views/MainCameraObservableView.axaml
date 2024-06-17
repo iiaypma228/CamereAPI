@@ -7,13 +7,14 @@
              xmlns:vlc="clr-namespace:LibVLCSharp.Avalonia;assembly=LibVLCSharp.Avalonia"
              xmlns:vm="using:Camera.UI.ViewModels"
              xmlns:md="using:Joint.Data.Models"
+			 xmlns:assets="clr-namespace:Camera.UI.Localize"
              xmlns:avaloniaProgressRing="clr-namespace:AvaloniaProgressRing"
              x:DataType="vm:MainCameraObservableViewModel"
              >
     
     <Grid VerticalAlignment="Stretch" HorizontalAlignment="Stretch" RowDefinitions="Auto, *" ColumnDefinitions="*">
        <StackPanel Margin="40,20,0,0" HorizontalAlignment="Left" VerticalAlignment="Top" Orientation="Horizontal" Grid.Column="0" Grid.Row="0">
-           <TextBlock Margin="0,0,10,0" Text="Обрана камера:"></TextBlock>
+           <TextBlock Margin="0,5,10,0" Text="{x:Static assets:Resources.textSelectedCamera}"></TextBlock>
            <ComboBox
                MinWidth="300"
                SelectedValue="{Binding SelectedCamera}"
@@ -35,7 +36,7 @@
         </StackPanel>
         
         <StackPanel IsVisible="{Binding !ConnectCameraCommand.IsRunning}" Grid.Row="1" VerticalAlignment="Center">
-            <TextBlock IsVisible="{Binding !IsOpened}" VerticalAlignment="Center" TextAlignment="Center" HorizontalAlignment="Center" Text="Не вдалося знайти таку камеру, спробуйте іншу!">
+            <TextBlock IsVisible="{Binding !IsOpened}" VerticalAlignment="Center" TextAlignment="Center" HorizontalAlignment="Center" Text="{x:Static assets:Resources.textErrorLoadCamera}">
             </TextBlock>
         </StackPanel>
         

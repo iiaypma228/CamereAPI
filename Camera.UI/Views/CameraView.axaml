@@ -5,6 +5,7 @@
              mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
              x:Class="Camera.UI.Views.CameraView"
 			 xmlns:vm="using:Camera.UI.ViewModels"
+			 xmlns:assets="clr-namespace:Camera.UI.Localize"
              xmlns:behav="clr-namespace:Camera.UI.Behaviors"
              x:DataType="vm:CameraViewModel"
              Background="#607088"
@@ -20,9 +21,9 @@
 	
 	<StackPanel Margin="20">
 		<StackPanel Orientation="Horizontal" Margin="0 5 0 5">
-			<Button FontSize="25" Margin="0 0 10 0" Classes="icon" Tag="{StaticResource CameraAddIcon}" Content="Додати" Command="{Binding CreateCamera}"/>
-			<Button FontSize="25" Margin="0 0 10 0" Classes="icon" Tag="{StaticResource CameraEditIcon}" Content="Змінити" Command="{Binding EditCameraCommand}" />
-			<Button FontSize="25" Margin="0 0 10 0" Classes="icon" Tag="{StaticResource DeleteIcon}" Content="Видалити" Command="{Binding DeleteCamera}"/>
+			<Button FontSize="25" Margin="0 0 10 0" Classes="icon" Tag="{StaticResource CameraAddIcon}" Content="{x:Static assets:Resources.textAdd}" Command="{Binding CreateCamera}"/>
+			<Button FontSize="25" Margin="0 0 10 0" Classes="icon" Tag="{StaticResource CameraEditIcon}" Content="{x:Static assets:Resources.textEdit}" Command="{Binding EditCameraCommand}" />
+			<Button FontSize="25" Margin="0 0 10 0" Classes="icon" Tag="{StaticResource DeleteIcon}" Content="{x:Static assets:Resources.textDelete}" Command="{Binding DeleteCamera}"/>
 		</StackPanel>
 		<DataGrid ItemsSource="{Binding Items}" SelectedItem="{Binding SelectedCamera}"
 		  behav:DoubleTappedBehav.Command="{Binding EditCameraCommand}" 
@@ -36,9 +37,9 @@
 		  SelectionMode="Single"
           BorderThickness="1" BorderBrush="#78859A">
 			<DataGrid.Columns>
-				<DataGridTextColumn Foreground="#DEEBFF" Header="Назва" Binding="{Binding Name}"/>
-				<DataGridTextColumn Foreground="#DEEBFF" Header="Спосіб підключення" Binding="{Binding Connection}"/>
-				<DataGridTextColumn Foreground="#DEEBFF" Header="Данні для підключення" Binding="{Binding ConnectionData}"/>
+				<DataGridTextColumn Foreground="#DEEBFF" Header="{x:Static assets:Resources.textCameraName}" Binding="{Binding Name}"/>
+				<DataGridTextColumn Foreground="#DEEBFF" Header="{x:Static assets:Resources.textTypeConnection}" Binding="{Binding Connection}"/>
+				<DataGridTextColumn Foreground="#DEEBFF" Header="{x:Static assets:Resources.textDataConnection}" Binding="{Binding ConnectionData}"/>
 			</DataGrid.Columns>
 		</DataGrid>
 	</StackPanel>

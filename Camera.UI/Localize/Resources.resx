@@ -192,4 +192,70 @@
   <data name="textChangeEmailSuccess" xml:space="preserve">
     <value>Mail changed successfully!</value>
   </data>
+  <data name="textCameraName" xml:space="preserve">
+    <value>Name</value>
+  </data>
+  <data name="textChangeEmail" xml:space="preserve">
+    <value>Change mail</value>
+  </data>
+  <data name="textChangeLanguage" xml:space="preserve">
+    <value>Change language</value>
+  </data>
+  <data name="textConnectTg" xml:space="preserve">
+    <value>Connect</value>
+  </data>
+  <data name="textDataConnection" xml:space="preserve">
+    <value>Data for connection</value>
+  </data>
+  <data name="textEditEmail" xml:space="preserve">
+    <value>Change of mail</value>
+  </data>
+  <data name="textErrorLoadCamera" xml:space="preserve">
+    <value>Couldn't find this camera, try another one!</value>
+  </data>
+  <data name="textLogout" xml:space="preserve">
+    <value>Logout</value>
+  </data>
+  <data name="textNotification" xml:space="preserve">
+    <value>Notification</value>
+  </data>
+  <data name="textNotificationName" xml:space="preserve">
+    <value>Name</value>
+  </data>
+  <data name="textRecipientData" xml:space="preserve">
+    <value>Recipient data</value>
+  </data>
+  <data name="textRememberMe" xml:space="preserve">
+    <value>Remember me</value>
+  </data>
+  <data name="textSelect" xml:space="preserve">
+    <value>Select</value>
+  </data>
+  <data name="textSelectedCamera" xml:space="preserve">
+    <value>Selected camera:</value>
+  </data>
+  <data name="textSettings" xml:space="preserve">
+    <value>Settings</value>
+  </data>
+  <data name="textTelegram" xml:space="preserve">
+    <value>Telegram chatbot</value>
+  </data>
+  <data name="textTypeConnection" xml:space="preserve">
+    <value>Connection method</value>
+  </data>
+  <data name="textTypeNotification" xml:space="preserve">
+    <value>Method of notification</value>
+  </data>
+  <data name="textUnconnectTg" xml:space="preserve">
+    <value>Disable</value>
+  </data>
+  <data name="textWelcome" xml:space="preserve">
+    <value>Welcome to the web camera human motion detection software system!</value>
+  </data>
+  <data name="String1" xml:space="preserve">
+    <value />
+  </data>
+  <data name="textSms" xml:space="preserve">
+    <value>SMS</value>
+  </data>
 </root>
