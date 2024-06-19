@@ -127,7 +127,7 @@
     <value>Email</value>
   </data>
   <data name="textCameras" xml:space="preserve">
-    <value>Cameras</value>
+    <value>Webcams</value>
   </data>
   <data name="textInfo" xml:space="preserve">
     <value>Info</value>
@@ -175,10 +175,10 @@
     <value>Password is required</value>
   </data>
   <data name="textCameraObervable" xml:space="preserve">
-    <value>Camera</value>
+    <value>Video stream from webcam</value>
   </data>
   <data name="textCameraCatalog" xml:space="preserve">
-    <value>Catalogs</value>
+    <value>Catalogs of webcams</value>
   </data>
   <data name="textOptions" xml:space="preserve">
     <value>Options</value>
@@ -217,7 +217,7 @@
     <value>Logout</value>
   </data>
   <data name="textNotification" xml:space="preserve">
-    <value>Notification</value>
+    <value>Catalogs of notification</value>
   </data>
   <data name="textNotificationName" xml:space="preserve">
     <value>Name</value>
@@ -252,10 +252,13 @@
   <data name="textWelcome" xml:space="preserve">
     <value>Welcome to the web camera human motion detection software system!</value>
   </data>
-  <data name="String1" xml:space="preserve">
-    <value />
-  </data>
   <data name="textSms" xml:space="preserve">
     <value>SMS</value>
+  </data>
+  <data name="textData" xml:space="preserve">
+    <value>Recipient's address</value>
+  </data>
+  <data name="textIPAddress" xml:space="preserve">
+    <value>IP address of the webcam</value>
   </data>
 </root>

@@ -49,7 +49,7 @@
 			
 					<TextBox 
 						Margin="0,0,0,20"
-						Watermark="Name" 
+						Watermark="{x:Static assets:Resources.textCameraName}" 
 						UseFloatingWatermark="True" 
 						Grid.Column="0" Grid.Row="0" 
 						Text="{Binding CameraName}">
@@ -76,6 +76,7 @@
 					<!--<TextBox Text="{Binding Camera.Connection}"></TextBox>-->
 					<TextBox 
 						x:Name="EthernetTextBox"
+						Watermark="{x:Static assets:Resources.textIPAddress}"
 						Grid.Column="0" Grid.Row="2"
 						Text="{Binding Camera.ConnectionData}"></TextBox>
 					

@@ -22,7 +22,7 @@
 		<StackPanel Orientation="Horizontal" Margin="0 5 0 5">
 			<Button FontSize="25" Margin="0 0 10 0" Classes="icon" Tag="{StaticResource AlertOn}" Content="{x:Static assets:Resources.textAdd}" Command="{Binding CreateNotification}" />
 			<Button FontSize="25" Margin="0 0 10 0" Classes="icon" Tag="{StaticResource NotificationIcon}" Content="{x:Static assets:Resources.textEdit}" Command="{Binding EditNotificationCommand}" />
-			<Button FontSize="25" Margin="0 0 10 0" Classes="icon" Tag="{StaticResource DeleteIcon}" Content="{x:Static assets:Resources.textDelete}" Command="{Binding DeleteCamera}" />
+			<Button FontSize="25" Margin="0 0 10 0" Classes="icon" Tag="{StaticResource DeleteIcon}" Content="{x:Static assets:Resources.textDelete}" Command="{Binding DeleteNotification}" />
 		</StackPanel>
 		<DataGrid ItemsSource="{Binding Items}" SelectedItem="{Binding SelectedNotification}"
           behaviors:DoubleTappedBehav.Command="{Binding EditNotificationCommand}" 

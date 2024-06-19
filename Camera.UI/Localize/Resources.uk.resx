@@ -127,7 +127,7 @@
     <value>Пошта</value>
   </data>
   <data name="textCameras" xml:space="preserve">
-    <value>Камери</value>
+    <value>Вебкамери</value>
   </data>
   <data name="textInfo" xml:space="preserve">
     <value>Інформація</value>
@@ -175,10 +175,10 @@
     <value>Поле пароль обов'язкове!</value>
   </data>
   <data name="textCameraObervable" xml:space="preserve">
-    <value>Камера</value>
+    <value>Відеопотік з вебкамери</value>
   </data>
   <data name="textCameraCatalog" xml:space="preserve">
-    <value>Довідник</value>
+    <value>Довідник вебкамер</value>
   </data>
   <data name="textOptions" xml:space="preserve">
     <value>Налаштування</value>
@@ -196,7 +196,7 @@
     <value>Назва</value>
   </data>
   <data name="textChangeEmail" xml:space="preserve">
-    <value>Змінити почту</value>
+    <value>Змінити пошту</value>
   </data>
   <data name="textChangeLanguage" xml:space="preserve">
     <value>Змінити мову</value>
@@ -215,9 +215,6 @@
   </data>
   <data name="textLogout" xml:space="preserve">
     <value>Вийти</value>
-  </data>
-  <data name="textNotification" xml:space="preserve">
-    <value>Сповіщення</value>
   </data>
   <data name="textNotificationName" xml:space="preserve">
     <value>Назва</value>
@@ -254,5 +251,14 @@
   </data>
   <data name="textSms" xml:space="preserve">
     <value>СМС</value>
+  </data>
+  <data name="textData" xml:space="preserve">
+    <value>Адреса отримувача</value>
+  </data>
+  <data name="textIPAddress" xml:space="preserve">
+    <value>IP адреса вебкамери</value>
+  </data>
+  <data name="textNotification" xml:space="preserve">
+    <value>Довідник сповіщень</value>
   </data>
 </root>

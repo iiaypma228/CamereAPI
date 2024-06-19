@@ -87,7 +87,7 @@ namespace Camera.UI.ViewModels
         
         private void ConfigureValidation()
         {
-            if (ValidationContext.Validations.Count > 0)
+            if (ValidationContext.Validations.Count == 0)
             {
                 this.ValidationRule(x => x.Email, v =>  !string.IsNullOrEmpty(v), Resources.textEmailIsRequired);
                 this.ValidationRule(x => x.Email, v => v != null && Regex.Match(v, "^[\\w\\.-]+@[a-zA-Z\\d\\.-]+\\.[a-zA-Z]{2,}$").Success, Resources.textEmailNotTemplate);

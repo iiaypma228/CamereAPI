@@ -61,15 +61,6 @@ namespace Camera.UI.Localize {
         }
         
         /// <summary>
-        ///   Ищет локализованную строку, похожую на .
-        /// </summary>
-        public static string String1 {
-            get {
-                return ResourceManager.GetString("String1", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Ищет локализованную строку, похожую на Add.
         /// </summary>
         public static string textAdd {
@@ -97,7 +88,7 @@ namespace Camera.UI.Localize {
         }
         
         /// <summary>
-        ///   Ищет локализованную строку, похожую на Catalogs.
+        ///   Ищет локализованную строку, похожую на Catalogs of webcams.
         /// </summary>
         public static string textCameraCatalog {
             get {
@@ -115,7 +106,7 @@ namespace Camera.UI.Localize {
         }
         
         /// <summary>
-        ///   Ищет локализованную строку, похожую на Camera.
+        ///   Ищет локализованную строку, похожую на Video stream from webcam.
         /// </summary>
         public static string textCameraObervable {
             get {
@@ -124,7 +115,7 @@ namespace Camera.UI.Localize {
         }
         
         /// <summary>
-        ///   Ищет локализованную строку, похожую на Cameras.
+        ///   Ищет локализованную строку, похожую на Webcams.
         /// </summary>
         public static string textCameras {
             get {
@@ -174,6 +165,15 @@ namespace Camera.UI.Localize {
         public static string textConnectTg {
             get {
                 return ResourceManager.GetString("textConnectTg", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Recipient&apos;s address.
+        /// </summary>
+        public static string textData {
+            get {
+                return ResourceManager.GetString("textData", resourceCulture);
             }
         }
         
@@ -277,6 +277,15 @@ namespace Camera.UI.Localize {
         }
         
         /// <summary>
+        ///   Ищет локализованную строку, похожую на IP address of the webcam.
+        /// </summary>
+        public static string textIPAddress {
+            get {
+                return ResourceManager.GetString("textIPAddress", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Ищет локализованную строку, похожую на Login.
         /// </summary>
         public static string textLogin {
@@ -295,7 +304,7 @@ namespace Camera.UI.Localize {
         }
         
         /// <summary>
-        ///   Ищет локализованную строку, похожую на Notification.
+        ///   Ищет локализованную строку, похожую на Catalogs of notification.
         /// </summary>
         public static string textNotification {
             get {

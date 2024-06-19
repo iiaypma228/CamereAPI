@@ -56,7 +56,7 @@ public class NotificationViewModel : RoutableViewModelBase
         _notificationFormViewModel.Notification = new Joint.Data.Models.Notification();
         RoutingState.Navigate.Execute(_notificationFormViewModel);
     }
-    public async void DeleteCamera()
+    public async void DeleteNotification()
     {
         if (SelectedNotification == null)
         {
